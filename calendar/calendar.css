@@ -41,3 +41,25 @@ body:has(#calendar-panel:not([hidden])){background:#f5f4ee}
 #calendar-output{display:block;width:100%;height:auto;border-radius:8px}
 #calendar-download{display:block;text-align:center;padding:14px;font-size:16px;color:#244c3c;margin-top:8px}
 @media(max-width:360px){.app-header{padding:18px 16px 0}.calendar-panel{padding-left:16px;padding-right:16px}.calendar-body{padding:20px 16px}.calendar-text{font-size:21px}.calendar-date-row{gap:14px}#calendar-day{font-size:72px}.calendar-date-row div{padding-left:14px}.calendar-date-row p{font-size:14px}}
+
+/* The daily card is a compact entry; the full calendar opens on demand. */
+.app-header{padding:16px 20px 12px}
+.app-brand{font-size:22px}
+.calendar-peek{display:flex;gap:14px;text-align:left;align-items:center;width:calc(100% - 40px);max-width:420px;margin:0 auto;background:#fffdf7;border:1px solid #e8e8df;padding:12px;border-radius:18px;color:#244c3c}
+#calendar-mini-photo{width:76px;height:90px;flex-shrink:0;object-fit:cover;border-radius:10px;background:#e8ecdf}
+.calendar-mini-copy{display:flex;flex-direction:column;gap:5px;min-width:0}
+#calendar-mini-date{font-size:14px;color:#657467}
+#calendar-mini-text{font-family:"Songti SC",SimSun,serif;font-size:17px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.calendar-mini-more{font-size:14px;color:#657467}
+#calendar-detail{width:min(480px,calc(100% - 24px));padding:16px 0;border-radius:22px}
+.calendar-detail-head{display:flex;justify-content:space-between;align-items:center;padding:0 20px 12px}
+.calendar-detail-head h2{font-size:18px}
+#decision-panel{border:0;margin-top:0;padding-top:0;padding-bottom:16px}
+#decision-panel h1,#decision-panel #intro,#decision-panel footer,#decision-panel .tools{display:none}
+#decision-panel .tabs{margin:14px 0}
+#decision-panel .frame{max-width:260px}
+#decision-panel .card{padding-top:12px;padding-bottom:16px}
+#decision-panel .card-head{margin-bottom:16px;align-items:center}
+#decision-panel .caption{margin:16px 0 14px}
+#decision-panel #notice:empty{display:none}
+@media(max-width:360px){.app-header{padding-top:14px}.calendar-peek{width:calc(100% - 32px);gap:10px}#calendar-mini-photo{width:68px;height:86px}#decision-panel .frame{max-width:240px}}
