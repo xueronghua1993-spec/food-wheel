@@ -1,0 +1,57 @@
+name: Check and publish food wheel
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript and food wheel rules
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const vm = require('node:vm');
+          const assert = require('node:assert/strict');
+          const html = fs.readFileSync('index.html', 'utf8');
+          const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+          new vm.Script(script);
+          const rules = script.slice(script.indexOf('function validate('), script.indexOf('try{const saved'));
+          const context = vm.createContext({});
+          vm.runInContext(rules, context);
+          assert.equal(context.validate(['面条', '汉堡']).error, '');
+          for (const values of [['面'], [' ', '面'], ['面', ' 面 '], ['123456789', '面'], Array(11).fill('面')]) assert.ok(context.validate(values).error);
+          let rotation = 0;
+          for (let count = 2; count <= 10; count++) {
+            for (let index = 0; index < count; index++) {
+              const next = context.nextRotation(rotation, index, count);
+              assert.ok(next - rotation >= 1440);
+              const angle = ((index + .5) * 360 / count + next) % 360;
+              assert.ok(Math.min(angle, 360 - angle) < 1e-8);
+              rotation = next;
+            }
+          }
+          console.log('PASS: JavaScript syntax, menu validation, pointer alignment for 2–10 options.');
+          NODE
+      - uses: actions/configure-pages@v5
+      - name: Prepare public assets
+        run: |
+          mkdir public
+          cp index.html public/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
