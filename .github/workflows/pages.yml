@@ -27,7 +27,7 @@ jobs:
           const html = fs.readFileSync('index.html', 'utf8');
           const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
           new vm.Script(script);
-          const rules = script.slice(script.indexOf('function validate('), script.indexOf('try{const saved'));
+          const rules = script.slice(script.indexOf('function validate('), script.indexOf('function loadMenu('));
           const context = vm.createContext({});
           vm.runInContext(rules, context);
           assert.equal(context.validate(['面条', '汉堡']).error, '');
@@ -45,10 +45,16 @@ jobs:
           console.log('PASS: JavaScript syntax, menu validation, pointer alignment for 2–10 options.');
           NODE
       - uses: actions/configure-pages@v5
-      - name: Prepare public assets
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install image renderer
         run: |
-          mkdir public
-          cp index.html public/index.html
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          npm install --no-save --package-lock=false sharp@0.34.3
+      - name: Prepare public assets
+        run: node scripts/build.cjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
