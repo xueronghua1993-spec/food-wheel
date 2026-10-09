@@ -2,7 +2,11 @@ const fs=require('node:fs');
 const sharp=require('sharp');
 async function build(){
  fs.mkdirSync('public',{recursive:true});
- fs.copyFileSync('index.html','public/index.html');
+ const source=fs.readFileSync('index.html','utf8');
+ const version=require('node:crypto').createHash('sha256').update(source).digest('hex').slice(0,12);
+ const html=source.replace("const buildVersion='__BUILD_VERSION__';","const buildVersion='"+version+"';");
+ fs.writeFileSync('public/index.html',html);
+ fs.writeFileSync('public/release.json',JSON.stringify({version}));
  fs.copyFileSync('logo.svg','public/logo.svg');
  await sharp('share-card.svg').png().toFile('public/share-card.png');
  await sharp('logo.svg').resize(180,180).png().toFile('public/apple-touch-icon.png');
