@@ -32,14 +32,11 @@ body:has(#calendar-panel:not([hidden])){background:#f5f4ee}
 #calendar-full{white-space:pre-line}
 .calendar-credits{font-size:14px;line-height:1.7;overflow-wrap:anywhere;margin-top:10px;color:#637765}
 .calendar-credits a{color:#244c3c;text-underline-offset:3px}
-#calendar-share-fallback{font-size:14px;line-height:1.6;margin:12px 0}
-#calendar-share-url{width:100%;font-size:16px;padding:10px;border:1px solid #d8ddce;border-radius:10px}
 #calendar-preview{width:min(480px,calc(100% - 24px));padding:16px;border-radius:20px}
 .calendar-preview-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
 #calendar-preview-title{font-size:20px}#calendar-preview-close{background:#e9eee3;color:#244c3c;padding:8px 14px;font-size:14px}
 #calendar-preview p{font-size:14px;line-height:1.6;color:#637765}
 #calendar-output{display:block;width:100%;height:auto;border-radius:8px}
-#calendar-download{display:block;text-align:center;padding:14px;font-size:16px;color:#244c3c;margin-top:8px}
 @media(max-width:360px){.app-header{padding:18px 16px 0}.calendar-panel{padding-left:16px;padding-right:16px}.calendar-body{padding:20px 16px}.calendar-text{font-size:21px}.calendar-date-row{gap:14px}#calendar-day{font-size:72px}.calendar-date-row div{padding-left:14px}.calendar-date-row p{font-size:14px}}
 
 /* The daily card is a compact entry; the full calendar opens on demand. */
@@ -191,7 +188,6 @@ body[data-mode=coffee] #decision-panel .selection-slot .result strong{color:#496
 #calendar-detail .calendar-panel{width:100%;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:16px 18px 20px;flex:1}
 #calendar-detail .calendar-toolbar{display:flex;flex-shrink:0;margin:0;gap:12px;padding:12px 18px max(12px,env(safe-area-inset-bottom));border-top:1px solid #dce5d4;background:#f4f8ef}
 #calendar-detail .calendar-toolbar button{min-height:48px;border-radius:14px;font-size:16px}
-#calendar-detail #calendar-share{flex:0 0 38%;background:#e6eedc;border:1px solid #d0dfc3;color:#36533b}
 #calendar-detail #calendar-save{flex:1;background:#285744;color:white;border-color:#285744}
 #calendar-detail .calendar-date-row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center;margin-top:22px;padding-top:18px;text-align:left}
 #calendar-detail #calendar-day{font-size:78px;line-height:.95;letter-spacing:-3px;font-variant-numeric:tabular-nums}
@@ -202,3 +198,7 @@ body[data-mode=coffee] #decision-panel .selection-slot .result strong{color:#496
 #calendar-detail .calendar-footnote{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;margin-top:18px;padding-top:12px;border-top:1px solid #e1e8d8}
 #calendar-detail .calendar-footnote .calendar-signature,#calendar-detail .calendar-footnote .calendar-remaining{padding:0;margin:0;border:0;font-size:14px;line-height:1.6;letter-spacing:0;color:#66765f}
 @media(max-width:360px){#calendar-detail .calendar-panel{padding:12px 12px 16px}#calendar-detail .calendar-date-row{gap:14px}#calendar-detail #calendar-day{font-size:68px}#calendar-detail .calendar-date-row div{padding-left:12px}#calendar-detail .calendar-navigation{gap:8px;padding:0 12px 10px}.calendar-navigation button{padding:8px;font-size:14px}#calendar-detail .calendar-toolbar{padding-left:12px;padding-right:12px}}
+
+#calendar-detail .calendar-toolbar #calendar-save{width:100%;flex:1}
+.calendar-toast{position:absolute;left:50%;bottom:max(84px,calc(env(safe-area-inset-bottom) + 84px));transform:translateX(-50%);z-index:10;width:max-content;max-width:calc(100% - 32px);padding:11px 16px;border-radius:12px;background:#203e32ed;color:#fff;font-size:14px;line-height:1.6;text-align:center;box-shadow:0 4px 16px #203e3220;pointer-events:none}
+#calendar-output{-webkit-touch-callout:default;user-select:auto}

@@ -66,11 +66,9 @@
    <div class="calendar-footnote"><span class="calendar-signature">每日一页</span><p id="calendar-remaining" class="calendar-remaining"></p></div>
   </div>
  </article>
- <div id="calendar-share-fallback" hidden><label for="calendar-share-url">长按下方链接复制</label><input id="calendar-share-url" type="text" readonly></div>
- <p id="calendar-message" class="calendar-status" role="status"></p>
  <details id="calendar-credits" class="calendar-credits" hidden><summary>文字与图片来源</summary><p id="calendar-credit-text"></p><a id="calendar-text-link" target="_blank" rel="noopener noreferrer">查看原文</a><p id="calendar-credit-photo"></p><a id="calendar-image-link" target="_blank" rel="noopener noreferrer">查看图片来源</a><p>摄影用于烘托气氛，并非历史人物或事件照片。</p></details>
 </section>
-<div id="calendar-actions" class="calendar-actions calendar-toolbar" aria-label="日历操作" hidden><button id="calendar-share" type="button">复制链接</button><button id="calendar-save" type="button">保存日历</button></div>
+<div id="calendar-actions" class="calendar-actions calendar-toolbar" aria-label="日历操作" hidden><button id="calendar-save" type="button">保存图片</button></div>
 </dialog>
 <main id="decision-panel"><header class="brand"><span class="brand-mark">◷</span>日常小决定<small>DAILY PICK</small></header><h1 id="heading">今天吃什么<span>？</span></h1><p id="intro" class="hint">好好吃饭，把纠结留给转盘。</p><nav class="tabs" aria-label="选择转盘"><button id="food" type="button" aria-pressed="true">吃什么</button><button id="coffee" type="button" aria-pressed="false">喝什么咖啡</button></nav><section class="card" aria-label="随机选择"><div class="card-head"><strong id="card-title">我的餐食转盘</strong><button id="edit" class="plain" type="button">编辑菜单 →</button></div><div class="frame"><div class="pointer" aria-hidden="true"></div><div id="wheel" class="wheel" role="img" aria-label="餐食转盘"></div><div id="hub" class="hub" aria-hidden="true">吃</div></div><div class="selection-slot"><p id="caption" class="caption"></p><div id="result" class="result" aria-live="polite" hidden><span id="result-label">今天就吃</span><strong id="winner"></strong></div></div><button id="spin" class="primary" type="button">帮我选一餐 ↗</button></section><div class="tools"><span id="tools-hint">只放你想吃的</span></div><p id="notice" class="notice" role="status"></p><footer>吃一顿喜欢的 · 喝一杯刚好的</footer></main>
 <dialog id="editor" aria-labelledby="title"><form id="form" novalidate><div class="top"><h2 id="title">想吃的，都放进来</h2><span id="count"></span></div><p class="hint">2～10 个选项 · 每项最多 8 个字符</p><div id="rows"></div><button id="add" type="button">＋ 新增选项</button><p id="error" role="alert"></p><div class="actions"><button id="cancel" type="button" class="secondary">取消</button><button type="submit" class="primary">保存菜单</button></div><button id="reset" class="plain" type="button">恢复默认菜单 ↺</button></form></dialog>
@@ -207,6 +205,7 @@ async function checkRelease(){
 }
 checkRelease();
 
-</script><dialog id="calendar-preview" aria-labelledby="calendar-preview-title"><div class="calendar-preview-head"><h2 id="calendar-preview-title">保存这一页</h2><button id="calendar-preview-close" type="button" aria-label="关闭图片预览">关闭</button></div><p>微信内可长按图片保存；其他浏览器也可点击下载。</p><img id="calendar-output" alt="日历保存图片"><a id="calendar-download" download>下载图片</a></dialog>
+</script><dialog id="calendar-preview" aria-labelledby="calendar-preview-title"><div class="calendar-preview-head"><h2 id="calendar-preview-title">长按保存到相册</h2><button id="calendar-preview-close" type="button" aria-label="关闭图片预览">关闭</button></div><p>长按下方图片，选择「保存图片」。</p><img id="calendar-output" alt="日历保存图片"></dialog>
+<div id="calendar-toast" class="calendar-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
 <script type="module" src="./calendar/calendar-ui.mjs"></script>
 </body></html>

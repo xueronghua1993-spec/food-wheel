@@ -3,11 +3,11 @@ import {renderCalendarImage} from './calendar-export.mjs';
 const $=id=>document.getElementById(id);
 export function mountCalendar({catalog,root}){
  const historyStart=catalog.historyStart||catalog.firstDate;
- let today=beijingDate(),selected=resolveDate(new URL(location.href).searchParams.get('date'),today,historyStart),current=null,outputUrl=null;
- const message=text=>{$('calendar-message').textContent=text;};
+ let today=beijingDate(),selected=resolveDate(new URL(location.href).searchParams.get('date'),today,historyStart),current=null,toastTimer=null;
+ const toast=text=>{clearTimeout(toastTimer);const node=$('calendar-toast');node.hidden=!text;node.textContent=text;if(!text)return;const host=$('calendar-preview').open?$('calendar-preview'):$('calendar-detail').open?$('calendar-detail'):document.body;host.append(node);toastTimer=setTimeout(()=>{node.hidden=true;},3500);};
  function render(push=false){
   current=entryForDate(selected,catalog);if(!current){$('calendar-status').textContent='这一页暂未准备好，请先使用小决定。';return;}
-  const info=dateInfo(selected);$('calendar-card').hidden=false;$('calendar-actions').hidden=false;$('calendar-navigation').hidden=false;$('calendar-credits').hidden=false;$('calendar-status').textContent='';message('');$('calendar-share-fallback').hidden=true;
+  const info=dateInfo(selected);$('calendar-card').hidden=false;$('calendar-actions').hidden=false;$('calendar-navigation').hidden=false;$('calendar-credits').hidden=false;$('calendar-status').textContent='';toast('');
   const photo=$('calendar-photo');photo.onerror=()=>{photo.onerror=null;photo.src='./calendar/assets/fallback.jpg';photo.alt='日常小决定原创山水备用画面';$('calendar-credit-photo').textContent='备用画面：日常小决定原创';$('calendar-image-link').hidden=true;};photo.alt=current.imageAlt;photo.src=current.imagePath;
   $('calendar-kind').textContent={quote:'每日一句',excerpt:'读一段经典',story:'一个小故事'}[current.type];
   $('calendar-text').textContent=current.text;$('calendar-text').dataset.type=current.type;
@@ -28,15 +28,31 @@ export function mountCalendar({catalog,root}){
  window.addEventListener('popstate',()=>{selected=resolveDate(new URL(location.href).searchParams.get('date'),today,historyStart);render();});
  function refresh(){const next=beijingDate();if(next!==today){const wasToday=selected===today;today=next;if(wasToday)selected=today;render(true);}}
  setInterval(refresh,30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});window.addEventListener('focus',refresh);
- $('calendar-share').onclick=async()=>{const url=new URL(location.href);url.searchParams.set('date',selected);url.searchParams.delete('v');try{await navigator.clipboard.writeText(url.href);message('链接已复制，可以发给朋友。');}catch{$('calendar-share-fallback').hidden=false;$('calendar-share-url').value=url.href;message('长按链接即可复制。');}};
+ const showSaveImage=async(blob,date,entry)=>{
+  const dataUrl=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('图片未能生成'));reader.readAsDataURL(blob);});
+  $('calendar-output').src=dataUrl;$('calendar-output').alt=`${date} 日历：${entry.text}`;$('calendar-preview').showModal();toast('图片已生成，长按保存到相册');
+ };
  $('calendar-save').onclick=async()=>{
-  const button=$('calendar-save'),snapshot=current,date=selected;button.disabled=true;button.textContent='正在制作…';message('');
-  try{const blob=await renderCalendarImage(snapshot,dateInfo(date));if(outputUrl)URL.revokeObjectURL(outputUrl);outputUrl=URL.createObjectURL(blob);$('calendar-output').src=outputUrl;$('calendar-output').alt=`${date} 日历：${snapshot.text}`;$('calendar-download').href=outputUrl;$('calendar-download').download=`每日一页-${date}.png`;$('calendar-preview').showModal();}
-  catch{message('图片暂时没能保存，请重试。');}
-  finally{button.disabled=false;button.textContent='保存日历';}
+  const button=$('calendar-save'),snapshot=current,date=selected;button.disabled=true;button.textContent='正在导出…';toast('');
+  try{
+   const blob=await renderCalendarImage(snapshot,dateInfo(date));
+   const file=new File([blob],`每日一页-${date}.png`,{type:'image/png'});
+   const wechat=/MicroMessenger/i.test(navigator.userAgent);
+   const mobile=wechat||/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)||navigator.maxTouchPoints>1;
+   let shared=false;
+   if(!wechat&&navigator.share&&navigator.canShare?.({files:[file]})){
+    try{await navigator.share({files:[file]});shared=true;toast('导出成功');}
+    catch(error){if(error.name==='AbortError'){toast('已取消导出');return;}}
+   }
+   if(!shared){
+    if(mobile)await showSaveImage(blob,date,snapshot);
+    else{const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=file.name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);toast('导出成功');}
+   }
+  }catch{toast('导出失败，请重试');}
+  finally{button.disabled=false;button.textContent='保存图片';}
  };
  $('calendar-preview-close').onclick=()=>$('calendar-preview').close();
- $('calendar-preview').addEventListener('close',()=>{if(outputUrl){URL.revokeObjectURL(outputUrl);outputUrl=null;$('calendar-output').removeAttribute('src');$('calendar-download').removeAttribute('href');}});
+ $('calendar-preview').addEventListener('close',()=>{$('calendar-output').removeAttribute('src');toast('');});
  render();return {refresh};
 }
 $('calendar-open').onclick=()=>$('calendar-detail').showModal();
