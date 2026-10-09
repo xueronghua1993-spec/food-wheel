@@ -95,3 +95,37 @@ body:has(#calendar-panel:not([hidden])){background:#f5f4ee}
 #calendar-detail #calendar-save{background:#244c3c;border-color:#244c3c;color:#fff}
 #calendar-detail .calendar-credits{border-top:1px solid #d4dacb;padding-top:4px}
 @media(max-width:360px){#calendar-detail .calendar-panel{padding:16px 12px 20px}#calendar-detail .calendar-body{padding:24px 18px 20px}#calendar-detail .calendar-text{font-size:22px}#calendar-detail #calendar-day{font-size:88px;letter-spacing:-4px}#calendar-detail .calendar-date-row{gap:12px}.calendar-paper-top{padding:18px 14px;gap:8px;letter-spacing:0}}
+
+/* Quiet movement and playful details, without adding another section. */
+body:has(#calendar-panel){background:radial-gradient(ellipse at 100% 0,#f5e5cd80,transparent 45%),#f5f4ee}
+body[data-mode=coffee]:has(#calendar-panel){background:radial-gradient(ellipse at 100% 0,#efd8bb70,transparent 45%),#f4efe8}
+.app-brand{display:inline-flex;gap:9px;align-items:center;letter-spacing:2px}
+.brand-sun{width:23px;height:23px;color:#b9703c;flex-shrink:0;transition:transform .45s ease}
+.calendar-peek{background:linear-gradient(120deg,#fffdf8,#f9f7ed);border-color:#e3e6d6;border-radius:22px 22px 28px 22px;box-shadow:0 5px 18px #244c3c07;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+#calendar-mini-photo{border:3px solid #fffdf8;border-radius:12px 12px 21px 12px;transform:rotate(-3deg);box-shadow:0 3px 8px #244c3c16;transition:transform .35s ease}
+#calendar-mini-date{color:#866349}
+.calendar-mini-copy{gap:6px}
+.calendar-mini-more{display:inline-flex;align-items:center;align-self:flex-start;gap:6px;padding:5px 10px;min-height:30px;border-radius:20px;background:#e6eddb;color:#36573b;font-size:14px;line-height:20px;box-shadow:inset 0 1px 0 #fff9}
+.calendar-open-icon{width:16px;height:16px;flex-shrink:0}
+.calendar-open-arrow{display:inline-block;margin-left:2px;transition:transform .25s ease}
+#decision-panel .tabs{background:#e7eadf99;border:1px solid #dfe5d5;border-radius:20px;padding:4px;gap:4px}
+#decision-panel .tabs button{border-radius:15px;transition:background .2s ease,color .2s ease,box-shadow .2s ease,transform .15s ease}
+#decision-panel .tabs button[aria-pressed=true]{background:#fffefa;box-shadow:0 3px 9px #284d3d12}
+#decision-panel .card{border-color:#e4e7d8;background:#fffdf9;border-radius:28px 28px 34px 28px;box-shadow:0 8px 26px #26473908}
+#decision-panel .frame{box-shadow:0 9px 24px #34563b12}
+#decision-panel #edit{background:#edf1e5;border-radius:22px;transition:background .2s ease,transform .15s ease}
+#decision-panel #spin{border-radius:18px;box-shadow:0 4px 0 #183d30;transition:transform .15s ease,box-shadow .15s ease,background .2s ease}
+#decision-panel #spin:not(:disabled):active{transform:translateY(3px);box-shadow:0 1px 0 #183d30}
+body[data-mode=coffee] #decision-panel #spin{box-shadow:0 4px 0 #503821}
+body[data-mode=coffee] #decision-panel #spin:not(:disabled):active{box-shadow:0 1px 0 #503821}
+.calendar-peek:active{transform:scale(.985)}
+#calendar-detail-close:active,#decision-panel #edit:active,#decision-panel .tabs button:not(:disabled):active{transform:scale(.97)}
+#calendar-detail-close,#calendar-save,#calendar-prev{transition:transform .15s ease,background .2s ease}
+#calendar-detail[open],#calendar-preview[open]{animation:calendar-unfold .32s cubic-bezier(.2,.7,.25,1) both}
+#calendar-detail[open]::backdrop{animation:calendar-dim .25s ease both}
+#decision-panel .result:not([hidden]){animation:decision-reveal .3s cubic-bezier(.2,.8,.3,1) both}
+@keyframes calendar-unfold{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes calendar-dim{from{opacity:0}to{opacity:1}}
+@keyframes decision-reveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(hover:hover){.app-brand:hover .brand-sun{transform:rotate(45deg)}.calendar-peek:hover{transform:translateY(-2px);border-color:#b8c8a7;box-shadow:0 9px 22px #244c3c10}.calendar-peek:hover #calendar-mini-photo{transform:rotate(0deg)}.calendar-peek:hover .calendar-open-arrow{transform:translate(2px,-2px)}#decision-panel #edit:hover{background:#e2ebd6}}
+@media(prefers-reduced-motion:reduce){.calendar-peek,#calendar-mini-photo,.brand-sun,.calendar-open-arrow,#decision-panel button,#calendar-detail-close,#calendar-save,#calendar-prev{transition:none}#calendar-detail[open],#calendar-preview[open],#calendar-detail[open]::backdrop,#decision-panel .result:not([hidden]){animation:none}.calendar-peek:hover,.calendar-peek:active,#decision-panel #spin:not(:disabled):active,#calendar-detail-close:active,#decision-panel #edit:active,#decision-panel .tabs button:not(:disabled):active{transform:none}}
