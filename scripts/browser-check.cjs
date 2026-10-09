@@ -31,7 +31,7 @@ const fs=require('node:fs');
   const winner=await page.locator('#winner').textContent();
   assert.ok(['美式','拿铁','卡布奇诺','澳白','摩卡','冷萃'].includes(winner));
   assert.equal(errors.length,0);
-  await page.addStyleTag({content:'.wheel{transition-duration:150ms}'});
+  await page.emulateMedia({reducedMotion:'reduce'});
   for(const mode of ['food','coffee']){
    await page.click('#'+mode);
    for(let round=0;round<2;round++){
