@@ -202,3 +202,48 @@ body[data-mode=coffee] #decision-panel .selection-slot .result strong{color:#496
 #calendar-detail .calendar-toolbar #calendar-save{width:100%;flex:1}
 .calendar-toast{position:absolute;left:50%;bottom:max(84px,calc(env(safe-area-inset-bottom) + 84px));transform:translateX(-50%);z-index:10;width:max-content;max-width:calc(100% - 32px);padding:11px 16px;border-radius:12px;background:#203e32ed;color:#fff;font-size:14px;line-height:1.6;text-align:center;box-shadow:0 4px 16px #203e3220;pointer-events:none}
 #calendar-output{-webkit-touch-callout:default;user-select:auto}
+
+/* One screen of paper: the photograph takes the space left by readable type. */
+#calendar-detail[open]{height:min(820px,calc(100dvh - 24px))}
+#calendar-detail .calendar-detail-head{padding:12px 18px 6px}
+#calendar-detail .calendar-detail-kicker{display:none}
+#calendar-detail .calendar-detail-head h2{font-size:21px}
+#calendar-detail .calendar-navigation{padding-bottom:6px}
+#calendar-detail .calendar-panel{display:flex;flex-direction:column;overflow:visible;padding:10px 16px;min-height:0}
+#calendar-detail .calendar-card{display:flex;flex-direction:column;flex:1;min-height:0}
+#calendar-detail .calendar-paper-top{display:none}
+#calendar-detail .calendar-photo{height:0;min-height:0;flex:1;width:100%;aspect-ratio:auto;object-fit:cover}
+#calendar-detail .calendar-body{flex:none;padding:16px 20px 14px}
+#calendar-detail .calendar-kind{margin-bottom:10px;font-size:14px}
+#calendar-detail .calendar-text{font-size:23px;line-height:1.6}
+#calendar-detail .calendar-text[data-type=story]{font-size:16px;line-height:1.6}
+#calendar-detail .calendar-source{margin-top:10px;line-height:1.5}
+#calendar-detail .calendar-date-row{margin-top:16px;padding-top:14px;gap:16px}
+#calendar-detail #calendar-day{font-size:68px}
+#calendar-detail .calendar-footnote{margin-top:12px;padding-top:10px}
+#calendar-detail #calendar-story{margin-top:6px;padding-top:0;border:0}
+#calendar-detail #calendar-story summary{padding:4px 0;min-height:32px;text-align:center}
+#calendar-detail #calendar-story[open]{position:absolute;inset:10px;z-index:4;overflow:auto;background:#fffff8;border-radius:16px;padding:16px 20px;box-shadow:0 4px 20px #203e3226}
+#calendar-detail #calendar-story[open] summary{position:sticky;top:0;background:#fffff8;border-bottom:1px solid #dce5d4;padding:10px 0}
+@media(max-height:640px){
+ #calendar-detail .calendar-detail-head{padding-top:8px}
+ #calendar-detail .calendar-panel{padding:6px 12px}
+ #calendar-detail .calendar-body{padding:10px 16px}
+ #calendar-detail .calendar-kind{margin-bottom:6px}
+ #calendar-detail .calendar-text{font-size:21px;line-height:1.5}
+ #calendar-detail .calendar-source{margin-top:6px}
+ #calendar-detail .calendar-date-row{margin-top:10px;padding-top:10px}
+ #calendar-detail #calendar-day{font-size:54px}
+ #calendar-detail .calendar-footnote{margin-top:8px;padding-top:6px}
+ #calendar-detail .calendar-toolbar{padding-top:8px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+}
+#calendar-detail .calendar-panel{position:relative}
+@media(max-width:360px){#calendar-detail .calendar-body{padding-left:12px;padding-right:12px}#calendar-detail .calendar-text{font-size:20px}}
+@media(max-width:360px){#calendar-detail .calendar-panel{padding-left:8px;padding-right:8px}#calendar-detail .calendar-body{padding-left:8px;padding-right:8px}}
+#calendar-detail .calendar-body{position:relative}
+#calendar-detail .calendar-body:has(#calendar-story:not([hidden])) .calendar-kind{justify-content:flex-start;letter-spacing:1px}
+#calendar-detail .calendar-body:has(#calendar-story:not([hidden])) .calendar-kind::before,#calendar-detail .calendar-body:has(#calendar-story:not([hidden])) .calendar-kind::after{display:none}
+#calendar-detail #calendar-story:not([open]){position:absolute;right:16px;top:10px;margin:0;padding:0}
+#calendar-detail #calendar-story:not([open]) summary{font-size:14px;line-height:1.5;min-height:28px}
+#calendar-detail #calendar-story[open]{position:fixed;inset:80px 12px;max-height:calc(100% - 160px)}
+@media(max-height:640px){#calendar-detail #calendar-story:not([open]){top:4px;right:12px}}
