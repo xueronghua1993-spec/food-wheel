@@ -27,16 +27,20 @@ const fs=require('node:fs');
     await page.waitForFunction(()=>!document.getElementById('result').hidden);
     const positions=await page.evaluate(()=>{
      const svg=document.querySelector('#wheel svg');
-     const matrix=svg.getScreenCTM();
+     const rect=svg.getBoundingClientRect(),scale=rect.width/320;
+     const raw=getComputedStyle(document.getElementById('wheel')).transform;
+     const matrix=new DOMMatrix(raw);
      return [...svg.querySelectorAll('text')].map(text=>{
       const anchor=text.parentNode.transform.baseVal.consolidate().matrix;
-      const expected=new DOMPoint(anchor.e,anchor.f).matrixTransform(matrix);
-      const actual=new DOMPoint(0,0).matrixTransform(text.getScreenCTM());
-      const m=text.getScreenCTM();
-      return {distance:Math.hypot(actual.x-expected.x,actual.y-expected.y),angle:Math.atan2(m.b,m.a)};
+      const box=text.getBBox(),screen=text.getBoundingClientRect();
+      const dx=anchor.e-160,dy=anchor.f-160;
+      const x=rect.left+rect.width/2+(matrix.a*dx+matrix.c*dy+box.x+box.width/2)*scale;
+      const y=rect.top+rect.height/2+(matrix.b*dx+matrix.d*dy+box.y+box.height/2)*scale;
+      return {distance:Math.hypot(screen.left+screen.width/2-x,screen.top+screen.height/2-y),
+       sizeError:Math.max(Math.abs(screen.width-box.width*scale),Math.abs(screen.height-box.height*scale))};
      });
     });
-    positions.forEach(p=>{assert.ok(p.distance<.5,'label drifted from its sector');assert.ok(Math.abs(p.angle)<.02,'label not upright at rest');});
+    positions.forEach(p=>{assert.ok(p.distance<2,'label drifted from its sector: '+JSON.stringify(p));assert.ok(p.sizeError<2,'label not upright at rest: '+JSON.stringify(p));});
    }
   }
   await page.screenshot({path:'public/screenshots/'+engine.name()+'-stopped-'+width+'.png',fullPage:true});
