@@ -1,0 +1,43 @@
+/* Calendar styles are scoped so the original wheel remains independent. */
+body:has(#calendar-panel:not([hidden])){background:#f5f4ee}
+.app-header{max-width:460px;margin:0 auto;padding:22px 20px 0;text-align:center}
+.app-brand{font-family:"Noto Serif CJK SC","Songti SC",SimSun,serif;font-weight:700;font-size:24px;letter-spacing:3px;color:#244c3c;text-decoration:none}
+.app-tabs{display:flex;gap:28px;justify-content:center;margin:22px 0 18px}
+.app-tabs button{background:transparent;color:#748074;border-radius:0;font-size:17px;padding:8px 12px 10px;min-height:46px;border-bottom:3px solid transparent}
+.app-tabs button[aria-pressed=true]{color:#244c3c;border-bottom-color:#244c3c;font-weight:700}
+#decision-panel{padding-top:0}#decision-panel .brand{display:none}
+.calendar-panel{max-width:460px;margin:0 auto;padding:0 20px 22px;color:#244c3c}
+.calendar-card{background:#fffdf7;border-radius:24px;overflow:hidden;box-shadow:0 4px 18px #203a3209;border:1px solid #e8e8df}
+.calendar-photo{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;background:#e8ecdf}
+.calendar-body{padding:22px 22px 20px;text-align:center}
+.calendar-kind{font-size:14px;color:#788273;letter-spacing:2px;margin:0 0 12px}
+.calendar-text{font-family:"Noto Serif CJK SC","Songti SC",SimSun,serif;font-size:23px;line-height:1.65;margin:0;color:#244c3c;white-space:pre-line;overflow-wrap:anywhere}
+.calendar-text[data-type=story]{font-family:system-ui,"Microsoft YaHei",sans-serif;font-size:18px;line-height:1.8;text-align:left}
+.calendar-source{font-size:14px;color:#657467;line-height:1.6;margin:14px 0 0;overflow-wrap:anywhere}
+.calendar-date-row{display:flex;align-items:center;justify-content:center;gap:22px;border-top:1px solid #d8ddce;margin-top:22px;padding-top:18px;text-align:left}
+#calendar-day{font-family:Georgia,"Times New Roman",serif;font-size:82px;line-height:1;font-weight:400;letter-spacing:-3px}
+.calendar-date-row div{border-left:1px solid #d8ddce;padding-left:18px;min-width:0}
+.calendar-date-row p{margin:0 0 4px;font-size:16px;line-height:1.5}
+#calendar-lunar{font-size:14px;color:#657467;margin-bottom:0}
+.calendar-remaining{font-size:14px;color:#657467;margin:16px 0 0}
+.calendar-signature{font-size:14px;letter-spacing:4px;color:#788273;margin:16px 0 0}
+.calendar-actions{display:flex;gap:14px;margin:18px 0 8px}
+.calendar-actions button{flex:1;background:transparent;border:1px solid #244c3c;min-height:48px;border-radius:18px;color:#244c3c;font-size:16px}
+.calendar-links{display:flex;justify-content:center;gap:14px}
+.calendar-links button{background:transparent;color:#637765;padding:8px 10px;font-size:14px;min-height:44px;text-decoration:underline;text-underline-offset:5px}
+.calendar-status{font-size:14px;line-height:1.7;color:#637765;text-align:center;margin:10px 0}
+.calendar-status:empty{display:none}
+#calendar-story{text-align:left;border-top:1px solid #e4e7db;margin-top:18px;padding-top:12px;font-size:16px;line-height:1.8}
+#calendar-story summary,.calendar-credits summary{cursor:pointer;min-height:44px;padding:10px 0;font-size:14px;color:#637765}
+#calendar-full{white-space:pre-line}
+.calendar-credits{font-size:14px;line-height:1.7;overflow-wrap:anywhere;margin-top:10px;color:#637765}
+.calendar-credits a{color:#244c3c;text-underline-offset:3px}
+#calendar-share-fallback{font-size:14px;line-height:1.6;margin:12px 0}
+#calendar-share-url{width:100%;font-size:16px;padding:10px;border:1px solid #d8ddce;border-radius:10px}
+#calendar-preview{width:min(480px,calc(100% - 24px));padding:16px;border-radius:20px}
+.calendar-preview-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
+#calendar-preview-title{font-size:20px}#calendar-preview-close{background:#e9eee3;color:#244c3c;padding:8px 14px;font-size:14px}
+#calendar-preview p{font-size:14px;line-height:1.6;color:#637765}
+#calendar-output{display:block;width:100%;height:auto;border-radius:8px}
+#calendar-download{display:block;text-align:center;padding:14px;font-size:16px;color:#244c3c;margin-top:8px}
+@media(max-width:360px){.app-header{padding:18px 16px 0}.calendar-panel{padding-left:16px;padding-right:16px}.calendar-body{padding:20px 16px}.calendar-text{font-size:21px}.calendar-date-row{gap:14px}#calendar-day{font-size:72px}.calendar-date-row div{padding-left:14px}.calendar-date-row p{font-size:14px}}

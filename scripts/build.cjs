@@ -3,7 +3,17 @@ const sharp=require('sharp');
 async function build(){
  fs.mkdirSync('public',{recursive:true});
  const source=fs.readFileSync('index.html','utf8');
- const version=require('node:crypto').createHash('sha256').update(source).digest('hex').slice(0,12);
+ const fingerprint=require('node:crypto').createHash('sha256').update(source);
+ function hashDirectory(dir){
+  for(const item of fs.readdirSync(dir,{withFileTypes:true}).sort((a,b)=>a.name.localeCompare(b.name))){
+   const filename=dir+'/'+item.name;
+   if(item.isDirectory())hashDirectory(filename);
+   else fingerprint.update(filename).update(fs.readFileSync(filename));
+  }
+ }
+ hashDirectory('calendar');
+ const version=fingerprint.digest('hex').slice(0,12);
+ fs.cpSync('calendar','public/calendar',{recursive:true});
  const html=source.replace("const buildVersion='__BUILD_VERSION__';","const buildVersion='"+version+"';");
  fs.writeFileSync('public/index.html',html);
  fs.writeFileSync('public/release.json',JSON.stringify({version}));
