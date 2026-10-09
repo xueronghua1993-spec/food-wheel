@@ -14,7 +14,7 @@ export function mountCalendar({catalog,root}){
   $('calendar-story').hidden=!current.fullText;$('calendar-story').open=false;$('calendar-full').textContent=current.fullText||'';
   $('calendar-day').textContent=String(info.day).padStart(2,'0');$('calendar-date').textContent=`${info.year}年${info.month}月${info.day}日`;
   $('calendar-weekday').textContent=info.weekday;$('calendar-lunar').textContent=info.lunar?'农历'+info.lunar:'';$('calendar-lunar').hidden=!info.lunar;
-  $('calendar-mini-date').textContent=`${info.month}月${info.day}日 · ${info.weekday}`;$('calendar-mini-text').textContent=current.text;const mini=$('calendar-mini-photo');mini.onerror=()=>{mini.onerror=null;mini.src='./calendar/assets/fallback.jpg';};mini.src=current.imagePath;
+  $('calendar-mini-date').textContent=`${info.month}月${info.day}日 · ${info.weekday}`;$('calendar-mini-text').textContent=current.text;const mini=$('calendar-mini-photo');mini.onload=()=>{$('calendar-peek-background').src=mini.currentSrc||mini.src;};mini.onerror=()=>{mini.onerror=null;mini.src='./calendar/assets/fallback.jpg';};mini.src=current.imagePath;
   $('calendar-remaining').textContent=`今年还剩 ${info.remainingDays} 天`;
   $('calendar-prev').disabled=selected<=catalog.firstDate;$('calendar-today').hidden=selected===today;
   $('calendar-credit-text').textContent=current.type==='story'?'正文为原创转述，卡片文字为故事概述。':'古典原文 · 简体展示';

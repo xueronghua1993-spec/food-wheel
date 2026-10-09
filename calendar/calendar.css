@@ -102,7 +102,7 @@ body[data-mode=coffee]:has(#calendar-panel){background:radial-gradient(ellipse a
 .app-brand{display:inline-flex;gap:9px;align-items:center;letter-spacing:2px}
 .brand-sun{width:23px;height:23px;color:#b9703c;flex-shrink:0;transition:transform .45s ease}
 .calendar-peek{background:linear-gradient(120deg,#fffdf8,#f9f7ed);border-color:#e3e6d6;border-radius:22px 22px 28px 22px;box-shadow:0 5px 18px #244c3c07;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
-#calendar-mini-photo{border:3px solid #fffdf8;border-radius:12px 12px 21px 12px;transform:rotate(-3deg);box-shadow:0 3px 8px #244c3c16;transition:transform .35s ease}
+#calendar-mini-photo{border:3px solid #fffdf8;border-radius:12px 12px 21px 12px;transform:none;box-shadow:0 3px 8px #244c3c16;transition:transform .35s ease}
 #calendar-mini-date{color:#866349}
 .calendar-mini-copy{gap:6px}
 .calendar-mini-more{display:inline-flex;align-items:center;align-self:flex-start;gap:6px;padding:5px 10px;min-height:30px;border-radius:20px;background:#e6eddb;color:#36573b;font-size:14px;line-height:20px;box-shadow:inset 0 1px 0 #fff9}
@@ -127,5 +127,14 @@ body[data-mode=coffee] #decision-panel #spin:not(:disabled):active{box-shadow:0 
 @keyframes calendar-unfold{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes calendar-dim{from{opacity:0}to{opacity:1}}
 @keyframes decision-reveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@media(hover:hover){.app-brand:hover .brand-sun{transform:rotate(45deg)}.calendar-peek:hover{transform:translateY(-2px);border-color:#b8c8a7;box-shadow:0 9px 22px #244c3c10}.calendar-peek:hover #calendar-mini-photo{transform:rotate(0deg)}.calendar-peek:hover .calendar-open-arrow{transform:translate(2px,-2px)}#decision-panel #edit:hover{background:#e2ebd6}}
+@media(hover:hover){.app-brand:hover .brand-sun{transform:rotate(45deg)}.calendar-peek:hover{transform:translateY(-2px);border-color:#b8c8a7;box-shadow:0 9px 22px #244c3c10}.calendar-peek:hover .calendar-open-arrow{transform:translate(2px,-2px)}#decision-panel #edit:hover{background:#e2ebd6}}
 @media(prefers-reduced-motion:reduce){.calendar-peek,#calendar-mini-photo,.brand-sun,.calendar-open-arrow,#decision-panel button,#calendar-detail-close,#calendar-save,#calendar-prev{transition:none}#calendar-detail[open],#calendar-preview[open],#calendar-detail[open]::backdrop,#decision-panel .result:not([hidden]){animation:none}.calendar-peek:hover,.calendar-peek:active,#decision-panel #spin:not(:disabled):active,#calendar-detail-close:active,#decision-panel #edit:active,#decision-panel .tabs button:not(:disabled):active{transform:none}}
+
+/* Today's photograph becomes a soft landscape behind the compact calendar. */
+.calendar-peek{position:relative;isolation:isolate;overflow:hidden;border-radius:20px;background:#f7f4e9;border-color:#dfe2d3}
+.calendar-peek-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%;opacity:.72;z-index:-2;pointer-events:none}
+.calendar-peek::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#fffdf4f5 0%,#fffdf4ed 38%,#fffdf4d1 68%,#fffdf46b 100%);z-index:-1;pointer-events:none}
+#calendar-mini-photo{transform:none;border:2px solid #fffdf5;border-radius:10px;box-shadow:0 3px 10px #35493818}
+.calendar-mini-more{background:#f5f4e8e6;border:1px solid #b9c6a6;box-shadow:none;color:#36503b}
+#calendar-mini-date{color:#6f674d;letter-spacing:.4px}
+#calendar-mini-text{color:#244334}
