@@ -2,11 +2,12 @@ import {beijingDate,dateInfo,entryForDate,resolveDate,offsetDate} from './calend
 import {renderCalendarImage} from './calendar-export.mjs';
 const $=id=>document.getElementById(id);
 export function mountCalendar({catalog,root}){
- let today=beijingDate(),selected=resolveDate(new URL(location.href).searchParams.get('date'),today,catalog.firstDate),current=null,outputUrl=null;
+ const historyStart=catalog.historyStart||catalog.firstDate;
+ let today=beijingDate(),selected=resolveDate(new URL(location.href).searchParams.get('date'),today,historyStart),current=null,outputUrl=null;
  const message=text=>{$('calendar-message').textContent=text;};
  function render(push=false){
   current=entryForDate(selected,catalog);if(!current){$('calendar-status').textContent='这一页暂未准备好，请先使用小决定。';return;}
-  const info=dateInfo(selected);$('calendar-card').hidden=false;$('calendar-actions').hidden=false;$('calendar-links').hidden=false;$('calendar-credits').hidden=false;$('calendar-status').textContent='';message('');$('calendar-share-fallback').hidden=true;
+  const info=dateInfo(selected);$('calendar-card').hidden=false;$('calendar-actions').hidden=false;$('calendar-navigation').hidden=false;$('calendar-credits').hidden=false;$('calendar-status').textContent='';message('');$('calendar-share-fallback').hidden=true;
   const photo=$('calendar-photo');photo.onerror=()=>{photo.onerror=null;photo.src='./calendar/assets/fallback.jpg';photo.alt='日常小决定原创山水备用画面';$('calendar-credit-photo').textContent='备用画面：日常小决定原创';$('calendar-image-link').hidden=true;};photo.alt=current.imageAlt;photo.src=current.imagePath;
   $('calendar-kind').textContent={quote:'每日一句',excerpt:'读一段经典',story:'一个小故事'}[current.type];
   $('calendar-text').textContent=current.text;$('calendar-text').dataset.type=current.type;
@@ -16,14 +17,15 @@ export function mountCalendar({catalog,root}){
   $('calendar-weekday').textContent=info.weekday;$('calendar-lunar').textContent=info.lunar?'农历'+info.lunar:'';$('calendar-lunar').hidden=!info.lunar;
   $('calendar-mini-date').textContent=`${info.month}月${info.day}日 · ${info.weekday}`;$('calendar-mini-text').textContent=current.text;const mini=$('calendar-mini-photo');mini.onload=()=>{$('calendar-peek-background').src=mini.currentSrc||mini.src;};mini.onerror=()=>{mini.onerror=null;mini.src='./calendar/assets/fallback.jpg';};mini.src=current.imagePath;
   $('calendar-remaining').textContent=`今年还剩 ${info.remainingDays} 天`;
-  $('calendar-prev').disabled=selected<=catalog.firstDate;$('calendar-today').hidden=selected===today;
+  $('calendar-prev').disabled=selected<=historyStart;$('calendar-today').disabled=selected===today;$('calendar-next').disabled=selected>=today;$('calendar-detail-title').textContent=selected===today?'今日日历':'往日日历';
   $('calendar-credit-text').textContent=current.type==='story'?'正文为原创转述，卡片文字为故事概述。':'古典原文 · 简体展示';
   $('calendar-text-link').href=current.textSource;$('calendar-credit-photo').textContent=`摄影：${current.imageAuthor} · ${current.imageLicense}`;$('calendar-image-link').href=current.imageSource;$('calendar-image-link').hidden=false;
-  if(push){const url=new URL(location.href);if(selected===today)url.searchParams.delete('date');else url.searchParams.set('date',selected);history.pushState(null,'',url);}
+  if(push){$('calendar-panel').scrollTop=0;const url=new URL(location.href);if(selected===today)url.searchParams.delete('date');else url.searchParams.set('date',selected);history.pushState(null,'',url);}
  }
- $('calendar-prev').onclick=()=>{if(selected>catalog.firstDate){selected=offsetDate(selected,-1);render(true);}};
+ $('calendar-prev').onclick=()=>{if(selected>historyStart){selected=offsetDate(selected,-1);render(true);}};
+ $('calendar-next').onclick=()=>{if(selected<today){selected=offsetDate(selected,1);render(true);}};
  $('calendar-today').onclick=()=>{selected=today;render(true);};
- window.addEventListener('popstate',()=>{selected=resolveDate(new URL(location.href).searchParams.get('date'),today,catalog.firstDate);render();});
+ window.addEventListener('popstate',()=>{selected=resolveDate(new URL(location.href).searchParams.get('date'),today,historyStart);render();});
  function refresh(){const next=beijingDate();if(next!==today){const wasToday=selected===today;today=next;if(wasToday)selected=today;render(true);}}
  setInterval(refresh,30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});window.addEventListener('focus',refresh);
  $('calendar-share').onclick=async()=>{const url=new URL(location.href);url.searchParams.set('date',selected);url.searchParams.delete('v');try{await navigator.clipboard.writeText(url.href);message('链接已复制，可以发给朋友。');}catch{$('calendar-share-fallback').hidden=false;$('calendar-share-url').value=url.href;message('长按链接即可复制。');}};

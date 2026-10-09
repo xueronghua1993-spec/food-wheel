@@ -24,3 +24,11 @@ test('History remains stable after appending schedule; fixed fallback cycle',()=
  assert.equal(entryForDate('2026-10-11',expanded).id,'a');
  assert.equal(entryForDate('2026-10-08',c),null);
 });
+test('Backfilled days use the fixed cycle without changing launch-day content',()=>{
+ const c={firstDate:'2026-10-09',historyStart:'2026-10-03',entries:[{id:'a'},{id:'b'},{id:'c'}],schedule:['a','b','c'],rotation:['a','b','c']};
+ assert.equal(entryForDate('2026-10-08',c)?.id,'c');
+ assert.equal(entryForDate('2026-10-03',c)?.id,'a');
+ assert.equal(entryForDate('2026-10-02',c),null);
+ assert.equal(entryForDate('2026-10-09',c).id,'a');
+ assert.equal(resolveDate('2026-10-08','2026-10-09',c.historyStart),'2026-10-08');
+});

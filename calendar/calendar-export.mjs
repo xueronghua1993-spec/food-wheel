@@ -39,10 +39,10 @@ export async function renderCalendarImage(entry,info){
  ctx.font='32px sans-serif';ctx.fillStyle='#60705d';sourceLines.forEach((line,i)=>ctx.fillText(line,540,sourceY+i*48));
  if(entry.type==='story'){ctx.font='28px sans-serif';ctx.fillText('故事概述 · 日常小决定',540,sourceY+sourceLines.length*48+12);}
  ctx.strokeStyle='#d2d8c9';ctx.beginPath();ctx.moveTo(90,dateY-28);ctx.lineTo(990,dateY-28);ctx.stroke();
- ctx.textAlign='left';ctx.fillStyle='#62854e';ctx.font='210px Georgia,serif';ctx.fillText(String(info.day).padStart(2,'0'),100,dateY);
+ ctx.textAlign='left';ctx.fillStyle='#62854e';ctx.font='180px Georgia,serif';ctx.fillText(String(info.day).padStart(2,'0'),100,dateY);
  ctx.fillStyle='#285744';ctx.font='42px sans-serif';ctx.fillText(`${info.year}年${info.month}月${info.day}日`,400,dateY+20);ctx.fillText(info.weekday,400,dateY+82);
  if(info.lunar){ctx.font='32px sans-serif';ctx.fillStyle='#60705d';ctx.fillText(`农历${info.lunar}`,400,dateY+140);}
- ctx.font='30px sans-serif';ctx.textAlign='center';ctx.fillStyle='#60705d';ctx.fillText('日常小决定 · 每日一页',540,dateY+220);
+ ctx.font='30px sans-serif';ctx.textAlign='center';ctx.fillStyle='#60705d';ctx.textAlign='left';ctx.fillText('每日一页',90,dateY+220);ctx.textAlign='right';ctx.fillText(`今年还剩 ${info.remainingDays} 天`,990,dateY+220);ctx.textAlign='center';
  ctx.font='28px sans-serif';photoCredit.forEach((line,i)=>ctx.fillText(line,540,dateY+278+i*44));
  return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('保存失败，请重试')),'image/png'));
 }

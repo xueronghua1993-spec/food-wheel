@@ -29,8 +29,8 @@ export function resolveDate(requested,today,firstDate){
 export function offsetDate(key,offset){const n=utcDay(key);if(!Number.isFinite(n))throw new RangeError('Invalid date');return new Date(n+offset*DAY).toISOString().slice(0,10);}
 export function entryForDate(key,catalog){
  const index=Math.round((utcDay(key)-utcDay(catalog.firstDate))/DAY);
- if(!Number.isFinite(index)||index<0)return null;
+ if(!Number.isFinite(index)||key<(catalog.historyStart||catalog.firstDate))return null;
  const rotation=catalog.rotation||catalog.schedule;
- const id=catalog.schedule[index]||rotation[index%rotation.length];
+ const id=catalog.schedule[index]||rotation[((index%rotation.length)+rotation.length)%rotation.length];
  return catalog.entries.find(e=>e.id===id)||null;
 }
