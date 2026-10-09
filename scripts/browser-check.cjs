@@ -15,7 +15,18 @@ const fs=require('node:fs');
   await page.click('#coffee');
   await page.screenshot({path:'public/screenshots/coffee-'+width+'.png',fullPage:true});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
-  await page.click('#spin');await page.waitForFunction(()=>!document.getElementById('result').hidden);
+  await page.click('#spin');
+  await page.waitForTimeout(350);
+  const angles=await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>{
+   const wheel=new DOMMatrix(getComputedStyle(document.getElementById('wheel')).transform);
+   resolve([...document.querySelectorAll('#wheel text')].map(text=>{
+    const local=text.transform.baseVal.consolidate().matrix;
+    const a=wheel.a*local.a+wheel.c*local.b,b=wheel.b*local.a+wheel.d*local.b;
+    return Math.atan2(b,a);
+   }));
+  })));
+  angles.forEach(angle=>assert.ok(Math.abs(angle)<.03,'label tilted during animation: '+angle));
+  await page.waitForFunction(()=>!document.getElementById('result').hidden);
   assert.equal(await page.locator('#food').isEnabled(),true);
   const winner=await page.locator('#winner').textContent();
   assert.ok(['美式','拿铁','卡布奇诺','澳白','摩卡','冷萃'].includes(winner));
@@ -47,6 +58,35 @@ const fs=require('node:fs');
   await page.screenshot({path:'public/screenshots/'+engine.name()+'-stopped-'+width+'.png',fullPage:true});
   await page.close();
  }
+ // Mock the deployed origin: stale HTML must navigate to the new version once.
+ const cached=fs.readFileSync('public/index.html','utf8');
+ const stamped=cached.match(/const buildVersion='([a-f0-9]{12})';/)[1];
+ for(const scenario of ['update','same','offline','stale-again']){
+  const page=await browser.newPage();
+  let visits=0;
+  await page.route('**/*',async route=>{
+   const url=new URL(route.request().url());
+   if(url.pathname.endsWith('/release.json')){
+    if(scenario==='offline'){await route.abort();return;}
+    await route.fulfill({contentType:'application/json',body:JSON.stringify({version:stamped})});return;
+   }
+   if(url.pathname.endsWith('/food-wheel/')){
+    visits++;
+    const stale=scenario==='update'||scenario==='stale-again';
+    const body=stale&&(scenario==='stale-again'||!url.searchParams.has('v'))?cached.replace("const buildVersion='"+stamped+"';","const buildVersion='000000000000';"):cached;
+    await route.fulfill({contentType:'text/html',body});return;
+   }
+   await route.fulfill({status:404,body:''});
+  });
+  await page.goto('https://xueronghua1993-spec.github.io/food-wheel/').catch(()=>{});
+  if(scenario==='update'||scenario==='stale-again')await page.waitForURL('**/?v='+stamped);
+  await page.waitForTimeout(300);
+  assert.equal(visits,scenario==='update'||scenario==='stale-again'?2:1);
+  assert.equal(await page.locator('#spin').isEnabled(),true);
+  await page.close();
+ }
+ console.log('PASS: release update, unchanged version, offline fallback and no redirect loop');
+
  await browser.close();}
  console.log('PASS: Chromium 360/390/430 layout, coffee spin and no JavaScript errors');
 })().catch(e=>{console.error(e);process.exit(1);});
