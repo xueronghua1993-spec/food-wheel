@@ -85,12 +85,23 @@ function draw(){
  });
  el('wheel').replaceChildren(svg);el('wheel').setAttribute('aria-label','餐食转盘：'+menu.join('、'));el('caption').textContent=menu.length+' 个选项 · 每个都有同样的机会';
 }
+// Use the wheel's currently displayed angle, so labels stay upright during motion.
+function alignLabels(){
+ const value=getComputedStyle(el('wheel')).transform;
+ const parts=value.startsWith('matrix(')?value.slice(7,-1).split(',').map(Number):null;
+ const angle=parts?Math.atan2(parts[1],parts[0])*180/Math.PI:parseFloat(value.match(/rotate\(([-\d.]+)deg\)/)?.[1]||0);
+ el('wheel').querySelectorAll('text').forEach(label=>label.setAttribute('transform','rotate('+(-angle)+')'));
+}
+const frame=window.requestAnimationFrame?.bind(window)||((callback)=>setTimeout(callback,16));
+const cancelFrame=window.cancelAnimationFrame?.bind(window)||clearTimeout;
 function spin(){
  if(busy)return;busy=true;['spin','again','edit','reset','food','coffee'].forEach(id=>el(id).disabled=true);el('spin').textContent='正在选…';el('result').hidden=true;
  const index=Math.floor(Math.random()*menu.length);rotation=nextRotation(rotation,index,menu.length);
- let done=false,timer;function finish(){if(done)return;done=true;el('wheel').querySelectorAll('text').forEach(label=>label.setAttribute('transform','rotate('+(-rotation)+')'));clearTimeout(timer);el('wheel').removeEventListener('transitionend',end);el('winner').textContent=menu[index];el('result').hidden=false;['spin','again','edit','reset','food','coffee'].forEach(id=>el(id).disabled=false);el('spin').textContent=mode==='coffee'?'帮我选一杯 ↗':'帮我选一餐 ↗';busy=false;}
+ let done=false,timer,animationFrame;
+ function track(){if(done)return;alignLabels();animationFrame=frame(track);}
+ function finish(){if(done)return;done=true;cancelFrame(animationFrame);el('wheel').querySelectorAll('text').forEach(label=>label.setAttribute('transform','rotate('+(-rotation)+')'));clearTimeout(timer);el('wheel').removeEventListener('transitionend',end);el('winner').textContent=menu[index];el('result').hidden=false;['spin','again','edit','reset','food','coffee'].forEach(id=>el(id).disabled=false);el('spin').textContent=mode==='coffee'?'帮我选一杯 ↗':'帮我选一餐 ↗';busy=false;}
  function end(event){if(event.target===el('wheel')&&event.propertyName==='transform')finish();}
- el('wheel').addEventListener('transitionend',end);el('wheel').style.transform='rotate('+rotation+'deg)';timer=setTimeout(finish,3400);
+ el('wheel').addEventListener('transitionend',end);el('wheel').style.transform='rotate('+rotation+'deg)';animationFrame=frame(track);timer=setTimeout(finish,3400);
 }
 function drawRows(focus){
  el('rows').replaceChildren();
@@ -121,4 +132,22 @@ el('add').onclick=()=>{if(draft.length>=10)return;draft.push('');drawRows(draft.
 el('cancel').onclick=()=>el('editor').close();
 el('form').onsubmit=event=>{event.preventDefault();const checked=validate(draft);if(checked.error){el('error').textContent=checked.error;const input=el('rows').children[checked.index]?.querySelector('input');if(input){input.setAttribute('aria-invalid','true');input.focus();}return;}menu=checked.items;persistMenu();el('result').hidden=true;draw();el('editor').close();};
 loadMenu();draw();
+// The deployed HTML is stamped by the cloud build. Preview source is left untouched.
+const buildVersion='__BUILD_VERSION__';
+async function checkRelease(){
+ if(buildVersion==='__BUILD_VERSION__'||location.hostname!=='xueronghua1993-spec.github.io')return;
+ try{
+  const response=await fetch('./release.json?t='+Date.now(),{cache:'no-store'});
+  if(!response.ok)return;
+  const release=await response.json();
+  if(!/^[a-f0-9]{12}$/.test(release.version)||release.version===buildVersion)return;
+  const url=new URL(location.href);
+  // One automatic navigation per version; prevent loops if the CDN still serves old HTML.
+  if(url.searchParams.get('v')===release.version)return;
+  url.searchParams.set('v',release.version);
+  location.replace(url.href);
+ }catch{/* Offline or update-check failures never block the wheel. */}
+}
+checkRelease();
+
 </script></body></html>
