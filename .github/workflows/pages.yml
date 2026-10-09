@@ -27,7 +27,7 @@ jobs:
           const html = fs.readFileSync('index.html', 'utf8');
           const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
           new vm.Script(script);
-          const rules = script.slice(script.indexOf('function validate('), script.indexOf('try{const saved'));
+          const rules = script.slice(script.indexOf('function validate('), script.indexOf('function loadMenu('));
           const context = vm.createContext({});
           vm.runInContext(rules, context);
           assert.equal(context.validate(['面条', '汉堡']).error, '');
