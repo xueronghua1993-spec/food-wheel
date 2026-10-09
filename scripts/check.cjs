@@ -48,7 +48,7 @@ d.getElementById('coffee').click();assert.match(d.getElementById('wheel').getAtt
 d.getElementById('spin').click();assert.equal(d.getElementById('food').disabled,true);
 const end=new dom.window.Event('transitionend');Object.defineProperty(end,'propertyName',{value:'transform'});d.getElementById('wheel').dispatchEvent(end);
 assert.equal(d.getElementById('food').disabled,false);
-assert.ok([...d.querySelectorAll('#wheel text')].every(n=>n.style.transform.includes('rotate(')));
+assert.ok([...d.querySelectorAll('#wheel text')].every(n=>n.getAttribute('transform').includes('rotate(')));
 d.getElementById('edit').click();d.getElementById('reset').click();
 assert.equal(JSON.parse(dom.window.localStorage.getItem('personal-coffee-wheel-v1')).length,6);
 assert.deepEqual(JSON.parse(dom.window.localStorage.getItem(key)),['披萨','寿司']);dom.window.close();
