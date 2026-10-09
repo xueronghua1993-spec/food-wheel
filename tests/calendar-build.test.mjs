@@ -11,3 +11,12 @@ test('Catalog is source backed with unique IDs and seven locally stored photos',
  for(const e of c.entries){assert.equal(e.verified,true);for(const key of ['text','author','work','textSource','imageSource','imageLicense','imageAuthor'])assert.ok(e[key],key);assert.ok(fs.existsSync(e.imagePath));assert.ok(fs.statSync(e.imagePath).size<410000);}
  for(const id of [...c.schedule,...c.rotation])assert.ok(c.entries.find(e=>e.id===id));
 });
+test('A release gives the calendar entry points and module dependencies versioned URLs',()=>{
+ const version=JSON.parse(fs.readFileSync('public/release.json','utf8')).version;
+ const html=fs.readFileSync('public/index.html','utf8');
+ assert.ok(html.includes(`calendar/calendar.css?v=${version}`),'CSS must change URL across releases');
+ assert.ok(html.includes(`calendar/calendar-ui.mjs?v=${version}`),'entry module must change URL across releases');
+ const ui=fs.readFileSync('public/calendar/calendar-ui.mjs','utf8');
+ assert.ok(ui.includes(`calendar-core.mjs?v=${version}`));assert.ok(ui.includes(`calendar-export.mjs?v=${version}`));assert.ok(ui.includes(`content.json?v=${version}`));
+ const c=JSON.parse(fs.readFileSync('public/calendar/content.json','utf8'));assert.ok(c.entries.every(e=>e.imagePath.endsWith(`?v=${version}`)));
+});

@@ -29,11 +29,11 @@ await boundary.evaluate(()=>{const styles=[...document.querySelectorAll('.app-he
 assert.ok(await boundary.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'200% text creates horizontal overflow');await boundary.close();
 const fallback=await browser.newPage({viewport:{width:393,height:720}});
 await fallback.addInitScript(()=>{window.calendarDrawnText=[];const draw=CanvasRenderingContext2D.prototype.fillText;CanvasRenderingContext2D.prototype.fillText=function(text,...args){window.calendarDrawnText.push(String(text));return draw.call(this,text,...args);};});
-await fallback.route('https://www.clarity.ms/**',r=>r.abort());await fallback.clock.install({time:new Date('2026-10-09T04:00:00Z')});await fallback.route('**/calendar/assets/autumn.jpg',r=>r.abort());await fallback.goto(base);
-await fallback.waitForFunction(()=>document.querySelector('#calendar-photo').src.endsWith('fallback.jpg')&&document.querySelector('#calendar-photo').naturalWidth>0);
+await fallback.route('https://www.clarity.ms/**',r=>r.abort());await fallback.clock.install({time:new Date('2026-10-09T04:00:00Z')});await fallback.route('**/calendar/assets/autumn.jpg*',r=>r.abort());await fallback.goto(base);
+await fallback.waitForFunction(()=>document.querySelector('#calendar-photo').src.includes('fallback.jpg')&&document.querySelector('#calendar-photo').naturalWidth>0);
 await fallback.click('#calendar-save');await fallback.waitForSelector('#calendar-preview[open]');assert.ok(await fallback.evaluate(()=>window.calendarDrawnText.some(t=>t.includes('备用画面'))),'fallback export must not credit absent photo');await fallback.click('#calendar-preview-close');
 await fallback.evaluate(()=>{navigator.clipboard.writeText=async()=>{throw new Error('clipboard denied');};});await fallback.click('#calendar-share');assert.equal(await fallback.locator('#calendar-share-fallback').isVisible(),true);await fallback.close();
-const broken=await browser.newPage();await broken.route('https://www.clarity.ms/**',r=>r.abort());await broken.route('**/calendar/content.json',r=>r.fulfill({status:500,body:'error'}));await broken.goto(base);
+const broken=await browser.newPage();await broken.route('https://www.clarity.ms/**',r=>r.abort());await broken.route('**/calendar/content.json*',r=>r.fulfill({status:500,body:'error'}));await broken.goto(base);
 await broken.waitForFunction(()=>document.querySelector('#calendar-status').textContent.includes('暂时'));
 await broken.click('#view-decisions');assert.equal(await broken.locator('#spin').isVisible(),true);await broken.close();
 console.log('PASS: midnight update, stable historical date, invalid/future link, 200% text, image fallback/export, clipboard fallback and content failure');

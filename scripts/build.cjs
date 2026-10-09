@@ -14,7 +14,17 @@ async function build(){
  hashDirectory('calendar');
  const version=fingerprint.digest('hex').slice(0,12);
  fs.cpSync('calendar','public/calendar',{recursive:true});
- const html=source.replace("const buildVersion='__BUILD_VERSION__';","const buildVersion='"+version+"';");
+ const html=source.replace("const buildVersion='__BUILD_VERSION__';","const buildVersion='"+version+"';")
+  .replaceAll('./calendar/calendar.css','./calendar/calendar.css?v='+version)
+  .replaceAll('./calendar/calendar-ui.mjs','./calendar/calendar-ui.mjs?v='+version);
+ for(const name of ['calendar-ui.mjs','calendar-export.mjs']){
+  const filename='public/calendar/'+name;
+  const code=fs.readFileSync(filename,'utf8').replace(/(\.\/[^'"\s]+\.(?:mjs|json|jpg))(?=['"])/g,'$1?v='+version);
+  fs.writeFileSync(filename,code);
+ }
+ const catalog=JSON.parse(fs.readFileSync('public/calendar/content.json','utf8'));
+ for(const entry of catalog.entries)entry.imagePath+='?v='+version;
+ fs.writeFileSync('public/calendar/content.json',JSON.stringify(catalog));
  fs.writeFileSync('public/index.html',html);
  fs.writeFileSync('public/release.json',JSON.stringify({version}));
  fs.copyFileSync('logo.svg','public/logo.svg');
