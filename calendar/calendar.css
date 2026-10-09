@@ -138,3 +138,31 @@ body[data-mode=coffee] #decision-panel #spin:not(:disabled):active{box-shadow:0 
 .calendar-mini-more{background:#f5f4e8e6;border:1px solid #b9c6a6;box-shadow:none;color:#36503b}
 #calendar-mini-date{color:#6f674d;letter-spacing:.4px}
 #calendar-mini-text{color:#244334}
+
+/* Cream, sage, peach and mist blue: a warmer and more varied daily palette. */
+body:has(#calendar-panel){background:radial-gradient(ellipse at 100% 0,#f6dfc66b,transparent 45%),radial-gradient(ellipse at 0 70%,#dce8e44d,transparent 55%),#f8f6ef}
+body[data-mode=coffee]:has(#calendar-panel){background:radial-gradient(ellipse at 100% 0,#eadbc966,transparent 45%),#f7f3ec}
+.calendar-peek-background{opacity:.65}
+.calendar-peek::before{background:linear-gradient(90deg,#fffdf5fc 0%,#fffdf5f2 40%,#fffdf5cf 70%,#fffdf56b 100%)}
+.calendar-mini-more{background:#fff3e1eF;border-color:#d8be99;color:#725234}
+#calendar-mini-date{color:#776143}
+#decision-panel .tabs{background:#ecefe4;border-color:#e1e6d7}
+#decision-panel .tabs button{color:#596a5d}
+#decision-panel #food[aria-pressed=true]{background:#fae2cd;color:#594b36;box-shadow:0 2px 6px #b8754110}
+#decision-panel #coffee[aria-pressed=true]{background:#dfecef;color:#36545b;box-shadow:0 2px 6px #42657112}
+#decision-panel .card{background:#fffef9;border-color:#e7e8dc}
+#decision-panel #edit{background:#e9f0df;color:#3e5d3b}
+#decision-panel .frame{width:100%;min-width:0;max-width:240px}
+#decision-panel .hub,#decision-panel .pointer{background:#3f624e}
+#decision-panel #spin{background:#3f624e;box-shadow:0 3px 9px #25473620;min-height:50px}
+#decision-panel #spin:not(:disabled):active{transform:translateY(1px);box-shadow:0 1px 4px #25473618}
+body[data-mode=coffee] #decision-panel .hub,body[data-mode=coffee] #decision-panel .pointer,body[data-mode=coffee] #decision-panel #spin{background:#79583f}
+body[data-mode=coffee] #decision-panel #spin{box-shadow:0 3px 9px #6c4a3220}
+body[data-mode=coffee] #decision-panel #spin:not(:disabled):active{box-shadow:0 1px 4px #6c4a3218}
+#decision-panel .selection-slot{display:grid;align-items:center;min-height:62px;margin:4px 0}
+#decision-panel .selection-slot .caption{margin:0;padding:8px 0;line-height:1.6;color:#61715b}
+#decision-panel .selection-slot .result{margin:0;padding:4px 8px;background:transparent;border-radius:0;text-align:center;line-height:1.4}
+#decision-panel .selection-slot .result strong{margin:2px 0 0;font-size:26px;line-height:1.2;color:#3f624e}
+#decision-panel .selection-slot #result-label{color:#6d765f;font-size:14px}
+body[data-mode=coffee] #decision-panel .selection-slot .result strong{color:#79583f}
+@media(prefers-reduced-motion:reduce){#decision-panel #spin:not(:disabled):active{transform:none}}

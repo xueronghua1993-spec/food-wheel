@@ -43,7 +43,6 @@
  #spin{min-height:50px;padding:12px 14px;font-size:17px}
  .result{margin-top:16px;padding:14px 12px 10px;display:block;text-align:center;font-size:14px;line-height:1.5}
  .result strong{font-size:28px;margin:4px 0;line-height:1.3}
- .result #again{font-size:15px;padding:8px 14px;min-height:44px}
  .notice,#count,#reset,#error,dialog .hint{font-size:14px}.notice{margin:10px 0 0}
 }
 
@@ -73,13 +72,13 @@
  <details id="calendar-credits" class="calendar-credits" hidden><summary>文字与图片来源</summary><p id="calendar-credit-text"></p><a id="calendar-text-link" target="_blank" rel="noopener noreferrer">查看原文</a><p id="calendar-credit-photo"></p><a id="calendar-image-link" target="_blank" rel="noopener noreferrer">查看图片来源</a><p>摄影用于烘托气氛，并非历史人物或事件照片。</p></details>
 </section>
 </dialog>
-<main id="decision-panel"><header class="brand"><span class="brand-mark">◷</span>日常小决定<small>DAILY PICK</small></header><h1 id="heading">今天吃什么<span>？</span></h1><p id="intro" class="hint">好好吃饭，把纠结留给转盘。</p><nav class="tabs" aria-label="选择转盘"><button id="food" type="button" aria-pressed="true">吃什么</button><button id="coffee" type="button" aria-pressed="false">喝什么咖啡</button></nav><section class="card" aria-label="随机选择"><div class="card-head"><strong id="card-title">我的餐食转盘</strong><button id="edit" class="plain" type="button">编辑菜单 →</button></div><div class="frame"><div class="pointer" aria-hidden="true"></div><div id="wheel" class="wheel" role="img" aria-label="餐食转盘"></div><div id="hub" class="hub" aria-hidden="true">吃</div></div><p id="caption" class="caption"></p><button id="spin" class="primary" type="button">帮我选一餐 ↗</button><div id="result" class="result" aria-live="polite" hidden><span id="result-label">今天就吃</span><strong id="winner"></strong><button id="again" class="plain" type="button">再选一次 ↻</button></div></section><div class="tools"><span id="tools-hint">只放你想吃的</span></div><p id="notice" class="notice" role="status"></p><footer>吃一顿喜欢的 · 喝一杯刚好的</footer></main>
+<main id="decision-panel"><header class="brand"><span class="brand-mark">◷</span>日常小决定<small>DAILY PICK</small></header><h1 id="heading">今天吃什么<span>？</span></h1><p id="intro" class="hint">好好吃饭，把纠结留给转盘。</p><nav class="tabs" aria-label="选择转盘"><button id="food" type="button" aria-pressed="true">吃什么</button><button id="coffee" type="button" aria-pressed="false">喝什么咖啡</button></nav><section class="card" aria-label="随机选择"><div class="card-head"><strong id="card-title">我的餐食转盘</strong><button id="edit" class="plain" type="button">编辑菜单 →</button></div><div class="frame"><div class="pointer" aria-hidden="true"></div><div id="wheel" class="wheel" role="img" aria-label="餐食转盘"></div><div id="hub" class="hub" aria-hidden="true">吃</div></div><div class="selection-slot"><p id="caption" class="caption"></p><div id="result" class="result" aria-live="polite" hidden><span id="result-label">今天就吃</span><strong id="winner"></strong></div></div><button id="spin" class="primary" type="button">帮我选一餐 ↗</button></section><div class="tools"><span id="tools-hint">只放你想吃的</span></div><p id="notice" class="notice" role="status"></p><footer>吃一顿喜欢的 · 喝一杯刚好的</footer></main>
 <dialog id="editor" aria-labelledby="title"><form id="form" novalidate><div class="top"><h2 id="title">想吃的，都放进来</h2><span id="count"></span></div><p class="hint">2～10 个选项 · 每项最多 8 个字符</p><div id="rows"></div><button id="add" type="button">＋ 新增选项</button><p id="error" role="alert"></p><div class="actions"><button id="cancel" type="button" class="secondary">取消</button><button type="submit" class="primary">保存菜单</button></div><button id="reset" class="plain" type="button">恢复默认菜单 ↺</button></form></dialog>
 <script>
 'use strict';
 const presets={food:['面条','米饭套餐','饺子','麻辣烫','汉堡','火锅'],coffee:['美式','拿铁','卡布奇诺','澳白','摩卡','冷萃']};
 let mode='food',defaults=presets.food;
-const palettes={food:['#e1e9c5','#f4dfb2','#c7ddd0','#e9d5bd','#d5dfb6','#c9dfdf'],coffee:['#ead9bd','#d7bca0','#eee1ce','#d4c7b6','#dec3ad','#cdb8a5']};
+const palettes={food:['#cbdcc2','#f4d1b7','#c9dfe2','#e3d3e9','#efe0af','#f0d2d1'],coffee:['#edd8b8','#dcc6b5','#e9cbbd','#d7dfc5','#cddce0','#e2d0dc']};
 let key='personal-food-wheel-v1';
 const el=id=>document.getElementById(id);
 let menu=[...defaults],draft=[],rotation=0,busy=false;
@@ -121,18 +120,19 @@ function switchMode(next){
 }
 function svgNode(tag,attrs){const node=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v]of Object.entries(attrs))node.setAttribute(k,v);return node;}
 function draw(){
+ el('caption').hidden=false;el('result').hidden=true;el('spin').textContent=mode==='coffee'?'帮我选一杯 ↗':'帮我选一餐 ↗';
  const svg=svgNode('svg',{viewBox:'0 0 320 320','aria-hidden':'true'});
  const point=a=>{const r=(a-90)*Math.PI/180;return[160+160*Math.cos(r),160+160*Math.sin(r)];};
  menu.forEach((name,i)=>{
   const size=360/menu.length,a=point(i*size),b=point((i+1)*size);
   svg.append(svgNode('path',{d:'M160,160 L'+a.join(',')+' A160,160 0 0,1 '+b.join(',')+' Z',fill:palettes[mode][i%6],stroke:'#fffaf2','stroke-width':1.5}));
-  const chars=Array.from(name),lines=chars.length>4?[chars.slice(0,4).join(''),chars.slice(4).join('')]:[name];
-  const font=Math.min(16,(190*Math.sin(Math.PI/menu.length)-8)/Math.max(...lines.map(v=>Array.from(v).length)));
+  const chars=Array.from(name),lineSize=menu.length>=8?3:4,lines=[];for(let j=0;j<chars.length;j+=lineSize)lines.push(chars.slice(j,j+lineSize).join(''));
+  const font=Math.min(20,(190*Math.sin(Math.PI/menu.length)-8)/Math.max(...lines.map(v=>Array.from(v).length)));
   const mid=(i+.5)*size*Math.PI/180,x=160+105*Math.sin(mid),y=160-105*Math.cos(mid);
   const label=svgNode('text',{'text-anchor':'middle','dominant-baseline':'middle',fill:'#304638','font-size':font,'font-weight':650});
   const anchor=svgNode('g',{transform:'translate('+x+' '+y+')'});
   label.setAttribute('transform','rotate('+(-rotation)+')');
-  lines.forEach((line,j)=>{const t=svgNode('tspan',{x:0,y:(j-(lines.length-1)/2)*16});t.textContent=line;label.append(t);});anchor.append(label);svg.append(anchor);
+  lines.forEach((line,j)=>{const t=svgNode('tspan',{x:0,y:(j-(lines.length-1)/2)*(font+3)});t.textContent=line;label.append(t);});anchor.append(label);svg.append(anchor);
  });
  el('wheel').replaceChildren(svg);el('wheel').setAttribute('aria-label','餐食转盘：'+menu.join('、'));el('caption').textContent=menu.length+' 个选项 · 每个都有同样的机会';
 }
@@ -144,7 +144,7 @@ function setWheelAngle(angle){
 const frame=window.requestAnimationFrame?.bind(window)||((callback)=>setTimeout(callback,16));
 const cancelFrame=window.cancelAnimationFrame?.bind(window)||clearTimeout;
 function spin(){
- if(busy)return;busy=true;['spin','again','edit','reset','food','coffee'].forEach(id=>el(id).disabled=true);el('spin').textContent='正在选…';el('result').hidden=true;
+ if(busy)return;busy=true;['spin','edit','reset','food','coffee'].forEach(id=>el(id).disabled=true);el('spin').textContent='正在选…';el('result').hidden=true;el('caption').hidden=false;el('caption').textContent='让转盘替你想一想…';
  const index=Math.floor(Math.random()*menu.length),startRotation=rotation;rotation=nextRotation(rotation,index,menu.length);
  const duration=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?0:3000;
  let started;
@@ -156,7 +156,7 @@ function spin(){
   setWheelAngle(startRotation+(rotation-startRotation)*eased);
   if(progress===1){finish();return;}animationFrame=frame(track);
  }
- function finish(){if(done)return;done=true;cancelFrame(animationFrame);setWheelAngle(rotation);clearTimeout(timer);el('wheel').removeEventListener('transitionend',end);el('winner').textContent=menu[index];el('result').hidden=false;['spin','again','edit','reset','food','coffee'].forEach(id=>el(id).disabled=false);el('spin').textContent=mode==='coffee'?'帮我选一杯 ↗':'帮我选一餐 ↗';busy=false;}
+ function finish(){if(done)return;done=true;cancelFrame(animationFrame);setWheelAngle(rotation);clearTimeout(timer);el('wheel').removeEventListener('transitionend',end);el('winner').textContent=menu[index];el('result').hidden=false;el('caption').hidden=true;['spin','edit','reset','food','coffee'].forEach(id=>el(id).disabled=false);el('spin').textContent=mode==='coffee'?'再选一杯 ↻':'再选一餐 ↻';busy=false;}
  function end(event){if(event.target===el('wheel')&&event.propertyName==='transform')finish();}
  el('wheel').addEventListener('transitionend',end);animationFrame=frame(track);timer=setTimeout(finish,3400);
 }
@@ -183,7 +183,7 @@ function resetMenu(){
 }
 el('food').onclick=()=>switchMode('food');el('coffee').onclick=()=>switchMode('coffee');
 el('reset').onclick=resetMenu;
-el('spin').onclick=spin;el('again').onclick=spin;
+el('spin').onclick=spin;
 el('edit').onclick=()=>{if(busy)return;draft=[...menu];el('error').textContent='';drawRows();el('editor').showModal();};
 el('add').onclick=()=>{if(draft.length>=10)return;draft.push('');drawRows(draft.length-1);};
 el('cancel').onclick=()=>el('editor').close();
