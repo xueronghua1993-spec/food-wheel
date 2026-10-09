@@ -2,10 +2,10 @@
 body:has(#calendar-panel:not([hidden])){background:#f5f4ee}
 .app-header{max-width:460px;margin:0 auto;padding:22px 20px 0;text-align:center}
 .app-brand{font-family:"Noto Serif CJK SC","Songti SC",SimSun,serif;font-weight:700;font-size:24px;letter-spacing:3px;color:#244c3c;text-decoration:none}
-.app-tabs{display:flex;gap:28px;justify-content:center;margin:22px 0 18px}
-.app-tabs button{background:transparent;color:#748074;border-radius:0;font-size:17px;padding:8px 12px 10px;min-height:46px;border-bottom:3px solid transparent}
-.app-tabs button[aria-pressed=true]{color:#244c3c;border-bottom-color:#244c3c;font-weight:700}
-#decision-panel{padding-top:0}#decision-panel .brand{display:none}
+.app-intro{font-size:14px;color:#788273;margin:12px 0 6px}
+.decision-shortcut{display:inline-block;color:#244c3c;font-size:16px;padding:12px;min-height:44px;margin-bottom:12px;text-underline-offset:5px}
+#decision-panel{scroll-margin-top:16px;border-top:1px solid #dedfd2;margin-top:12px;padding-top:20px}
+#decision-panel .brand{display:none}
 .calendar-panel{max-width:460px;margin:0 auto;padding:0 20px 22px;color:#244c3c}
 .calendar-card{background:#fffdf7;border-radius:24px;overflow:hidden;box-shadow:0 4px 18px #203a3209;border:1px solid #e8e8df}
 .calendar-photo{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;background:#e8ecdf}
