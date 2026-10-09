@@ -1,10 +1,27 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fffaf2"><title>今天吃什么？</title>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fffaf2"><title>今天吃什么？｜让转盘帮你选</title>
+<meta name="description" content="把想吃的放进转盘，轻轻一点，决定今天的美味。">
+<link rel="canonical" href="https://xueronghua1993-spec.github.io/food-wheel/">
+<link rel="icon" type="image/svg+xml" href="./logo.svg">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="今天吃什么？">
+<meta property="og:description" content="把想吃的放进转盘，轻轻一点，决定今天的美味。">
+<meta property="og:url" content="https://xueronghua1993-spec.github.io/food-wheel/">
+<meta property="og:image" content="https://xueronghua1993-spec.github.io/food-wheel/share-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="今天吃什么？彩色美食转盘">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="今天吃什么？">
+<meta name="twitter:description" content="把想吃的放进转盘，轻轻一点，决定今天的美味。">
+<meta name="twitter:image" content="https://xueronghua1993-spec.github.io/food-wheel/share-card.png">
 <style>
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(at 0% 10%,#ffe1df,transparent 50%),radial-gradient(at 100% 90%,#daf4e8,transparent 50%),#fffaf2;color:#343548;font-family:system-ui,"Microsoft YaHei",sans-serif;min-height:100vh}main{max-width:440px;padding:30px 22px;margin:auto;text-align:center}.badge{display:inline-block;background:#efe7fb;color:#665586;padding:8px 14px;border-radius:24px;font-size:12px}h1{font-size:36px;margin:16px 0 8px}h1 span{color:#dd4e40}.hint{color:#756778;font-size:14px;margin-bottom:30px}.frame{position:relative;aspect-ratio:1;width:100%;max-width:330px;margin:auto;border:9px solid white;border-radius:50%;box-shadow:0 18px 40px #a175a324}.wheel{position:absolute;inset:0;border-radius:50%;transition:transform 3s cubic-bezier(.15,.65,.12,1)}svg{width:100%;height:100%;display:block}.pointer{position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:26px;height:38px;background:#61528c;clip-path:polygon(0 0,100% 0,50% 100%);z-index:2}.hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:58px;height:58px;border:5px solid white;border-radius:50%;background:#61528c;color:white;font-weight:bold}.caption{font-size:12px;color:#756778;margin:24px 0 18px}button,input{font:inherit}button{border:0;border-radius:15px;min-height:48px;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.5;cursor:default}button:focus-visible,input:focus-visible{outline:3px solid #7962ae;outline-offset:3px}.primary{color:white;background:linear-gradient(115deg,#dd4e40,#e45b36);padding:14px 18px;font-weight:bold;box-shadow:0 4px 0 #b63537}#spin{width:100%;font-size:18px}.plain{background:transparent;color:#61528c;padding:8px 22px}.result{margin:22px 0 8px}.result strong{font-size:25px;color:#c64638;overflow-wrap:anywhere}[hidden]{display:none!important}footer{font-size:11px;color:#817586;margin-top:25px}.notice{font-size:13px;color:#a13a36}dialog{width:min(430px,calc(100% - 28px));max-height:calc(100dvh - 32px);border:1px solid #e9def2;background:#fffcf8;color:#343548;border-radius:23px;padding:23px}dialog::backdrop{background:#34304866}h2{font-size:21px;margin:0}.top{display:flex;justify-content:space-between;align-items:center;gap:8px}#count{font-size:13px;color:#756778}.row{display:flex;gap:8px;margin:10px 0}.row input{width:100%;min-width:0;border:1px solid #e1d7ed;border-radius:12px;padding:11px;font-size:16px}.remove{flex-shrink:0;width:48px;background:#ffe6e3;color:#b73f43}#add{width:100%;background:transparent;color:#61528c;border:1px dashed #b5a1ce}.actions{display:flex;gap:12px}.actions button{flex:1}.secondary{background:#eee6f7;color:#61528c}#error{color:#a13a36;font-size:13px;min-height:20px}@media(prefers-reduced-motion:reduce){.wheel{transition-duration:.01s}}
 </style></head>
-<body><main><div class="badge">一顿饭的小决定</div><h1>今天吃什么<span>？</span></h1><p class="hint">纠结的时候，让转盘帮你选。</p><div class="frame"><div class="pointer" aria-hidden="true"></div><div id="wheel" class="wheel" role="img" aria-label="餐食转盘"></div><div class="hub" aria-hidden="true">吃</div></div><p id="caption" class="caption"></p><button id="spin" class="primary" type="button">帮我选 ↗</button><div id="result" class="result" aria-live="polite" hidden>今天吃：<strong id="winner"></strong><br><button id="again" class="plain" type="button">再转一次 ↻</button></div><button id="edit" class="plain" type="button">编辑菜单 ✎</button><p id="notice" class="notice" role="status"></p><footer>选项你来定，纠结交给转盘。</footer></main>
+<body><main><div class="badge">一顿饭的小决定</div><h1>今天吃什么<span>？</span></h1><p class="hint">纠结的时候，让转盘帮你选。</p><div class="frame"><div class="pointer" aria-hidden="true"></div><div id="wheel" class="wheel" role="img" aria-label="餐食转盘"></div><div class="hub" aria-hidden="true">吃</div></div><p id="caption" class="caption"></p><button id="spin" class="primary" type="button">帮我选 ↗</button><div id="result" class="result" aria-live="polite" hidden>今天吃：<strong id="winner"></strong><br><button id="again" class="plain" type="button">再转一次 ↻</button></div><button id="edit" class="plain" type="button">编辑菜单 ✎</button><button id="reset" class="plain" type="button">恢复默认菜单 ↺</button><p id="notice" class="notice" role="status"></p><footer>选项你来定，纠结交给转盘。</footer></main>
 <dialog id="editor" aria-labelledby="title"><form id="form" novalidate><div class="top"><h2 id="title">想吃的，都放进来</h2><span id="count"></span></div><p class="hint">2～10 个选项 · 每项最多 8 个字符</p><div id="rows"></div><button id="add" type="button">＋ 新增选项</button><p id="error" role="alert"></p><div class="actions"><button id="cancel" type="button" class="secondary">取消</button><button type="submit" class="primary">保存菜单</button></div></form></dialog>
 <script>
 'use strict';
@@ -43,9 +60,9 @@ function draw(){
  el('wheel').replaceChildren(svg);el('wheel').setAttribute('aria-label','餐食转盘：'+menu.join('、'));el('caption').textContent=menu.length+' 个选项 · 每个都有同样的机会';
 }
 function spin(){
- if(busy)return;busy=true;['spin','again','edit'].forEach(id=>el(id).disabled=true);el('spin').textContent='正在选…';el('result').hidden=true;
+ if(busy)return;busy=true;['spin','again','edit','reset'].forEach(id=>el(id).disabled=true);el('spin').textContent='正在选…';el('result').hidden=true;
  const index=Math.floor(Math.random()*menu.length);rotation=nextRotation(rotation,index,menu.length);
- let done=false,timer;function finish(){if(done)return;done=true;clearTimeout(timer);el('wheel').removeEventListener('transitionend',end);el('winner').textContent=menu[index];el('result').hidden=false;['spin','again','edit'].forEach(id=>el(id).disabled=false);el('spin').textContent='帮我选 ↗';busy=false;}
+ let done=false,timer;function finish(){if(done)return;done=true;clearTimeout(timer);el('wheel').removeEventListener('transitionend',end);el('winner').textContent=menu[index];el('result').hidden=false;['spin','again','edit','reset'].forEach(id=>el(id).disabled=false);el('spin').textContent='帮我选 ↗';busy=false;}
  function end(event){if(event.target===el('wheel')&&event.propertyName==='transform')finish();}
  el('wheel').addEventListener('transitionend',end);el('wheel').style.transform='rotate('+rotation+'deg)';timer=setTimeout(finish,3400);
 }
@@ -56,10 +73,25 @@ function drawRows(focus){
   const remove=document.createElement('button');remove.type='button';remove.className='remove';remove.textContent='×';remove.setAttribute('aria-label','删除第 '+(i+1)+' 个选项');remove.onclick=()=>{draft.splice(i,1);el('error').textContent='';drawRows(Math.min(i,draft.length-1));};row.append(input,remove);el('rows').append(row);
  });el('count').textContent=draft.length+'/10';el('add').disabled=draft.length>=10;if(focus>=0)el('rows').children[focus]?.querySelector('input').focus();
 }
+function persistMenu(){
+ el('notice').textContent='';
+ try{localStorage.setItem(key,JSON.stringify(menu));return true;}
+ catch{el('notice').textContent='本次修改未能保存，当前页面仍可继续使用。';return false;}
+}
+function resetMenu(){
+ if(busy)return;
+ if(!window.confirm('恢复默认菜单？你当前的自定义菜单会被替换。'))return;
+ menu=[...defaults];
+ const saved=persistMenu();
+ el('result').hidden=true;
+ draw();
+ if(saved)el('notice').textContent='已恢复默认菜单。';
+}
+el('reset').onclick=resetMenu;
 el('spin').onclick=spin;el('again').onclick=spin;
 el('edit').onclick=()=>{if(busy)return;draft=[...menu];el('error').textContent='';drawRows();el('editor').showModal();};
 el('add').onclick=()=>{if(draft.length>=10)return;draft.push('');drawRows(draft.length-1);};
 el('cancel').onclick=()=>el('editor').close();
-el('form').onsubmit=event=>{event.preventDefault();const checked=validate(draft);if(checked.error){el('error').textContent=checked.error;const input=el('rows').children[checked.index]?.querySelector('input');if(input){input.setAttribute('aria-invalid','true');input.focus();}return;}menu=checked.items;el('notice').textContent='';try{localStorage.setItem(key,JSON.stringify(menu));}catch{el('notice').textContent='本次修改未能保存，当前页面仍可继续使用。';}el('result').hidden=true;draw();el('editor').close();};
+el('form').onsubmit=event=>{event.preventDefault();const checked=validate(draft);if(checked.error){el('error').textContent=checked.error;const input=el('rows').children[checked.index]?.querySelector('input');if(input){input.setAttribute('aria-invalid','true');input.focus();}return;}menu=checked.items;persistMenu();el('result').hidden=true;draw();el('editor').close();};
 draw();
 </script></body></html>
