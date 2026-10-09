@@ -23,7 +23,7 @@ jobs:
       - name: Build share assets
         run: node scripts/build.cjs
       - name: Install cloud browser
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
       - name: Check mobile layout and capture screenshots
         run: node scripts/browser-check.cjs
       - uses: actions/upload-artifact@v4
