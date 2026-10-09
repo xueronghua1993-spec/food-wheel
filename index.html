@@ -53,15 +53,16 @@
 <button id="calendar-open" class="calendar-peek" type="button" aria-haspopup="dialog" aria-label="打开完整日历">
  <img id="calendar-mini-photo" alt="" width="76" height="90"><span class="calendar-mini-copy"><span id="calendar-mini-date">今日日历</span><span id="calendar-mini-text">正在翻开今天的一页…</span><span class="calendar-mini-more">展开日历 ↗</span></span>
 </button>
-<dialog id="calendar-detail" aria-labelledby="calendar-detail-title"><div class="calendar-detail-head"><h2 id="calendar-detail-title">每日一页</h2><button id="calendar-detail-close" class="plain" type="button">关闭</button></div>
+<dialog id="calendar-detail" aria-labelledby="calendar-detail-title"><div class="calendar-detail-head"><div><p class="calendar-detail-kicker">把今天留成一页</p><h2 id="calendar-detail-title">今日日历</h2></div><button id="calendar-detail-close" class="plain" type="button" aria-label="关闭日历">收起 ×</button></div>
 <section id="calendar-panel" class="calendar-panel" aria-label="每日图片日历">
  <p id="calendar-status" class="calendar-status" role="status">正在翻开今天的一页…</p>
  <article id="calendar-card" class="calendar-card" hidden>
+  <div class="calendar-paper-top"><span>日常小决定</span><i aria-hidden="true"></i><span>每日一页</span></div>
   <img id="calendar-photo" class="calendar-photo" alt="" width="1200" height="900">
   <div class="calendar-body"><p id="calendar-kind" class="calendar-kind"></p><p id="calendar-text" class="calendar-text"></p><p id="calendar-source" class="calendar-source"></p>
    <details id="calendar-story" hidden><summary>读完整故事</summary><p id="calendar-full"></p><p>故事由日常小决定根据原文转述。</p></details>
    <div class="calendar-date-row"><strong id="calendar-day"></strong><div><p id="calendar-date"></p><p id="calendar-weekday"></p><p id="calendar-lunar"></p></div></div>
-   <p id="calendar-remaining" class="calendar-remaining"></p><p class="calendar-signature">每日一页</p>
+   <p id="calendar-remaining" class="calendar-remaining"></p><p class="calendar-signature">日常小决定 · 每日一页</p>
   </div>
  </article>
  <div id="calendar-actions" class="calendar-actions" hidden><button id="calendar-prev" type="button">← 前一天</button><button id="calendar-save" type="button">保存日历</button></div>

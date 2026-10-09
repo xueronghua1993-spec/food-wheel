@@ -24,22 +24,23 @@ export async function renderCalendarImage(entry,info){
  ctx.font=`54px ${font}`;
  const lines=wrapText(ctx,entry.text,900);
  ctx.font='32px sans-serif';const sourceLines=wrapText(ctx,`${entry.author} · ${entry.work}`,900);
- const photoH=760,quoteY=photoH+90,lineH=82;
+ const paperH=120,photoH=720,quoteY=paperH+photoH+90,lineH=82;
  const sourceY=quoteY+lines.length*lineH+24;
  const dateY=sourceY+sourceLines.length*48+100;
  const photoCredit=wrapText(ctx,usedFallback?'备用画面：日常小决定':`摄影：${entry.imageAuthor}`,900);
  canvas.height=dateY+320+photoCredit.length*44;
  ctx.fillStyle='#f8f7f0';ctx.fillRect(0,0,canvas.width,canvas.height);
+ ctx.textBaseline='top';ctx.fillStyle='#7c826f';ctx.font='32px sans-serif';ctx.textAlign='left';ctx.fillText('日常小决定',60,48);ctx.textAlign='right';ctx.fillText('每日一页',1020,48);ctx.fillStyle='#263e33';ctx.beginPath();ctx.arc(540,60,15,0,Math.PI*2);ctx.fill();
  const ratio=Math.max(1080/image.naturalWidth,photoH/image.naturalHeight);
  const sw=1080/ratio,sh=photoH/ratio;
- ctx.drawImage(image,(image.naturalWidth-sw)/2,(image.naturalHeight-sh)/2,sw,sh,0,0,1080,photoH);
+ ctx.drawImage(image,(image.naturalWidth-sw)/2,(image.naturalHeight-sh)/2,sw,sh,0,paperH,1080,photoH);
  ctx.textAlign='center';ctx.textBaseline='top';ctx.fillStyle='#234c3c';ctx.font=`54px ${font}`;
  lines.forEach((line,i)=>ctx.fillText(line,540,quoteY+i*lineH));
  ctx.font='32px sans-serif';ctx.fillStyle='#68776b';sourceLines.forEach((line,i)=>ctx.fillText(line,540,sourceY+i*48));
  if(entry.type==='story'){ctx.font='28px sans-serif';ctx.fillText('故事概述 · 日常小决定',540,sourceY+sourceLines.length*48+12);}
  ctx.strokeStyle='#d2d8c9';ctx.beginPath();ctx.moveTo(90,dateY-28);ctx.lineTo(990,dateY-28);ctx.stroke();
- ctx.textAlign='left';ctx.fillStyle='#234c3c';ctx.font=`bold 170px ${font}`;ctx.fillText(String(info.day).padStart(2,'0'),100,dateY);
- ctx.font='42px sans-serif';ctx.fillText(`${info.year}年${info.month}月${info.day}日`,400,dateY+20);ctx.fillText(info.weekday,400,dateY+82);
+ ctx.textAlign='left';ctx.fillStyle='#b34e36';ctx.font='210px Georgia,serif';ctx.fillText(String(info.day).padStart(2,'0'),100,dateY);
+ ctx.fillStyle='#234c3c';ctx.font='42px sans-serif';ctx.fillText(`${info.year}年${info.month}月${info.day}日`,400,dateY+20);ctx.fillText(info.weekday,400,dateY+82);
  if(info.lunar){ctx.font='32px sans-serif';ctx.fillStyle='#68776b';ctx.fillText(`农历${info.lunar}`,400,dateY+140);}
  ctx.font='30px sans-serif';ctx.textAlign='center';ctx.fillStyle='#68776b';ctx.fillText('日常小决定 · 每日一页',540,dateY+220);
  ctx.font='28px sans-serif';photoCredit.forEach((line,i)=>ctx.fillText(line,540,dateY+278+i*44));

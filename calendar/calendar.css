@@ -63,3 +63,35 @@ body:has(#calendar-panel:not([hidden])){background:#f5f4ee}
 #decision-panel .caption{margin:16px 0 14px}
 #decision-panel #notice:empty{display:none}
 @media(max-width:360px){.app-header{padding-top:14px}.calendar-peek{width:calc(100% - 32px);gap:10px}#calendar-mini-photo{width:68px;height:86px}#decision-panel .frame{max-width:240px}}
+
+/* Full calendar: photographic paper, generous type and a quiet date footer. */
+#calendar-detail{padding:0;border:0;background:#eeeee5;box-shadow:0 24px 80px #152e3540;max-height:calc(100dvh - 24px)}
+#calendar-detail::backdrop{background:#18392e99;backdrop-filter:blur(5px)}
+.calendar-detail-head{position:sticky;top:0;z-index:2;padding:16px 20px;background:#eeeee5f5;border-bottom:1px solid #dcdfd1;gap:16px}
+.calendar-detail-kicker{margin:0 0 4px;font-size:14px;color:#748070;letter-spacing:1px}
+.calendar-detail-head h2{font-family:"Songti SC",SimSun,serif;font-size:23px;font-weight:600;letter-spacing:2px}
+#calendar-detail-close{background:#e0e5d8;font-size:14px;padding:10px 14px;border-radius:24px;flex-shrink:0}
+#calendar-detail .calendar-panel{padding:20px 18px 22px}
+#calendar-detail .calendar-card{border:0;border-radius:4px 4px 12px 12px;background:#fffdf6;box-shadow:0 8px 22px #243c3212}
+.calendar-paper-top{display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;padding:20px 18px;gap:12px;font-size:14px;color:#7c826f;letter-spacing:1px}
+.calendar-paper-top span:last-child{text-align:right}
+.calendar-paper-top i{display:block;width:12px;height:12px;border-radius:50%;margin:auto;background:#263e33;box-shadow:inset 0 2px 3px #0006,0 1px 0 #fff}
+#calendar-detail .calendar-photo{aspect-ratio:3/2}
+#calendar-detail .calendar-body{padding:28px 24px 24px}
+#calendar-detail .calendar-kind{display:flex;align-items:center;justify-content:center;gap:12px;letter-spacing:3px;margin-bottom:16px}
+#calendar-detail .calendar-kind::before,#calendar-detail .calendar-kind::after{content:"";width:24px;height:1px;background:#cbd1c0}
+#calendar-detail .calendar-text{font-size:24px;line-height:1.8;color:#2c4538;text-wrap:balance}
+#calendar-detail .calendar-text[data-type=story]{font-size:18px;line-height:1.9;text-wrap:wrap}
+#calendar-detail .calendar-source{margin-top:18px;font-size:14px;color:#727c6c}
+#calendar-detail .calendar-date-row{justify-content:space-between;gap:16px;margin-top:28px;padding-top:22px;border-top:1px solid #d5d9c8}
+#calendar-detail #calendar-day{font-size:106px;letter-spacing:-6px;color:#b34e36;font-weight:400}
+#calendar-detail .calendar-date-row div{border:0;padding-left:0}
+#calendar-detail .calendar-date-row p{font-size:15px}
+#calendar-detail #calendar-lunar{font-size:14px}
+#calendar-detail .calendar-remaining{margin-top:20px;font-size:14px;letter-spacing:1px}
+#calendar-detail .calendar-signature{margin-top:18px;padding-top:16px;border-top:1px dashed #d9dece;font-size:14px;letter-spacing:2px}
+#calendar-detail .calendar-actions{margin-top:20px;gap:12px}
+#calendar-detail .calendar-actions button{border-radius:14px;border-color:#bdc9b8;min-height:50px;background:#f8f9f2}
+#calendar-detail #calendar-save{background:#244c3c;border-color:#244c3c;color:#fff}
+#calendar-detail .calendar-credits{border-top:1px solid #d4dacb;padding-top:4px}
+@media(max-width:360px){#calendar-detail .calendar-panel{padding:16px 12px 20px}#calendar-detail .calendar-body{padding:24px 18px 20px}#calendar-detail .calendar-text{font-size:22px}#calendar-detail #calendar-day{font-size:88px;letter-spacing:-4px}#calendar-detail .calendar-date-row{gap:12px}.calendar-paper-top{padding:18px 14px;gap:8px;letter-spacing:0}}
