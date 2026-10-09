@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fffaf2"><title>今天吃什么？｜让转盘帮你选</title>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fffaf2"><title>日常小决定｜今天吃什么，喝什么咖啡</title>
 <meta name="description" content="把想吃的放进转盘，轻轻一点，决定今天的美味。">
 <link rel="canonical" href="https://xueronghua1993-spec.github.io/food-wheel/">
 <link rel="icon" type="image/svg+xml" href="./logo.svg">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:title" content="今天吃什么？">
+<meta property="og:title" content="今天吃什么，喝什么咖啡？">
 <meta property="og:description" content="把想吃的放进转盘，轻轻一点，决定今天的美味。">
 <meta property="og:url" content="https://xueronghua1993-spec.github.io/food-wheel/">
 <meta property="og:image" content="https://xueronghua1993-spec.github.io/food-wheel/share-card.png">
@@ -15,19 +15,20 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="今天吃什么？彩色美食转盘">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="今天吃什么？">
+<meta name="twitter:title" content="今天吃什么，喝什么咖啡？">
 <meta name="twitter:description" content="把想吃的放进转盘，轻轻一点，决定今天的美味。">
 <meta name="twitter:image" content="https://xueronghua1993-spec.github.io/food-wheel/share-card.png">
 <style>
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(at 0% 10%,#ffe1df,transparent 50%),radial-gradient(at 100% 90%,#daf4e8,transparent 50%),#fffaf2;color:#343548;font-family:system-ui,"Microsoft YaHei",sans-serif;min-height:100vh}main{max-width:440px;padding:30px 22px;margin:auto;text-align:center}.badge{display:inline-block;background:#efe7fb;color:#665586;padding:8px 14px;border-radius:24px;font-size:12px}h1{font-size:36px;margin:16px 0 8px}h1 span{color:#dd4e40}.hint{color:#756778;font-size:14px;margin-bottom:30px}.frame{position:relative;aspect-ratio:1;width:100%;max-width:330px;margin:auto;border:9px solid white;border-radius:50%;box-shadow:0 18px 40px #a175a324}.wheel{position:absolute;inset:0;border-radius:50%;transition:transform 3s cubic-bezier(.15,.65,.12,1)}svg{width:100%;height:100%;display:block}.pointer{position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:26px;height:38px;background:#61528c;clip-path:polygon(0 0,100% 0,50% 100%);z-index:2}.hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:58px;height:58px;border:5px solid white;border-radius:50%;background:#61528c;color:white;font-weight:bold}.caption{font-size:12px;color:#756778;margin:24px 0 18px}button,input{font:inherit}button{border:0;border-radius:15px;min-height:48px;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.5;cursor:default}button:focus-visible,input:focus-visible{outline:3px solid #7962ae;outline-offset:3px}.primary{color:white;background:linear-gradient(115deg,#dd4e40,#e45b36);padding:14px 18px;font-weight:bold;box-shadow:0 4px 0 #b63537}#spin{width:100%;font-size:18px}.plain{background:transparent;color:#61528c;padding:8px 22px}.result{margin:22px 0 8px}.result strong{font-size:25px;color:#c64638;overflow-wrap:anywhere}[hidden]{display:none!important}footer{font-size:11px;color:#817586;margin-top:25px}.notice{font-size:13px;color:#a13a36}dialog{width:min(430px,calc(100% - 28px));max-height:calc(100dvh - 32px);border:1px solid #e9def2;background:#fffcf8;color:#343548;border-radius:23px;padding:23px}dialog::backdrop{background:#34304866}h2{font-size:21px;margin:0}.top{display:flex;justify-content:space-between;align-items:center;gap:8px}#count{font-size:13px;color:#756778}.row{display:flex;gap:8px;margin:10px 0}.row input{width:100%;min-width:0;border:1px solid #e1d7ed;border-radius:12px;padding:11px;font-size:16px}.remove{flex-shrink:0;width:48px;background:#ffe6e3;color:#b73f43}#add{width:100%;background:transparent;color:#61528c;border:1px dashed #b5a1ce}.actions{display:flex;gap:12px}.actions button{flex:1}.secondary{background:#eee6f7;color:#61528c}#error{color:#a13a36;font-size:13px;min-height:20px}@media(prefers-reduced-motion:reduce){.wheel{transition-duration:.01s}}
+*{box-sizing:border-box}body{margin:0;background:#f4f3ec;color:#203a32;font-family:system-ui,"Microsoft YaHei",sans-serif;min-height:100vh}main{max-width:460px;margin:auto;padding:24px 20px 28px}.brand{display:flex;align-items:center;gap:10px;font-weight:750;font-size:15px}.brand-mark{display:grid;place-items:center;width:34px;height:34px;background:#234f40;color:#fff;border-radius:12px}.brand small{margin-left:auto;color:#858b80;font-size:10px;letter-spacing:2px}.badge{margin-top:28px;color:#758276;font-size:12px}h1{font-size:32px;letter-spacing:-1px;margin:8px 0}h1 span{color:#55825c}.hint{color:#7b847b;font-size:13px;margin:0 0 22px;line-height:1.7}.tabs{display:flex;background:#e7e9df;border-radius:16px;padding:5px;margin:20px 0}.tabs button{flex:1;background:transparent;color:#748074;min-height:46px;border-radius:12px;font-weight:650}.tabs button[aria-pressed=true]{background:#fff;color:#244c3c;box-shadow:0 2px 8px #203a3210}.card{background:#fffdf7;border:1px solid #e9e8de;border-radius:28px;padding:22px 18px;text-align:center;box-shadow:0 10px 35px #30423408}.card-head{display:flex;justify-content:space-between;color:#758276;font-size:11px;margin-bottom:24px}.card-head strong{color:#345844;font-weight:650}.frame{position:relative;aspect-ratio:1;width:100%;max-width:300px;margin:auto;border:7px solid white;border-radius:50%;box-shadow:0 6px 22px #37493812}.wheel{position:absolute;inset:0;border-radius:50%;transition:transform 3s cubic-bezier(.15,.65,.12,1)}svg{width:100%;height:100%;display:block}.wheel text{transform-box:fill-box;transform-origin:center;transition:transform 3s cubic-bezier(.15,.65,.12,1)}.pointer{position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:25px;height:34px;background:#244f3d;clip-path:polygon(0 0,100% 0,50% 100%);z-index:2}.hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:58px;height:58px;border:5px solid white;border-radius:50%;background:#244f3d;color:white;font-weight:bold}.caption{font-size:11px;color:#879184;margin:22px 0 18px}button,input{font:inherit}button{border:0;border-radius:14px;min-height:44px;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.45;cursor:default}button:focus-visible,input:focus-visible{outline:3px solid #649e78;outline-offset:3px}.primary{color:#fff;background:#244f3d;padding:14px 18px;font-weight:700}#spin{width:100%;font-size:16px;min-height:54px}.plain{background:transparent;color:#637765;padding:8px 14px}.result{margin-top:20px;padding:16px;border-radius:18px;background:#edf2e7;font-size:12px}.result strong{display:block;font-size:26px;color:#244f3d;margin:5px;overflow-wrap:anywhere}[hidden]{display:none!important}.tools{display:flex;justify-content:space-between;align-items:center;margin-top:16px}.tools span{font-size:11px;color:#90978c}footer{text-align:center;font-size:10px;color:#9a9f94;margin-top:24px}.notice{font-size:12px;color:#5b755b;text-align:center;min-height:16px;margin:12px 0 0}dialog{width:min(430px,calc(100% - 28px));max-height:calc(100dvh - 32px);border:1px solid #e4e8dc;background:#fffdf7;color:#203a32;border-radius:24px;padding:23px}dialog::backdrop{background:#203a3270}h2{font-size:20px;margin:0}.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}#count{font-size:12px;color:#758276}.row{display:flex;gap:8px;margin:10px 0}.row input{width:100%;min-width:0;border:1px solid #dde3d7;border-radius:12px;padding:11px;font-size:16px;background:white;color:#203a32}.remove{flex-shrink:0;width:44px;background:#f3e7df;color:#926857}#add{width:100%;background:transparent;color:#4d735c;border:1px dashed #a5b9a7}.actions{display:flex;gap:12px}.actions button{flex:1}.secondary{background:#e9eee3;color:#476a51}#error{color:#a13a36;font-size:13px;min-height:20px}#reset{width:100%;font-size:12px;margin-top:12px}body[data-mode=coffee]{background:#f4efe8}body[data-mode=coffee] .primary,body[data-mode=coffee] .hub,body[data-mode=coffee] .pointer{background:#73513a}@media(max-width:380px){main{padding:18px 16px}.card{padding:20px 14px}h1{font-size:30px}}@media(prefers-reduced-motion:reduce){.wheel,.wheel text{transition-duration:.01s}}
 </style></head>
-<body><main><div class="badge">一顿饭的小决定</div><h1>今天吃什么<span>？</span></h1><p class="hint">纠结的时候，让转盘帮你选。</p><div class="frame"><div class="pointer" aria-hidden="true"></div><div id="wheel" class="wheel" role="img" aria-label="餐食转盘"></div><div class="hub" aria-hidden="true">吃</div></div><p id="caption" class="caption"></p><button id="spin" class="primary" type="button">帮我选 ↗</button><div id="result" class="result" aria-live="polite" hidden>今天吃：<strong id="winner"></strong><br><button id="again" class="plain" type="button">再转一次 ↻</button></div><button id="edit" class="plain" type="button">编辑菜单 ✎</button><button id="reset" class="plain" type="button">恢复默认菜单 ↺</button><p id="notice" class="notice" role="status"></p><footer>选项你来定，纠结交给转盘。</footer></main>
-<dialog id="editor" aria-labelledby="title"><form id="form" novalidate><div class="top"><h2 id="title">想吃的，都放进来</h2><span id="count"></span></div><p class="hint">2～10 个选项 · 每项最多 8 个字符</p><div id="rows"></div><button id="add" type="button">＋ 新增选项</button><p id="error" role="alert"></p><div class="actions"><button id="cancel" type="button" class="secondary">取消</button><button type="submit" class="primary">保存菜单</button></div></form></dialog>
+<body data-mode="food"><main><header class="brand"><span class="brand-mark">◷</span>日常小决定<small>DAILY PICK</small></header><div class="badge" id="badge">把纠结留给转盘</div><h1 id="heading">今天吃什么<span>？</span></h1><p id="intro" class="hint">好好吃饭，从一个轻松的决定开始。</p><nav class="tabs" aria-label="选择转盘"><button id="food" type="button" aria-pressed="true">吃什么</button><button id="coffee" type="button" aria-pressed="false">喝什么咖啡</button></nav><section class="card" aria-label="随机选择"><div class="card-head"><strong id="card-title">我的餐食转盘</strong><span>等概率 · 随机选</span></div><div class="frame"><div class="pointer" aria-hidden="true"></div><div id="wheel" class="wheel" role="img" aria-label="餐食转盘"></div><div id="hub" class="hub" aria-hidden="true">吃</div></div><p id="caption" class="caption"></p><button id="spin" class="primary" type="button">帮我选一餐 ↗</button><div id="result" class="result" aria-live="polite" hidden><span id="result-label">今天就吃</span><strong id="winner"></strong><button id="again" class="plain" type="button">再选一次 ↻</button></div></section><div class="tools"><span id="tools-hint">只放你想吃的</span><button id="edit" class="plain" type="button">编辑菜单 →</button></div><p id="notice" class="notice" role="status"></p><footer>吃一顿喜欢的 · 喝一杯刚好的</footer></main>
+<dialog id="editor" aria-labelledby="title"><form id="form" novalidate><div class="top"><h2 id="title">想吃的，都放进来</h2><span id="count"></span></div><p class="hint">2～10 个选项 · 每项最多 8 个字符</p><div id="rows"></div><button id="add" type="button">＋ 新增选项</button><p id="error" role="alert"></p><div class="actions"><button id="cancel" type="button" class="secondary">取消</button><button type="submit" class="primary">保存菜单</button></div><button id="reset" class="plain" type="button">恢复默认菜单 ↺</button></form></dialog>
 <script>
 'use strict';
-const defaults=['面条','米饭套餐','饺子','麻辣烫','汉堡','火锅'];
-const palette=['#ffd27d','#ffaaa5','#b9e6cd','#cdc0ef','#ffcea6','#aadce8','#eec0dc','#d4e4a4','#c2d1f3','#f6deb0'];
-const key='personal-food-wheel-v1';
+const presets={food:['面条','米饭套餐','饺子','麻辣烫','汉堡','火锅'],coffee:['美式','拿铁','卡布奇诺','澳白','摩卡','冷萃']};
+let mode='food',defaults=presets.food;
+const palettes={food:['#e1e9c5','#f4dfb2','#c7ddd0','#e9d5bd','#d5dfb6','#c9dfdf'],coffee:['#ead9bd','#d7bca0','#eee1ce','#d4c7b6','#dec3ad','#cdb8a5']};
+let key='personal-food-wheel-v1';
 const el=id=>document.getElementById(id);
 let menu=[...defaults],draft=[],rotation=0,busy=false;
 function validate(values){
@@ -44,32 +45,55 @@ function nextRotation(current,index,count){
  const target=(360-(index+.5)*360/count)%360;
  return current+1440+(target-current%360+360)%360;
 }
-try{const saved=JSON.parse(localStorage.getItem(key));if(saved!==null){if(Array.isArray(saved)&&saved.every(v=>typeof v==='string')&&!validate(saved).error)menu=validate(saved).items;else el('notice').textContent='保存的菜单不可用，已恢复默认菜单。';}}catch{el('notice').textContent='无法读取保存的菜单，已使用默认菜单。';}
+function loadMenu(){
+ menu=[...defaults];
+ try{const saved=JSON.parse(localStorage.getItem(key));if(saved!==null){if(Array.isArray(saved)&&saved.every(v=>typeof v==='string')&&!validate(saved).error)menu=validate(saved).items;else el('notice').textContent='保存的选项不可用，已使用默认选项。';}}catch{el('notice').textContent='无法读取保存的选项，已使用默认选项。';}
+}
+function switchMode(next){
+ if(busy||next===mode)return;
+ mode=next;defaults=presets[mode];key=mode==='food'?'personal-food-wheel-v1':'personal-coffee-wheel-v1';
+ el('notice').textContent='';loadMenu();
+ document.body.dataset.mode=mode;
+ ['food','coffee'].forEach(id=>el(id).setAttribute('aria-pressed',String(id===mode)));
+ const coffee=mode==='coffee';
+ el('heading').textContent=coffee?'今天喝什么咖啡？':'今天吃什么？';
+ el('intro').textContent=coffee?'给今天留一点香气，让转盘选一杯。':'好好吃饭，从一个轻松的决定开始。';
+ el('card-title').textContent=coffee?'我的咖啡转盘':'我的餐食转盘';
+ el('hub').textContent=coffee?'喝':'吃';
+ el('spin').textContent=coffee?'帮我选一杯 ↗':'帮我选一餐 ↗';
+ el('result-label').textContent=coffee?'今天就喝':'今天就吃';
+ el('tools-hint').textContent=coffee?'只放你喜欢的咖啡':'只放你想吃的';
+ el('title').textContent=coffee?'喜欢的咖啡，都放进来':'想吃的，都放进来';
+ el('edit').textContent=coffee?'编辑咖啡 →':'编辑菜单 →';
+ el('result').hidden=true;draw();
+}
 function svgNode(tag,attrs){const node=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v]of Object.entries(attrs))node.setAttribute(k,v);return node;}
 function draw(){
  const svg=svgNode('svg',{viewBox:'0 0 320 320','aria-hidden':'true'});
  const point=a=>{const r=(a-90)*Math.PI/180;return[160+160*Math.cos(r),160+160*Math.sin(r)];};
  menu.forEach((name,i)=>{
   const size=360/menu.length,a=point(i*size),b=point((i+1)*size);
-  svg.append(svgNode('path',{d:'M160,160 L'+a.join(',')+' A160,160 0 0,1 '+b.join(',')+' Z',fill:palette[i],stroke:'#fffaf2','stroke-width':1.5}));
+  svg.append(svgNode('path',{d:'M160,160 L'+a.join(',')+' A160,160 0 0,1 '+b.join(',')+' Z',fill:palettes[mode][i%6],stroke:'#fffaf2','stroke-width':1.5}));
   const chars=Array.from(name),lines=chars.length>4?[chars.slice(0,4).join(''),chars.slice(4).join('')]:[name];
   const font=Math.min(16,(190*Math.sin(Math.PI/menu.length)-8)/Math.max(...lines.map(v=>Array.from(v).length)));
-  const label=svgNode('text',{'text-anchor':'middle','dominant-baseline':'middle',transform:'rotate('+((i+.5)*size)+' 160 160)',fill:'#343548','font-size':font,'font-weight':700});
-  lines.forEach((line,j)=>{const t=svgNode('tspan',{x:160,y:65+(j-(lines.length-1)/2)*18});t.textContent=line;label.append(t);});svg.append(label);
+  const mid=(i+.5)*size*Math.PI/180,x=160+105*Math.sin(mid),y=160-105*Math.cos(mid);
+  const label=svgNode('text',{'text-anchor':'middle','dominant-baseline':'middle',fill:'#304638','font-size':font,'font-weight':650});
+  label.style.transform='rotate('+(-rotation)+'deg)';
+  lines.forEach((line,j)=>{const t=svgNode('tspan',{x,y:y+(j-(lines.length-1)/2)*16});t.textContent=line;label.append(t);});svg.append(label);
  });
  el('wheel').replaceChildren(svg);el('wheel').setAttribute('aria-label','餐食转盘：'+menu.join('、'));el('caption').textContent=menu.length+' 个选项 · 每个都有同样的机会';
 }
 function spin(){
- if(busy)return;busy=true;['spin','again','edit','reset'].forEach(id=>el(id).disabled=true);el('spin').textContent='正在选…';el('result').hidden=true;
+ if(busy)return;busy=true;['spin','again','edit','reset','food','coffee'].forEach(id=>el(id).disabled=true);el('spin').textContent='正在选…';el('result').hidden=true;
  const index=Math.floor(Math.random()*menu.length);rotation=nextRotation(rotation,index,menu.length);
- let done=false,timer;function finish(){if(done)return;done=true;clearTimeout(timer);el('wheel').removeEventListener('transitionend',end);el('winner').textContent=menu[index];el('result').hidden=false;['spin','again','edit','reset'].forEach(id=>el(id).disabled=false);el('spin').textContent='帮我选 ↗';busy=false;}
+ let done=false,timer;function finish(){if(done)return;done=true;clearTimeout(timer);el('wheel').removeEventListener('transitionend',end);el('winner').textContent=menu[index];el('result').hidden=false;['spin','again','edit','reset','food','coffee'].forEach(id=>el(id).disabled=false);el('spin').textContent=mode==='coffee'?'帮我选一杯 ↗':'帮我选一餐 ↗';busy=false;}
  function end(event){if(event.target===el('wheel')&&event.propertyName==='transform')finish();}
- el('wheel').addEventListener('transitionend',end);el('wheel').style.transform='rotate('+rotation+'deg)';timer=setTimeout(finish,3400);
+ el('wheel').addEventListener('transitionend',end);el('wheel').style.transform='rotate('+rotation+'deg)';el('wheel').querySelectorAll('text').forEach(label=>label.style.transform='rotate('+(-rotation)+'deg)');timer=setTimeout(finish,3400);
 }
 function drawRows(focus){
  el('rows').replaceChildren();
  draft.forEach((value,i)=>{
-  const row=document.createElement('div');row.className='row';const input=document.createElement('input');input.value=value;input.placeholder='例如：盖浇饭';input.setAttribute('aria-label','第 '+(i+1)+' 个选项');input.oninput=()=>{draft[i]=input.value;el('error').textContent='';input.removeAttribute('aria-invalid');};
+  const row=document.createElement('div');row.className='row';const input=document.createElement('input');input.value=value;input.placeholder=mode==='coffee'?'例如：燕麦拿铁':'例如：盖浇饭';input.setAttribute('aria-label','第 '+(i+1)+' 个选项');input.oninput=()=>{draft[i]=input.value;el('error').textContent='';input.removeAttribute('aria-invalid');};
   const remove=document.createElement('button');remove.type='button';remove.className='remove';remove.textContent='×';remove.setAttribute('aria-label','删除第 '+(i+1)+' 个选项');remove.onclick=()=>{draft.splice(i,1);el('error').textContent='';drawRows(Math.min(i,draft.length-1));};row.append(input,remove);el('rows').append(row);
  });el('count').textContent=draft.length+'/10';el('add').disabled=draft.length>=10;if(focus>=0)el('rows').children[focus]?.querySelector('input').focus();
 }
@@ -84,14 +108,15 @@ function resetMenu(){
  menu=[...defaults];
  const saved=persistMenu();
  el('result').hidden=true;
- draw();
+ draw();el('editor').close();
  if(saved)el('notice').textContent='已恢复默认菜单。';
 }
+el('food').onclick=()=>switchMode('food');el('coffee').onclick=()=>switchMode('coffee');
 el('reset').onclick=resetMenu;
 el('spin').onclick=spin;el('again').onclick=spin;
 el('edit').onclick=()=>{if(busy)return;draft=[...menu];el('error').textContent='';drawRows();el('editor').showModal();};
 el('add').onclick=()=>{if(draft.length>=10)return;draft.push('');drawRows(draft.length-1);};
 el('cancel').onclick=()=>el('editor').close();
 el('form').onsubmit=event=>{event.preventDefault();const checked=validate(draft);if(checked.error){el('error').textContent=checked.error;const input=el('rows').children[checked.index]?.querySelector('input');if(input){input.setAttribute('aria-invalid','true');input.focus();}return;}menu=checked.items;persistMenu();el('result').hidden=true;draw();el('editor').close();};
-draw();
+loadMenu();draw();
 </script></body></html>
