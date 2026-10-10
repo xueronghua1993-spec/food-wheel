@@ -32,6 +32,8 @@ jobs:
         run: node scripts/check-todos.cjs
       - name: Check weather and online preview
         run: node scripts/check-weather.cjs
+      - name: Check optional accounts and cloud synchronization (mocked backend)
+        run: node scripts/check-account.cjs
       - uses: actions/upload-artifact@v4
         with:
           name: food-wheel-preview
