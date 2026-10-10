@@ -36,13 +36,14 @@ export function mountWeather(){
  try{session=window.sessionStorage;}catch{}try{local=window.localStorage;}catch{}
  let generation=0,searchGeneration=0,current=null,lastLoaded=0;
  function show(place,weather,cached=false){
-  current=place;lastLoaded=Date.now();
+  current=place;lastLoaded=Date.now();$('weather-widget').hidden=false;
   $('weather-city').textContent=place.name;
   $('weather-summary').textContent=weather.temperature+'°C · '+weather.description+' · '+weather.low+'～'+weather.high+'°C';
   $('weather-info').textContent=(place.source==='ip'?'IP 估算':'手动选择')+' · 当地 '+weather.date+' '+weather.time.slice(11,16)+(cached?' · 缓存':'');
  }
  async function load(place=null,force=false){
   const token=++generation;
+  if(!current&&!place)$('weather-widget').hidden=true;
   $('weather-summary').textContent='正在获取天气…';$('weather-info').textContent='';$('weather-city').textContent=place?.name||'当地天气';
   try{
    if(!place){
@@ -55,7 +56,7 @@ export function mountWeather(){
     else{place=locationOf(await json('https://ipwho.is/?fields=success,city,latitude,longitude'));write(session,'daily-weather-ip-v1',{at:Date.now(),location:place});}
    }
    if(token!==generation)return;
-   $('weather-city').textContent=place.name;
+   $('weather-city').textContent=place.name;$('weather-widget').hidden=false;
    const cacheKey='daily-weather-v1:'+place.latitude+','+place.longitude;
    const cached=read(session,cacheKey);
    if(!force&&validCache(cached)){show(place,cached.weather,true);return;}
@@ -66,8 +67,9 @@ export function mountWeather(){
    write(session,cacheKey,{at:Date.now(),weather});show(place,weather);
   }catch{
    if(token!==generation)return;current=place;
-   $('weather-summary').textContent=place?'天气暂时不可用，请稍后重试。':'无法估算城市，请手动选择。';
-   $('weather-info').textContent='不影响日历和待办使用。';
+   $('weather-widget').hidden=!place;
+   $('weather-summary').textContent=place?'天气暂时不可用，请稍后重试。':'';
+   $('weather-info').textContent='';
   }
  }
  $('weather-change').onclick=()=>{$('weather-form').hidden=!$('weather-form').hidden;if(!$('weather-form').hidden)$('weather-search').focus();};
