@@ -1,3 +1,4 @@
+import {uuid} from './account-store.mjs';
 export function createTodoStore(storage){
  const prefix='daily-calendar-todos-v1:';
  let date='',items=[],error='';
@@ -21,7 +22,7 @@ export function createTodoStore(storage){
    if(!text)return {error:'先写一件今天想做的事。'};
    if(Array.from(text).length>100)return {error:'每件待办最多 100 个字符。'};
    if(items.length>=50)return {error:'每天最多记录 50 件待办。'};
-   items.push({id:globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2),text,done:false});
+   items.push({id:uuid(),text,done:false});
    save();return {error:'',...this.snapshot()};
   },
   toggle(id){const item=items.find(x=>x.id===id);if(item){item.done=!item.done;save();}return this.snapshot();},
@@ -31,6 +32,7 @@ export function createTodoStore(storage){
 export function mountTodos({getToday,onCount}){
  const $=id=>document.getElementById(id);
  let storage;try{storage=window.localStorage;}catch{storage={getItem(){throw Error('blocked');},setItem(){throw Error('blocked');}};}
+ const local=storage;storage={getItem:key=>(window.appStore||local).getItem(key),setItem:(key,value)=>(window.appStore||local).setItem(key,value)};
  const store=createTodoStore(storage);
  let selected='',readOnly=false;
  function render(){
@@ -61,6 +63,7 @@ export function mountTodos({getToday,onCount}){
   if(result.error&&!result.items){$('todo-message').textContent=result.error;$('todo-input').focus();return;}
   $('todo-input').value='';render();$('todo-input').focus();
  };
+ window.addEventListener('personal-data-change',()=>{if(selected){store.select(selected);$('todo-input').value='';render();}});
  return {select(date){
   if(date===selected){readOnly=date!==getToday();render();return;}
   selected=date;readOnly=date!==getToday();store.select(date);$('todo-input').value='';render();
