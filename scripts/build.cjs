@@ -12,12 +12,19 @@ async function build(){
   }
  }
  hashDirectory('calendar');
+ hashDirectory('ai');
  const version=fingerprint.digest('hex').slice(0,12);
  fs.cpSync('calendar','public/calendar',{recursive:true});
+ fs.mkdirSync('public/ai',{recursive:true});
+ for(const name of ['config.mjs','meal-rules.mjs','meal-ui.mjs','meal.css'])fs.copyFileSync('ai/'+name,'public/ai/'+name);
  const html=source.replace("const buildVersion='__BUILD_VERSION__';","const buildVersion='"+version+"';")
   .replaceAll('./calendar/calendar.css','./calendar/calendar.css?v='+version)
   .replaceAll('./calendar/calendar-ui.mjs','./calendar/calendar-ui.mjs?v='+version)
-  .replaceAll('./calendar/weather-ui.mjs','./calendar/weather-ui.mjs?v='+version);
+  .replaceAll('./calendar/weather-ui.mjs','./calendar/weather-ui.mjs?v='+version)
+  .replaceAll('./ai/meal.css','./ai/meal.css?v='+version)
+  .replaceAll('./ai/meal-ui.mjs','./ai/meal-ui.mjs?v='+version);
+ const mealFile='public/ai/meal-ui.mjs';
+ fs.writeFileSync(mealFile,fs.readFileSync(mealFile,'utf8').replace(/(\.\/[^'"\s]+\.mjs)(?=['"])/g,'$1?v='+version));
  for(const name of ['calendar-ui.mjs','calendar-export.mjs','calendar-todos.mjs','weather-ui.mjs']){
   const filename='public/calendar/'+name;
   const code=fs.readFileSync(filename,'utf8').replace(/(\.\/[^'"\s]+\.(?:mjs|json|jpg))(?=['"])/g,'$1?v='+version);
