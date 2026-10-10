@@ -57,10 +57,44 @@
 #weather-search-status{font-size:14px;line-height:1.6}#weather-results{display:flex;flex-direction:column}#weather-results button{text-align:left;min-height:44px;border-bottom:1px solid #dbe3d2}
 @media(max-width:360px){.weather-widget{width:calc(100% - 32px)}}
 .calendar-mini-more{flex-wrap:wrap}
+
+/* Compact weather shares the header; details float above the page. */
+.app-header{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative;padding:12px 20px}
+.app-brand{font-size:20px;letter-spacing:1px;white-space:nowrap;gap:7px}
+.weather-widget{width:auto;max-width:48%;margin:0;padding:0;border:0;background:transparent;flex:none;text-align:left}
+#weather-details>summary{display:flex;align-items:center;gap:6px;cursor:pointer;list-style:none;min-height:44px;border-radius:12px;padding:2px 4px}
+#weather-details>summary::-webkit-details-marker{display:none}
+#weather-details>summary:focus-visible{outline:3px solid #649e78;outline-offset:2px}
+#weather-icon{font-size:25px;line-height:1;flex:none}
+.weather-brief{display:flex;flex-direction:column;min-width:0;max-width:115px}
+#weather-city{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#weather-summary{font-size:12px;line-height:1.5;margin:0;white-space:nowrap}
+.weather-popover{position:absolute;right:16px;top:calc(100% - 4px);z-index:8;width:min(310px,calc(100vw - 32px));padding:14px;border:1px solid #dce5d4;border-radius:16px;background:#fffdf7;box-shadow:0 10px 30px #203a3226}
+.weather-top{justify-content:flex-end}.weather-popover button{min-height:44px}
+@media(max-width:600px){
+ .calendar-peek{padding:10px;gap:10px}
+ #calendar-mini-photo{width:64px;height:74px}
+ #calendar-mini-text{font-size:16px}
+ #calendar-mini-date,.calendar-mini-more{font-size:13px}
+ #decision-panel{padding:0 16px 12px}
+ #decision-panel .tabs{margin:10px 0}
+ #decision-panel .card{padding:12px 14px}
+ #decision-panel .card-head{margin-bottom:14px}
+ #decision-panel .frame{width:min(100%,260px,calc(100dvh - 330px));min-width:0;max-width:260px}
+ #decision-panel .selection-slot{min-height:58px;margin:2px 0}
+}
+@media(max-width:360px){
+ .app-header{padding:8px 16px;gap:6px}
+ .app-brand{font-size:18px;letter-spacing:0;gap:5px}
+ .brand-sun{width:20px;height:20px}
+ #weather-icon{font-size:22px}
+ .weather-brief{max-width:95px}
+}
+
 </style></head>
 <body data-mode="food">
-<header class="app-header"><a class="app-brand" href="./"><svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><span>日常小决定</span></a></header>
-<aside id="weather-widget" class="weather-widget" aria-label="当地天气" hidden><div class="weather-top"><strong id="weather-city">当地天气</strong><button id="weather-change" type="button">切换城市</button><button id="weather-retry" type="button">刷新</button></div><p id="weather-summary" role="status">正在获取天气…</p><p id="weather-info"></p><form id="weather-form" hidden><label for="weather-search">查找城市</label><div class="weather-search-row"><input id="weather-search" type="text" maxlength="50" placeholder="例如：杭州" autocomplete="off"><button type="submit">查找</button></div><p id="weather-search-status" role="status"></p><div id="weather-results"></div><button id="weather-auto" type="button">恢复 IP 自动估算</button></form></aside>
+<header class="app-header"><a class="app-brand" href="./"><svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><span>日常小决定</span></a><aside id="weather-widget" class="weather-widget" aria-label="当地天气" hidden><details id="weather-details"><summary aria-label="查看天气详情"><span id="weather-icon" aria-hidden="true">☁️</span><span class="weather-brief"><strong id="weather-city">当地天气</strong><span id="weather-summary" role="status">获取中…</span></span></summary><div class="weather-popover"><div class="weather-top"><button id="weather-change" type="button">切换城市</button><button id="weather-retry" type="button">刷新</button></div><p id="weather-info"></p><form id="weather-form" hidden><label for="weather-search">查找城市</label><div class="weather-search-row"><input id="weather-search" type="text" maxlength="50" placeholder="例如：杭州" autocomplete="off"><button type="submit">查找</button></div><p id="weather-search-status" role="status"></p><div id="weather-results"></div><button id="weather-auto" type="button">恢复 IP 自动估算</button></form></div></details></aside></header>
+
 <button id="calendar-open" class="calendar-peek" type="button" aria-haspopup="dialog" aria-label="打开完整日历">
  <img id="calendar-peek-background" class="calendar-peek-background" alt="" aria-hidden="true" draggable="false">
  <img id="calendar-mini-photo" alt="" width="76" height="90"><span class="calendar-mini-copy"><span id="calendar-mini-date">今日日历</span><span id="calendar-mini-text">正在翻开今天的一页…</span><span class="calendar-mini-more"><svg class="calendar-open-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h8l4 4v10H4zM12 3v4h4M7 10h6M7 13h4"/></svg>展开日历<span id="calendar-mini-todo-count"> · 待办 0/0</span><span class="calendar-open-arrow" aria-hidden="true">↗</span></span></span>
