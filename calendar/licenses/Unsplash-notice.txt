@@ -1,0 +1,4 @@
+The calendar photographs remain subject to the Unsplash License, not the code license.
+License: https://unsplash.com/license
+Individual photographer names, photo URLs and archive provenance are recorded in calendar/content.json.
+Photos are used in original dated calendar compositions.
