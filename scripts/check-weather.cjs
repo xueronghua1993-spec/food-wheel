@@ -19,6 +19,8 @@ const server=http.createServer((req,res)=>{
    await page.route('https://api.open-meteo.com/**',r=>{weatherCalls++;return r.fulfill({status:failWeather?500:200,contentType:'application/json',body:JSON.stringify({timezone:'Asia/Shanghai',current:{temperature_2m:22,weather_code:2,time:'2026-10-10T12:00'},daily:{temperature_2m_max:[25],temperature_2m_min:[18],time:['2026-10-10']}})});});
    await page.route('https://geocoding-api.open-meteo.com/**',r=>r.fulfill({contentType:'application/json',body:JSON.stringify({results:[{name:'杭州',admin1:'浙江',country:'中国',latitude:30.2,longitude:120.2}]})}));
    await page.goto(base);await page.waitForFunction(()=>document.getElementById('weather-summary').textContent.includes('22°C'));
+   assert.equal(await page.locator('#weather-widget').isVisible(),true);
+   assert.equal(await page.locator('.weather-credit').count(),0);
    assert.match(await page.locator('#weather-info').textContent(),/IP 估算/);
    await page.reload();await page.waitForFunction(()=>document.getElementById('weather-info').textContent.includes('缓存'));
    assert.equal(ipCalls,1);assert.equal(weatherCalls,1);
@@ -29,7 +31,10 @@ const server=http.createServer((req,res)=>{
    await page.screenshot({path:'public/screenshots/weather-'+engine.name()+'-'+width+'.png',fullPage:true});
    failWeather=true;await page.click('#weather-retry');await page.waitForFunction(()=>document.getElementById('weather-summary').textContent.includes('暂时不可用'));
    await page.click('#calendar-open');await page.click('#calendar-view-todos');await page.fill('#todo-input','天气失败也能记');await page.click('#todo-form button');assert.equal(await page.locator('#todo-list li').count(),1);await page.click('#calendar-detail-close');
-   failIP=true;await page.click('#weather-change');await page.click('#weather-auto');await page.waitForFunction(()=>document.getElementById('weather-summary').textContent.includes('无法估算'));
+   failIP=true;await page.click('#weather-change');await page.click('#weather-auto');await page.waitForFunction(()=>document.getElementById('weather-widget').hidden);
+   assert.equal(await page.locator('#weather-info').textContent(),'');
+   await page.reload();await page.waitForFunction(()=>document.getElementById('weather-widget').hidden&&document.getElementById('calendar-mini-text').textContent!=='正在翻开今天的一页…');
+   assert.equal(await page.locator('#weather-widget').isVisible(),false);
    await page.close();
   }}finally{await browser.close();}
  }
