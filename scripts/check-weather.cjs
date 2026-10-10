@@ -29,6 +29,7 @@ const server=http.createServer((req,res)=>{
     const h=header.getBoundingClientRect(),w=widget.getBoundingClientRect(),b=brand.getBoundingClientRect();
     return w.left>=b.right&&w.bottom<=h.bottom&&document.querySelector('#spin').getBoundingClientRect().bottom<=innerHeight&&document.documentElement.scrollWidth<=innerWidth;
    });
+   console.log('LAYOUT',engine.name(),width,await page.evaluate(()=>Object.fromEntries(['.app-header','.app-brand','#weather-widget','#calendar-open','.tabs','.frame','#spin'].map(s=>{const r=document.querySelector(s).getBoundingClientRect();return [s,{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom,right:r.right}]}))));
    assert.ok(await fits(),'header weather and spin must fit one screen');
    await page.emulateMedia({reducedMotion:'reduce'});
    for(const mode of ['food','coffee']){
