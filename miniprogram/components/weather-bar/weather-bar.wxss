@@ -1,1 +1,2 @@
 :host{display:block}.weather-bar{display:flex;align-items:center;justify-content:flex-end;gap:8rpx;padding:12rpx 16rpx;border-radius:20rpx;background:#edf2e5;color:#285744;font-size:24rpx;line-height:1.4;white-space:nowrap}.temperature{font-weight:650}.weather-icon{font-size:26rpx}
+.weather-city,.weather-description{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis}.weather-city{max-width:96rpx}.temperature,.weather-icon{flex:none}

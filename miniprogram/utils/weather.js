@@ -7,7 +7,7 @@ function createWeather(platform,{automatic=false}={}){
   async load(force=false){
    const current=++generation;
    let place;if(!automatic){try{place=locationOf(platform.getStorageSync('daily-weather-city-v1'),'manual');}catch{}}
-   if(!place)place=locationOf(await request(config.ipURL));
+   if(!place){const ip=await request(config.ipURL),name=String(ip.city||ip.name||'').trim();place=locationOf({...ip,city:name||'未知城市'});place.name=name;}
    if(current!==generation)return null;
    const cacheKey='mini-weather-v1:'+place.latitude+','+place.longitude;
    let cached;try{cached=platform.getStorageSync(cacheKey);}catch{}

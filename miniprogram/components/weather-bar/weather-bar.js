@@ -13,7 +13,7 @@ Component({
   async loadWeather(){
    if(!this.service||this.data.loading)return;
    const token=++this.sequence;this.setData({loading:true});
-   try{const weather=await this.service.load();if(this.active&&token===this.sequence&&weather)this.setData({weather:{...weather,cityLabel:weather.source==='IP 估算'?'':weather.name}});}
+   try{const weather=await this.service.load();if(this.active&&token===this.sequence&&weather)this.setData({weather:{...weather,cityLabel:String(weather.name||'').trim()}});}
    catch{if(this.active&&token===this.sequence)this.setData({weather:null});}
    finally{if(this.active&&token===this.sequence)this.setData({loading:false});}
   }

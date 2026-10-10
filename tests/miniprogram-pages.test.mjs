@@ -94,9 +94,13 @@ test('weather loads automatically without GPS and ignores a previously selected 
  const calls=[],store=new Map([['daily-weather-city-v1',{name:'杭州',latitude:30.27,longitude:120.15}]]);
  const {c}=weatherComponent({getStorageSync:k=>store.get(k),setStorageSync:(k,v)=>store.set(k,v),getLocation(){assert.fail('no GPS');},request:o=>{calls.push(o.url);o.success({statusCode:200,data:o.url.includes('ipwho')?{success:true,city:'San Jose',latitude:37.3,longitude:-121.9}:{timezone:'America/Los_Angeles',current:{temperature_2m:15.4,weather_code:0,time:'2026-10-10T08:00'},daily:{time:['2026-10-10'],temperature_2m_max:[21],temperature_2m_min:[12]}}});}});
  await new Promise(resolve=>setImmediate(resolve));
- assert.equal(calls.length,2);assert.ok(calls[0].includes('ipwho.is'));assert.ok(calls[1].includes('latitude=37.3'));assert.equal(c.data.weather.temperature,15);assert.equal(c.data.weather.cityLabel,'');
+ assert.equal(calls.length,2);assert.ok(calls[0].includes('ipwho.is'));assert.ok(calls[1].includes('latitude=37.3'));assert.equal(c.data.weather.temperature,15);assert.equal(c.data.weather.cityLabel,'San Jose');
 });
 test('weather failure quietly hides the weather and releases loading state',async()=>{
  const {c}=weatherComponent({getStorageSync(){},request:o=>o.fail({errMsg:'offline'})});
  await new Promise(resolve=>setImmediate(resolve));assert.equal(c.data.weather,null);assert.equal(c.data.loading,false);
+});
+test('valid weather still displays when the location has coordinates but no city name',async()=>{
+ const {c}=weatherComponent({getStorageSync(){},setStorageSync(){},request:o=>o.success({statusCode:200,data:o.url.includes('ipwho')?{success:true,city:'',latitude:30.3,longitude:120.2}:{timezone:'Asia/Shanghai',current:{temperature_2m:19.4,weather_code:0,time:'2026-10-10T23:00'},daily:{time:['2026-10-10'],temperature_2m_max:[27],temperature_2m_min:[16]}}})});
+ await new Promise(resolve=>setImmediate(resolve));assert.equal(c.data.weather.temperature,19);assert.equal(c.data.weather.cityLabel,'');
 });
