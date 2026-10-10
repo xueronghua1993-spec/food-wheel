@@ -33,7 +33,8 @@ const server=http.createServer((req,res)=>{
    await page.click('#calendar-open');await page.click('#calendar-view-todos');await page.fill('#todo-input','天气失败也能记');await page.click('#todo-form button');assert.equal(await page.locator('#todo-list li').count(),1);await page.click('#calendar-detail-close');
    failIP=true;await page.click('#weather-change');await page.click('#weather-auto');await page.waitForFunction(()=>document.getElementById('weather-widget').hidden);
    assert.equal(await page.locator('#weather-info').textContent(),'');
-   await page.reload();await page.waitForFunction(()=>document.getElementById('weather-widget').hidden&&document.getElementById('calendar-mini-text').textContent!=='正在翻开今天的一页…');
+   await page.evaluate(()=>sessionStorage.clear());
+   await page.reload();await page.waitForFunction(()=>document.getElementById('weather-widget').hidden&&document.getElementById('weather-summary').textContent==='');
    assert.equal(await page.locator('#weather-widget').isVisible(),false);
    await page.close();
   }}finally{await browser.close();}
