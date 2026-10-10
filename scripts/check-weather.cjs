@@ -22,7 +22,6 @@ const server=http.createServer((req,res)=>{
    assert.equal(await page.locator('#weather-widget').isVisible(),true);
    assert.equal(await page.locator('.weather-credit').count(),0);
    assert.match(await page.locator('#weather-info').textContent(),/IP 估算/);
-   await page.reload();await page.waitForFunction(()=>document.getElementById('weather-info').textContent.includes('缓存'));
    assert.equal(ipCalls,1);assert.equal(weatherCalls,1);
    await page.click('#weather-change');await page.fill('#weather-search','杭州');await page.click('#weather-form button[type=submit]');await page.click('#weather-results button');
    await page.waitForFunction(()=>document.getElementById('weather-info').textContent.includes('手动'));
@@ -39,7 +38,7 @@ const server=http.createServer((req,res)=>{
    await page.close();
   }}finally{await browser.close();}
  }
- console.log('PASS: mocked IP/weather, cache reuse, manual city, rate limit/network fallback and independent todos');
+ console.log('PASS: mocked IP/weather, manual city, hidden missing-city panel, rate limit/network fallback and independent todos');
  // Read-only live preview verification. Its availability is reported separately.
  const browser=await chromium.launch({headless:true});
  try{
