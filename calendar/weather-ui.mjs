@@ -2,7 +2,7 @@ const $=id=>document.getElementById(id),TTL=15*60*1000;
 export function locationOf(data,source='ip'){
  const latitude=Number(data.latitude),longitude=Number(data.longitude);
  const name=String(data.city||data.name||'').trim();
- if(data.success===false||!name||!Number.isFinite(latitude)||!Number.isFinite(longitude)||Math.abs(latitude)>90||Math.abs(longitude)>180)throw Error('location');
+ if(data.success===false||data.latitude==null||data.longitude==null||!name||!Number.isFinite(latitude)||!Number.isFinite(longitude)||Math.abs(latitude)>90||Math.abs(longitude)>180)throw Error('location');
  return {name:name.slice(0,80),latitude,longitude,source};
 }
 export function describeWeather(code){
@@ -34,7 +34,7 @@ function validCache(value){
 export function mountWeather(){
  let session,local;
  try{session=window.sessionStorage;}catch{}try{local=window.localStorage;}catch{}
- let generation=0,current=null,lastLoaded=0;
+ let generation=0,searchGeneration=0,current=null,lastLoaded=0;
  function show(place,weather,cached=false){
   current=place;lastLoaded=Date.now();
   $('weather-city').textContent=place.name;
@@ -76,11 +76,11 @@ export function mountWeather(){
  $('weather-form').onsubmit=async event=>{
   event.preventDefault();const query=$('weather-search').value.trim();
   if(query.length<2){$('weather-search-status').textContent='请输入至少两个字符的城市名称。';return;}
-  const token=++generation;
+  const token=++searchGeneration;
   $('weather-search-status').textContent='正在查找城市…';$('weather-results').replaceChildren();
   try{
    const url=new URL('https://geocoding-api.open-meteo.com/v1/search');url.searchParams.set('name',query);url.searchParams.set('count','5');url.searchParams.set('language','zh');
-   const data=await json(url);if(token!==generation)return;
+   const data=await json(url);if(token!==searchGeneration)return;
    const results=data.results||[];
    $('weather-search-status').textContent=results.length?'请选择城市：':'没有找到，请试试城市英文名或加上省份。';
    for(const result of results){
@@ -88,7 +88,7 @@ export function mountWeather(){
     const button=document.createElement('button');button.type='button';button.textContent=[result.name,result.admin1,result.country].filter(Boolean).join(' · ');
     button.onclick=()=>{write(local,'daily-weather-city-v1',place);$('weather-form').hidden=true;load(place);};$('weather-results').append(button);
    }
-  }catch{if(token===generation)$('weather-search-status').textContent='城市查询失败，请稍后重试。';}
+  }catch{if(token===searchGeneration)$('weather-search-status').textContent='城市查询失败，请稍后重试。';}
  };
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-lastLoaded>TTL)load(current);});
  load();
