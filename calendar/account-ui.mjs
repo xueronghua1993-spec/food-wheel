@@ -10,14 +10,19 @@ window.appStore=store;
 function status(message){$('account-status').textContent=message;$('account-open').title=message;}
 function message(text){$('account-message').textContent=text;}
 function view(next){
- screen=next;const logged=!!user;
- $('account-guest').hidden=logged&&!recovery;$('account-member').hidden=!logged||recovery;
+ screen=next;const logged=!!user,verifying=next==='verify';
+ $('account-guest').hidden=verifying||logged&&!recovery;$('account-member').hidden=verifying||!logged||recovery;
+ $('account-verification').hidden=!verifying;$('account-status').hidden=verifying;
  $('account-tabs').hidden=recovery;
  $('account-email-label').hidden=recovery;$('account-email').hidden=recovery;$('account-email').required=!recovery;
+ $('account-password-label').textContent=next==='signup'?'设置本站登录密码':next==='password'?'设置新的本站登录密码':'本站登录密码';
+ $('account-password-hint').textContent=next==='signup'||next==='password'?'至少 8 个字符，用于登录本站，不是你的邮箱密码。':'输入你注册本站时设置的密码，不是邮箱密码。';
+ $('account-password-hint').hidden=next==='reset';
  $('account-password-label').hidden=next==='reset';$('account-password').hidden=next==='reset';$('account-password').required=next!=='reset';
  $('account-password').autocomplete=next==='signup'||next==='password'?'new-password':'current-password';
  $('account-confirm-label').hidden=next!=='password';$('account-confirm').hidden=next!=='password';$('account-confirm').required=next==='password';
  $('account-forgot').hidden=next==='password';
+ for(const id of ['account-login','account-signup','account-forgot','account-back-login'])$(id).disabled=authBusy;
  $('account-submit').textContent=({login:'登录并同步',signup:'注册账号',reset:'发送重置邮件',password:'保存新密码'})[next];
  for(const name of ['login','signup'])$('account-'+name).setAttribute('aria-pressed',String(name===next));
  $('account-email').disabled=authBusy;$('account-password').disabled=authBusy;$('account-submit').disabled=authBusy;
@@ -82,8 +87,9 @@ async function sync(){
  })();
  syncing=task;try{await task;}finally{if(syncing===task)syncing=null;if(current===epoch&&store.owner===id&&store.pending(id).length){clearTimeout(timer);timer=setTimeout(()=>sync(),15000);}}
 }
-for(const name of ['login','signup'])$('account-'+name).onclick=()=>{recovery=false;view(name);message('');};
-$('account-forgot').onclick=()=>{view('reset');message('输入注册时的邮箱。');};
+for(const name of ['login','signup'])$('account-'+name).onclick=()=>{if(authBusy)return;recovery=false;view(name);message('');};
+$('account-back-login').onclick=()=>{if(authBusy)return;view('login');message('确认邮箱后，使用本站登录密码登录。');$('account-email').focus();};
+$('account-forgot').onclick=()=>{if(authBusy)return;view('reset');message('输入注册时的邮箱。');};
 $('account-sync').onclick=()=>sync();
 $('account-import').onclick=async()=>{
  const id=user?.id;if(!id||store.owner!==id)return;
@@ -104,21 +110,25 @@ $('account-logout').onclick=async()=>{
  finally{authBusy=false;view('login');}
 };
 $('account-form').onsubmit=async event=>{
- event.preventDefault();if(authBusy)return;
+ event.preventDefault();if(authBusy||screen==='verify')return;
+ const action=screen;
  const email=$('account-email').value.trim(),password=$('account-password').value;
  if(screen!=='reset'&&Array.from(password).length<8){message('密码至少需要 8 个字符。');return;}
  if(screen==='password'&&password!==$('account-confirm').value){message('两次输入的密码不一致。');return;}
  authBusy=true;view(screen);message('正在处理…');
  try{
   const sdk=await ready();let response;
-  if(screen==='login')response=await sdk.auth.signInWithPassword({email,password});
-  if(screen==='signup')response=await sdk.auth.signUp({email,password,options:{emailRedirectTo:siteURL}});
-  if(screen==='reset')response=await sdk.auth.resetPasswordForEmail(email,{redirectTo:siteURL});
-  if(screen==='password')response=await sdk.auth.updateUser({password});
+  if(action==='login')response=await sdk.auth.signInWithPassword({email,password});
+  if(action==='signup')response=await sdk.auth.signUp({email,password,options:{emailRedirectTo:siteURL}});
+  if(action==='reset')response=await sdk.auth.resetPasswordForEmail(email,{redirectTo:siteURL});
+  if(action==='password')response=await sdk.auth.updateUser({password});
   if(response.error)throw response.error;
-  if(screen==='signup')message('请查看验证邮件，点击链接后返回登录。');
-  else if(screen==='reset')message('如该邮箱已注册，请查看重置密码邮件。');
-  else if(screen==='password'){recovery=false;view('login');message('密码已更新。');}
+  if(action==='signup'){
+   if(response.data?.session){await setUser(response.data.session.user);message('注册成功，已登录本站。');}
+   else{$('account-verification-email').textContent=email;view('verify');message('');$('account-verification-title').focus();}
+  }
+  else if(action==='reset')message('如该邮箱已注册，请查看重置密码邮件。');
+  else if(action==='password'){recovery=false;view('login');message('密码已更新。');}
   else message('登录成功，正在读取你的数据。');
  }catch(error){
   const code=error.code||'';
