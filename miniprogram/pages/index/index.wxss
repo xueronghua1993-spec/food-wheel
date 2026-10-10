@@ -19,3 +19,9 @@
 .draft-row{display:flex;gap:12rpx;margin:12rpx 0}.draft-row .input{flex:1}.remove{background:#edf2e5;font-size:34rpx;padding:12rpx 24rpx}.modal .row button{flex:1}.reset-menu{width:100%;margin-top:16rpx;font-size:24rpx}
 @media(max-width:360px){.screen{padding-left:28rpx;padding-right:28rpx}.peek-photo{width:120rpx;height:136rpx}.peek-quote{font-size:30rpx}}
 @media(max-height:640px){.wheel-wrap{width:440rpx;height:440rpx}.peek-photo{height:120rpx}.peek-quote{-webkit-line-clamp:1}}
+
+.wheel-card > .row{min-height:64rpx}
+.edit-menu{flex:0 0 auto;width:auto;min-width:0;height:64rpx;margin:0;padding:0 8rpx;display:flex;align-items:center;justify-content:center;line-height:1;white-space:nowrap}
+.draft-row{align-items:center}
+.draft-row .input{flex:1 1 0;width:0;min-width:0;height:88rpx;padding:0 20rpx;line-height:88rpx}
+.draft-row .remove{flex:0 0 88rpx;width:88rpx;min-width:88rpx;height:88rpx;margin:0;padding:0;display:flex;align-items:center;justify-content:center;line-height:1;font-size:40rpx;border-radius:18rpx}
