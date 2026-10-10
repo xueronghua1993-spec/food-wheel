@@ -94,6 +94,7 @@
  .weather-brief{max-width:95px}
 }
 
+@media(max-width:600px) and (max-height:640px){#calendar-mini-text{-webkit-line-clamp:1}#calendar-mini-photo{height:60px}}
 </style></head>
 <body data-mode="food">
 <header class="app-header"><a class="app-brand" href="./"><svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><span>日常小决定</span></a><aside id="weather-widget" class="weather-widget" aria-label="当地天气" hidden><details id="weather-details"><summary aria-label="查看天气详情"><span id="weather-icon" aria-hidden="true">☁️</span><span class="weather-brief"><strong id="weather-city">当地天气</strong><span id="weather-summary" role="status">获取中…</span></span></summary><div class="weather-popover"><div class="weather-top"><button id="weather-change" type="button">切换城市</button><button id="weather-retry" type="button">刷新</button></div><p id="weather-info"></p><form id="weather-form" hidden><label for="weather-search">查找城市</label><div class="weather-search-row"><input id="weather-search" type="text" maxlength="50" placeholder="例如：杭州" autocomplete="off"><button type="submit">查找</button></div><p id="weather-search-status" role="status"></p><div id="weather-results"></div><button id="weather-auto" type="button">恢复 IP 自动估算</button></form></div></details></aside></header>
