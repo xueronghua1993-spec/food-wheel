@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "每日一页",
+  "usingComponents": {
+    "weather-bar": "/components/weather-bar/weather-bar"
+  }
+}

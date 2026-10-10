@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "日常小决定",
+  "usingComponents": {
+    "weather-bar": "/components/weather-bar/weather-bar"
+  }
+}

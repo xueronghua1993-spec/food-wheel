@@ -1,0 +1,73 @@
+const catalog=require('../../generated/content');
+const {today,dateInfo,resolveDate,offsetDate,entryForDate}=require('../../utils/dates');
+const {createTodoStore}=require('../../generated/todos'),{exportCalendar}=require('../../utils/canvas');
+Page({
+ data:{today:'',selected:'',firstDate:catalog.historyStart||catalog.firstDate,entry:null,info:{},photo:'/assets/fallback.jpg',photoLoading:false,photoError:'',view:'paper',fullOpen:false,todos:[],done:0,todoInput:'',todoError:'',readOnly:false,status:'',saving:false,previewPath:'',previewVisible:false,albumDenied:false,albumError:'',readingSize:'long',readingHeight:0},
+ onLoad(options){
+  this.todos=createTodoStore(getApp().store);this.generation=0;
+  wx.showShareMenu?.({menus:['shareAppMessage','shareTimeline']});
+  const now=today();this.setData({today:now});this.select(resolveDate(options.date,now,this.data.firstDate));
+ },
+ onShow(){
+  this._active=true;
+  this.refreshDate();this.readTodos();this.setData({status:'保存在此设备。'});
+  this.midnightTimer=setInterval(()=>this.refreshDate(),30000);
+ },
+ onHide(){this._active=false;clearInterval(this.midnightTimer);},
+ onUnload(){this.onHide();this.generation++;},
+ refreshDate(){const now=today();if(now!==this.data.today){const wasToday=this.data.selected===this.data.today;this.setData({today:now});this.select(wasToday?now:this.data.selected);}},
+ select(date){
+  const now=today(),selected=resolveDate(date,now,this.data.firstDate),entry=entryForDate(selected,catalog),info=dateInfo(selected),generation=++this.generation;
+  this.setData({today:now,selected,entry,info,readOnly:selected!==now,photo:entry?.imagePath||'/assets/fallback.jpg',photoLoading:false,photoError:'',fullOpen:false,todoInput:'',todoError:'',previewPath:'',previewVisible:false,albumDenied:false,albumError:'',readingSize:'long',readingHeight:0});this.readTodos();this.updateReadingLayout(entry);
+ },
+ updateReadingLayout(entry){
+  const length=Array.from(String(entry?.text||'')).length;
+  const readingSize=entry?.fullText||length>140?'long':length>60?'medium':'short';
+  this.setData({readingSize,readingHeight:0});
+  this.measureReading();
+ },
+ measureReading(){
+  if(this.data.readingSize==='long'||!wx.createSelectorQuery)return;
+  wx.nextTick?.(()=>{wx.createSelectorQuery().in(this).select('.reading-body').boundingClientRect(rect=>{if(rect?.height>0){const height=wx.getWindowInfo?.().windowHeight||667;this.setData({readingHeight:Math.min(Math.ceil(rect.height)+2,height*.38)});}}).exec();});
+ },
+ readTodos(){
+  const state=this.todos.select(this.data.selected);this.setData({todos:state.items,done:state.items.filter(x=>x.done).length,todoError:state.error,readOnly:this.data.selected!==today()});
+ },
+ prev(){if(this.data.saving)return;if(this.data.selected>this.data.firstDate)this.select(offsetDate(this.data.selected,-1));},
+ next(){if(this.data.saving)return;if(this.data.selected<this.data.today)this.select(offsetDate(this.data.selected,1));},
+ goToday(){if(!this.data.saving)this.select(today());},
+ pickDate(event){if(!this.data.saving)this.select(event.detail.value);},
+ switchView(event){const view=event.currentTarget.dataset.view;if(['paper','todos'].includes(view)){this.setData({view});if(view==='paper')this.measureReading();}},
+ toggleFull(){this.setData({fullOpen:!this.data.fullOpen});},
+ inputTodo(event){this.setData({todoInput:event.detail.value});},
+ canEdit(){return this.data.selected===today();},
+ addTodo(){if(!this.canEdit())return;const result=this.todos.add(this.data.todoInput);if(result.error&&!result.items){this.setData({todoError:result.error});return;}this.setData({todoInput:''});this.readTodos();},
+ toggleTodo(event){if(!this.canEdit())return;this.todos.toggle(event.currentTarget.dataset.id);this.readTodos();},
+ removeTodo(event){if(!this.canEdit())return;this.todos.remove(event.currentTarget.dataset.id);this.readTodos();},
+ photoError(){this.setData({photo:'/assets/fallback.jpg',photoError:'照片未能载入，暂用备用画面。',photoLoading:false});},
+ retryPhoto(){if(!this.data.saving)this.select(this.data.selected);},
+ async saveImage(){
+  if(this.data.saving||!this.data.entry)return;this.setData({saving:true,albumDenied:false});
+  const entry=this.data.entry,info=this.data.info,photo=this.data.photo;
+  try{const previewPath=await exportCalendar(this,entry,info,photo);this.setData({previewPath,saving:false,previewVisible:false});this.saveAlbum();}
+  catch(error){wx.showToast({title:error.message||'图片生成失败，请重试',icon:'none'});}
+  finally{if(!this.data.previewPath)this.setData({saving:false});}
+ },
+ previewImage(){if(this.data.previewPath)wx.previewImage({urls:[this.data.previewPath],current:this.data.previewPath});},
+ saveAlbum(){
+  if(!this.data.previewPath||this.data.saving)return;this.setData({saving:true});
+  wx.saveImageToPhotosAlbum({filePath:this.data.previewPath,
+   success:()=>{this.setData({albumDenied:false,previewPath:'',previewVisible:false,albumError:''});wx.showToast({title:'已保存到相册',icon:'success'});},
+   fail:error=>{
+    const message=String(error.errMsg||'');
+    if(/cancel/i.test(message)){wx.showToast({title:'已取消保存',icon:'none'});return;}
+    const denied=/auth|denied/i.test(message);this.setData({albumDenied:denied,previewVisible:true,albumError:denied?'允许保存到相册后，这张日历会自动保存。':'暂时没能保存，请重试，或长按图片保存。'});
+   },complete:()=>this.setData({saving:false})
+  });
+ },
+ albumSettingsChanged(event){if(event.detail?.authSetting?.['scope.writePhotosAlbum']){this.setData({albumDenied:false,albumError:'',previewVisible:false});this.saveAlbum();}else{this.setData({albumError:'相册权限尚未开启，也可以点击图片后长按保存。'});}},
+ closePreview(){if(!this.data.saving)this.setData({previewPath:'',previewVisible:false,albumDenied:false,albumError:''});},
+ shareDetails(){const text=String(this.data.entry?.text||'把日子过得认真一点。').replace(/\s+/g,' ').trim();const excerpt=Array.from(text).slice(0,36).join('')+(Array.from(text).length>36?'…':'');return {title:this.data.selected+' · '+excerpt,imageUrl:this.data.photo,query:'date='+this.data.selected};},
+ onShareAppMessage(){const {title,imageUrl,query}=this.shareDetails();return {title,imageUrl,path:'/pages/calendar/calendar?'+query};},
+ onShareTimeline(){return this.shareDetails();}
+});

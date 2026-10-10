@@ -1,0 +1,61 @@
+.calendar-screen{padding-left:28rpx;padding-right:28rpx}.paper{margin-top:26rpx;border:1rpx solid #dee6d5;border-radius:16rpx;overflow:hidden;background:#fffef8;box-shadow:0 12rpx 40rpx #28574408}.paper-top{padding:22rpx 28rpx;font-size:23rpx;color:#7b896f}.paper-dot{color:#285744;font-size:22rpx}.calendar-photo{display:block;width:100%;height:440rpx}.photo-note{padding:14rpx 28rpx;font-size:22rpx;color:#7b896f;text-align:center}.paper-content{padding:36rpx 40rpx 24rpx;text-align:center}.kind{font-size:21rpx;letter-spacing:4rpx;color:#7b896f}.quote{font-family:"Songti SC",serif;font-size:38rpx;line-height:1.9;margin:24rpx 0;white-space:pre-wrap;word-break:break-all}.story-quote{font-size:32rpx;text-align:left;line-height:1.85}.source{font-size:24rpx;color:#7b896f;line-height:1.8}.full-story{font-family:serif;font-size:29rpx;line-height:1.9;white-space:pre-wrap;text-align:left;padding:24rpx 0}.date-row{border-top:1rpx solid #d8e2ce;padding-top:26rpx;margin-top:38rpx;display:flex;align-items:center;gap:28rpx;text-align:left}.day-number{font-family:Georgia,serif;font-size:138rpx;line-height:1.05;color:#62854e;min-width:180rpx;text-align:center}.date-meta{color:#7b896f;font-size:24rpx;line-height:1.9}.date-title{font-size:29rpx;font-weight:550;color:#285744}.remaining{font-size:21rpx;color:#7b896f;margin:24rpx 0 0;letter-spacing:2rpx}.navigation{margin:28rpx 0}.actions button{flex:1;font-size:28rpx;padding:20rpx 12rpx}.todo-form{margin:24rpx 0}.todo-form input{flex:1;min-width:0}.todo-row{display:flex;align-items:center;gap:12rpx;padding:20rpx 0;border-bottom:1rpx solid #edf2e5}.todo-main{display:flex;align-items:center;gap:18rpx;flex:1;min-width:0}.check{width:38rpx;height:38rpx;border:2rpx solid #bccdaf;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26rpx}.checked{background:#62854e;border-color:#62854e;color:#fffef8}.todo-text{word-break:break-all;font-size:28rpx}.done{text-decoration:line-through;color:#8e9c83}.delete{color:#8e9c83;font-size:22rpx;flex-shrink:0;padding:10rpx}.export-canvas{position:fixed;left:-10000px;top:0;width:1px;height:1px;pointer-events:none}.export-preview{width:100%;height:52vh;margin-top:16rpx}.todos-card{min-height:420rpx}
+
+/* The native navigation bar is outside this viewport; keep all page actions visible. */
+.calendar-screen{height:100vh;display:flex;flex-direction:column;gap:16rpx;padding:20rpx 28rpx calc(16rpx + env(safe-area-inset-bottom));overflow:hidden}
+.calendar-heading{position:relative;display:flex;align-items:center;justify-content:flex-end;flex:none;min-height:88rpx}
+.calendar-heading .title{position:absolute;left:50%;transform:translateX(-50%);font-size:36rpx;margin:0;line-height:1.4;text-align:center;white-space:nowrap}
+
+.calendar-screen>.tabs{flex:none}
+.paper{flex:1;min-height:0;margin:0;display:flex;flex-direction:column;border-radius:24rpx}
+.paper-top{flex:none;padding:12rpx 24rpx;font-size:22rpx;line-height:1.4}
+.calendar-photo{flex:none;height:25vh;min-height:120rpx;max-height:330rpx}
+.paper-content{flex:1;min-height:0;display:flex;flex-direction:column;padding:16rpx 28rpx 12rpx}
+.reading-scroll{flex:1;height:0;min-height:0}
+.kind{font-size:20rpx;line-height:1.4;letter-spacing:2rpx}
+.quote{font-size:32rpx;line-height:1.6;margin:12rpx 0;word-break:normal;overflow-wrap:anywhere}
+.story-quote{font-size:28rpx;line-height:1.65}
+.source{font-size:22rpx;line-height:1.5}
+.full-story{font-size:28rpx;padding:16rpx 0;line-height:1.75}
+.reading-scroll .link{min-height:80rpx;font-size:24rpx}
+.date-row{flex:none;gap:20rpx;margin-top:12rpx;padding-top:12rpx}
+.day-number{font-size:84rpx;min-width:116rpx;line-height:1}
+.date-meta{font-size:22rpx;line-height:1.5}
+.date-title{font-size:26rpx}
+.remaining{flex:none;margin:8rpx 0 0;font-size:20rpx;line-height:1.4}
+.navigation{flex:none;margin:0;gap:8rpx}
+.navigation button{flex:1;width:0;min-height:88rpx;padding:12rpx 4rpx;font-size:24rpx}
+.actions{flex:none;gap:16rpx}
+.actions button{width:0;min-height:88rpx;padding:12rpx;font-size:28rpx}
+.calendar-screen>.footer{display:none}
+.todos-card{flex:1;height:0;min-height:0;margin:0;padding:24rpx}
+.todo-form input{width:0;flex:1}
+.todo-form button{width:112rpx;padding:12rpx;min-height:88rpx}
+.todo-row .delete{width:88rpx;min-height:88rpx;padding:8rpx;font-size:24rpx}
+.todo-main{min-height:88rpx}
+.preview-close{flex:none!important;min-width:88rpx}
+.export-preview{height:44vh;flex-shrink:1;min-height:0}
+.photo-note{flex:none;padding:8rpx 20rpx;line-height:1.4}
+@media(max-height:600px){.calendar-screen{gap:8rpx;padding-top:12rpx}.calendar-photo{height:20vh}.paper-top{display:none}.paper-content{padding:12rpx 24rpx 8rpx}.day-number{font-size:68rpx}.date-row{gap:12rpx;padding-top:8rpx;margin-top:8rpx}.remaining{margin-top:4rpx}}
+
+.todos-card{width:100%;padding:0}.todos-body{padding:24rpx;width:100%;box-sizing:border-box}
+
+
+.actions button{flex:1;width:100%}
+
+/* Short copy determines its own height; give remaining space to the photograph. */
+.reading-body{padding:2rpx 0 12rpx}
+.reading-short .calendar-photo,.reading-medium .calendar-photo{flex:1;min-height:120rpx;height:0;max-height:none}
+.reading-short .paper-content,.reading-medium .paper-content{flex:none}
+.reading-short .reading-scroll{flex:none;height:180rpx}
+.reading-medium .reading-scroll{flex:none;height:280rpx}
+.reading-short .quote{font-size:36rpx;line-height:1.7;margin:20rpx 0}
+.export-heading{width:100%;flex:none}
+.export-heading .section-title{flex:1;min-width:0;font-size:32rpx}
+.export-heading .preview-close{flex:0 0 88rpx!important;width:88rpx;min-width:88rpx;height:88rpx;margin-left:auto;margin-right:0;padding:0;font-size:44rpx;line-height:1}
+.export-modal .export-action{width:100%;flex:none;min-height:88rpx;white-space:nowrap;margin:0;padding:16rpx 24rpx}
+.export-note{margin:12rpx 0 20rpx;font-size:26rpx;line-height:1.6}
+.export-hint{flex:none;text-align:center;font-size:22rpx;color:#7b896f;margin-top:16rpx}
+.export-modal .export-preview{margin-top:8rpx;height:40vh}
+@media(max-height:600px){.reading-short .quote{font-size:32rpx;margin:12rpx 0}.export-modal .export-preview{height:34vh}.export-hint{margin-top:8rpx}}
+
+.heading-weather{display:block;flex:none;max-width:calc(50% - 84rpx);margin-left:auto}

@@ -1,0 +1,9 @@
+{
+  "appid": "wx3b755ea7217f2cc0",
+  "projectname": "日常小决定",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "./",
+  "libVersion": "3.4.0",
+  "setting": {"es6": true, "enhance": true, "minified": true, "urlCheck": true},
+  "packOptions": {"ignore": [{"type": "file", "value": "README.md"}]}
+}
