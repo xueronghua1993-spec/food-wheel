@@ -30,6 +30,8 @@ jobs:
         run: node scripts/browser-check.cjs
       - name: Check calendar todos in mobile browsers
         run: node scripts/check-todos.cjs
+      - name: Check weather and online preview
+        run: node scripts/check-weather.cjs
       - uses: actions/upload-artifact@v4
         with:
           name: food-wheel-preview
