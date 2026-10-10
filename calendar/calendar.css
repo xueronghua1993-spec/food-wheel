@@ -247,3 +247,24 @@ body[data-mode=coffee] #decision-panel .selection-slot .result strong{color:#496
 #calendar-detail #calendar-story:not([open]) summary{font-size:14px;line-height:1.5;min-height:28px}
 #calendar-detail #calendar-story[open]{position:fixed;inset:80px 12px;max-height:calc(100% - 160px)}
 @media(max-height:640px){#calendar-detail #calendar-story:not([open]){top:4px;right:12px}}
+
+/* Todos live in a separate calendar pane; the printable calendar remains unchanged. */
+.calendar-view-tabs{display:flex;gap:4px;margin:0 18px 10px;padding:4px;background:#e2e9da;border-radius:14px;flex:none}
+.calendar-view-tabs button{flex:1;min-height:44px;background:transparent;color:#617357;font-size:15px}
+.calendar-view-tabs button[aria-pressed=true]{background:#fffdf6;color:#244c3c;box-shadow:0 2px 6px #244c3c10}
+.calendar-todos{flex:1;min-height:0;overflow-y:auto;padding:16px 20px;color:#244c3c}
+.todo-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.todo-top h3{font-size:21px;margin:0}.todo-top p{font-size:14px;color:#788273;margin:6px 0 0}
+#todo-count{font-size:14px;color:#64735d;white-space:nowrap}
+.todo-label{display:block;font-size:14px;margin-bottom:8px}
+.todo-entry{display:flex;gap:8px}.todo-entry input{min-width:0;flex:1;border:1px solid #cfdac5;background:#fffdf7;border-radius:12px;padding:12px;font-size:16px;color:#244c3c}
+.todo-entry button{padding:10px 16px;background:#285744;color:white;flex-shrink:0}
+#todo-message{font-size:14px;color:#985139;line-height:1.5}#todo-message:empty{display:none}
+#todo-empty{padding:28px 6px;color:#7b8873;font-size:14px;text-align:center;line-height:1.7}
+#todo-list{list-style:none;padding:0;margin:16px 0}
+.todo-row{display:flex;gap:8px;align-items:center;border-bottom:1px solid #dbe3d2;padding:8px 0}
+.todo-row label{display:flex;flex:1;min-width:0;align-items:center;gap:12px;min-height:44px}
+.todo-row input{width:20px;height:20px;flex:none;accent-color:#285744}
+.todo-row span{font-size:16px;line-height:1.6;overflow-wrap:anywhere}.todo-row.is-done span{text-decoration:line-through;color:#85917b}
+.todo-row button{font-size:14px;color:#8c6553;background:transparent;padding:8px;flex:none}
+.todo-note{font-size:14px;color:#7b8873;text-align:center;line-height:1.6;margin:24px 0 8px}
