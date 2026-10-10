@@ -37,4 +37,4 @@
 
 .wheel-heading .section-title{flex:1;min-width:0}.wheel-heading .edit-menu{margin-left:auto;margin-right:0;flex:none}
 
-.page-weather{display:block;margin-top:16rpx}
+.home-topline{display:flex;align-items:center;justify-content:space-between;gap:16rpx;min-height:76rpx;margin-bottom:16rpx}.greeting{flex:1;min-width:0;font-size:26rpx;font-weight:600;color:#345844;line-height:1.5}.home-weather{flex:none;max-width:46%}.wheel-heading .section-title{font-size:27rpx}

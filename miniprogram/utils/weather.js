@@ -1,12 +1,12 @@
 const {createRequest,query}=require('./request'),config=require('../config');
 const {locationOf,weatherOf,weatherIcon}=require('../generated/weather');
-function createWeather(platform){
+function createWeather(platform,{automatic=false}={}){
  const request=createRequest(platform);let generation=0;
  return {
   invalidate(){generation++;},
   async load(force=false){
    const current=++generation;
-   let place;try{place=locationOf(platform.getStorageSync('daily-weather-city-v1'),'manual');}catch{}
+   let place;if(!automatic){try{place=locationOf(platform.getStorageSync('daily-weather-city-v1'),'manual');}catch{}}
    if(!place)place=locationOf(await request(config.ipURL));
    if(current!==generation)return null;
    const cacheKey='mini-weather-v1:'+place.latitude+','+place.longitude;

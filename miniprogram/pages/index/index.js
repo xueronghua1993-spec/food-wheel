@@ -3,16 +3,17 @@ const {menuKeys,todoPrefix}=require('../../generated/account-store');
 const {today,dateInfo,entryForDate}=require('../../utils/dates'),catalog=require('../../generated/content');
 const {canvasNode,drawWheel}=require('../../utils/canvas');
 Page({
- data:{mode:'food',menu:presets.food,busy:false,winner:'',notice:'',editing:false,draft:[],draftRows:[],editError:'',miniText:'',miniDate:'',miniPhoto:'/assets/fallback.jpg',todoCount:'0/0'},
+ data:{mode:'food',menu:presets.food,busy:false,winner:'',notice:'',editing:false,draft:[],draftRows:[],editError:'',miniText:'',miniDate:'',miniPhoto:'/assets/fallback.jpg',todoCount:'0/0',greeting:''},
  onLoad(options={}){if(options.mode==='coffee')this.setData({mode:'coffee',menu:presets.coffee});this.store=getApp().store;this.rotation=0;wx.showShareMenu?.({menus:['shareAppMessage','shareTimeline']});},
  onReady(){canvasNode(this,'wheel').then(({node,width})=>{
   this.canvas=node;this.size=width;const dpr=wx.getWindowInfo().pixelRatio;node.width=width*dpr;node.height=width*dpr;this.ctx=node.getContext('2d');this.ctx.scale(dpr,dpr);this.paint();
  }).catch(()=>this.setData({notice:'转盘画面未能载入，仍可点击按钮随机选择。'}));},
  onShow(){
-  this._active=true;this.store=this.store||getApp().store;this.reload();
+  this._active=true;this.updateGreeting();this.store=this.store||getApp().store;this.reload();
  },
  onHide(){this._active=false;this.finishSpin?.();this.photoToken=(this.photoToken||0)+1;},
  onUnload(){this.onHide();clearTimeout(this.frame);},
+ updateGreeting(){const hour=new Date().getHours();this.setData({greeting:hour>=5&&hour<11?'早安，打工人 ☀️':hour>=11&&hour<14?'干饭时间到 🍚':hour>=14&&hour<18?'给脑子续个杯 ☕':hour>=18&&hour<23?'今天也算过关啦 🌙':'明天的你有意见啦 💤'});},
  reload(){
   const store=this.store||getApp().store;let menu=[...presets[this.data.mode]],notice='';
   try{const values=JSON.parse(store.getItem(menuKeys[this.data.mode]));if(values!==null){if(!Array.isArray(values)||values.some(x=>typeof x!=='string')||validate(values).error)throw Error('invalid');menu=validate(values).items;}}

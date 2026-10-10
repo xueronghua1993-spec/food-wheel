@@ -90,12 +90,13 @@ test('calendar allocates short copy by measured height and gives long stories a 
 });
 
 function weatherComponent(wx){let definition;const file='miniprogram/components/weather-bar/weather-bar.js';const require=createRequire(new URL('../'+file,import.meta.url));vm.runInNewContext(fs.readFileSync(file,'utf8'),{require,Component:c=>definition=c,wx});const c={...definition.methods,data:JSON.parse(JSON.stringify(definition.data)),setData(v){Object.assign(this.data,v);}};definition.lifetimes.attached.call(c);return {c,definition};}
-test('weather remains opt-in and does not request precise location',async()=>{
- const {c}=weatherComponent({getStorageSync(){},request(){assert.fail('weather must wait for first tap');},getLocation(){assert.fail('weather must not request GPS');}});assert.equal(c.data.enabled,false);assert.equal(c.data.loading,false);
+test('weather loads automatically without GPS and ignores a previously selected city',async()=>{
+ const calls=[],store=new Map([['daily-weather-city-v1',{name:'杭州',latitude:30.27,longitude:120.15}]]);
+ const {c}=weatherComponent({getStorageSync:k=>store.get(k),setStorageSync:(k,v)=>store.set(k,v),getLocation(){assert.fail('no GPS');},request:o=>{calls.push(o.url);o.success({statusCode:200,data:o.url.includes('ipwho')?{success:true,city:'San Jose',latitude:37.3,longitude:-121.9}:{timezone:'America/Los_Angeles',current:{temperature_2m:15.4,weather_code:0,time:'2026-10-10T08:00'},daily:{time:['2026-10-10'],temperature_2m_max:[21],temperature_2m_min:[12]}}});}});
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(calls.length,2);assert.ok(calls[0].includes('ipwho.is'));assert.ok(calls[1].includes('latitude=37.3'));assert.equal(c.data.weather.temperature,15);assert.equal(c.data.weather.cityLabel,'');
 });
-test('weather city selection loads temperature and survives network failure',async()=>{
- let failed=false;const store=new Map([['daily-weather-city-v1',{name:'杭州',latitude:30.27,longitude:120.15}]]);
- const {c}=weatherComponent({getStorageSync:k=>store.get(k),setStorageSync:(k,v)=>store.set(k,v),request:o=>{if(failed)o.fail({errMsg:'offline'});else o.success({statusCode:200,data:{timezone:'Asia/Shanghai',current:{temperature_2m:23.4,weather_code:0,time:'2026-10-10T12:00'},daily:{time:['2026-10-10'],temperature_2m_max:[25],temperature_2m_min:[18]}}});}});
- await c.loadWeather(true);assert.equal(c.data.weather.name,'杭州');assert.equal(c.data.weather.temperature,23);assert.equal(store.get('mini-weather-enabled-v1'),true);
- failed=true;await c.loadWeather(true);assert.equal(c.data.weather.temperature,23);assert.ok(c.data.error);assert.equal(c.data.loading,false);
+test('weather failure quietly hides the weather and releases loading state',async()=>{
+ const {c}=weatherComponent({getStorageSync(){},request:o=>o.fail({errMsg:'offline'})});
+ await new Promise(resolve=>setImmediate(resolve));assert.equal(c.data.weather,null);assert.equal(c.data.loading,false);
 });
