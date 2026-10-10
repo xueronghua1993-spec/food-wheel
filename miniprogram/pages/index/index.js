@@ -4,7 +4,7 @@ const {today,dateInfo,entryForDate}=require('../../utils/dates'),catalog=require
 const {canvasNode,drawWheel}=require('../../utils/canvas');
 Page({
  data:{mode:'food',menu:presets.food,busy:false,winner:'',notice:'',editing:false,draft:[],draftRows:[],editError:'',miniText:'',miniDate:'',miniPhoto:'/assets/fallback.jpg',todoCount:'0/0'},
- onLoad(){this.store=getApp().store;this.rotation=0;wx.showShareMenu?.({menus:['shareAppMessage','shareTimeline']});},
+ onLoad(options={}){if(options.mode==='coffee')this.setData({mode:'coffee',menu:presets.coffee});this.store=getApp().store;this.rotation=0;wx.showShareMenu?.({menus:['shareAppMessage','shareTimeline']});},
  onReady(){canvasNode(this,'wheel').then(({node,width})=>{
   this.canvas=node;this.size=width;const dpr=wx.getWindowInfo().pixelRatio;node.width=width*dpr;node.height=width*dpr;this.ctx=node.getContext('2d');this.ctx.scale(dpr,dpr);this.paint();
  }).catch(()=>this.setData({notice:'转盘画面未能载入，仍可点击按钮随机选择。'}));},
@@ -47,6 +47,8 @@ Page({
  resetMenu(){if(this.data.busy)return;wx.showModal({title:'恢复默认菜单？',content:'当前自定义选项会被替换。',success:r=>{if(!r.confirm)return;try{this.store.setItem(menuKeys[this.data.mode],JSON.stringify(presets[this.data.mode]));this.setData({winner:'',editing:false,editError:''});this.reload();}catch{this.setData(this.data.editing?{editError:'默认菜单未能保存，请重试。'}:{notice:'默认菜单未能保存，请重试。'});}}});},
  openCalendar(){if(!this.data.busy)wx.navigateTo({url:'/pages/calendar/calendar'});},
  imageError(){this.setData({miniPhoto:'/assets/fallback.jpg'});},
- onShareAppMessage(){return {title:'今天吃什么？把纠结留给转盘',path:'/pages/index/index'};},
- onShareTimeline(){return {title:'日常小决定 · 今天吃什么？'};}
+ shareDetails(){const coffee=this.data.mode==='coffee';return {title:coffee?'今天喝什么咖啡？转一下，选一杯好心情':'今天吃什么？转一下，把纠结留给转盘',imageUrl:coffee?'/assets/share-coffee.jpg':'/assets/share-food.jpg',query:'mode='+this.data.mode};},
+ shareTimeline(){wx.showShareMenu?.({menus:['shareAppMessage','shareTimeline']});wx.showModal({title:'分享到朋友圈',content:'点击右上角“···”，选择“分享到朋友圈”。封面和标题已经为你准备好了。',showCancel:false,confirmText:'知道了'});},
+ onShareAppMessage(){const {title,imageUrl,query}=this.shareDetails();return {title,imageUrl,path:'/pages/index/index?'+query};},
+ onShareTimeline(){return this.shareDetails();}
 });

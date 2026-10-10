@@ -53,3 +53,17 @@ test('reset failure remains visible in the open editor and preserves custom menu
  a.store.setItem=()=>{throw Error('storage full');};p.resetMenu();
  assert.equal(p.data.editing,true);assert.match(p.data.editError,/默认菜单未能保存/);
 });
+
+test('wheel shares restore coffee mode and supply a local cover',()=>{
+ const p=loadPage('index',app(),{showShareMenu(){}});p.onLoad({mode:'coffee'});p.onShow();
+ assert.equal(p.data.mode,'coffee');
+ const timeline=p.onShareTimeline();assert.equal(timeline.query,'mode=coffee');assert.match(timeline.title,/咖啡/);assert.equal(timeline.imageUrl,'/assets/share-coffee.jpg');assert.ok(fs.existsSync('miniprogram'+timeline.imageUrl));
+ const friend=p.onShareAppMessage();assert.ok(friend.path.endsWith('?mode=coffee'));assert.equal(friend.imageUrl,timeline.imageUrl);p.onHide();
+ const invalid=loadPage('index',app());invalid.onLoad({mode:'invalid'});assert.equal(invalid.data.mode,'food');
+});
+test('calendar shares the selected date and its real photo, not an unrelated screenshot',()=>{
+ const p=loadPage('calendar',app());p.onLoad({date:'2026-10-03'});
+ const timeline=p.onShareTimeline();assert.equal(timeline.query,'date=2026-10-03');assert.equal(timeline.imageUrl,p.data.photo);assert.ok(timeline.title.includes(p.data.entry.text.slice(0,12)));
+ assert.equal(p.onShareAppMessage().imageUrl,p.data.photo);
+ p.select('2026-10-04');assert.equal(p.onShareTimeline().query,'date=2026-10-04');assert.equal(p.onShareTimeline().imageUrl,p.data.photo);
+});

@@ -57,6 +57,8 @@ Page({
  },
  openSettings(){wx.openSetting({success:result=>{if(result.authSetting['scope.writePhotosAlbum']){this.setData({albumDenied:false});this.saveAlbum();}}});},
  closePreview(){if(!this.data.saving)this.setData({previewPath:'',albumDenied:false});},
- onShareAppMessage(){return {title:'每日一页 · '+this.data.selected,path:'/pages/calendar/calendar?date='+this.data.selected};},
- onShareTimeline(){return {title:'每日一页 · '+this.data.selected,query:'date='+this.data.selected};}
+ shareDetails(){const text=String(this.data.entry?.text||'把日子过得认真一点。').replace(/\s+/g,' ').trim();const excerpt=Array.from(text).slice(0,36).join('')+(Array.from(text).length>36?'…':'');return {title:this.data.selected+' · '+excerpt,imageUrl:this.data.photo,query:'date='+this.data.selected};},
+ shareTimeline(){wx.showShareMenu?.({menus:['shareAppMessage','shareTimeline']});wx.showModal({title:'分享到朋友圈',content:'点击右上角“···”，选择“分享到朋友圈”，会分享当前日期的照片和文字。',showCancel:false,confirmText:'知道了'});},
+ onShareAppMessage(){const {title,imageUrl,query}=this.shareDetails();return {title,imageUrl,path:'/pages/calendar/calendar?'+query};},
+ onShareTimeline(){return this.shareDetails();}
 });

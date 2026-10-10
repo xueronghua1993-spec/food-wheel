@@ -39,3 +39,5 @@
 @media(max-height:600px){.calendar-screen{gap:8rpx;padding-top:12rpx}.calendar-photo{height:20vh}.paper-top{display:none}.paper-content{padding:12rpx 24rpx 8rpx}.day-number{font-size:68rpx}.date-row{gap:12rpx;padding-top:8rpx;margin-top:8rpx}.remaining{margin-top:4rpx}}
 
 .todos-card{width:100%;padding:0}.todos-body{padding:24rpx;width:100%;box-sizing:border-box}
+
+.timeline-share{flex:none;width:100%;min-height:80rpx;padding:8rpx;font-size:24rpx}.calendar-photo{height:22vh;max-height:290rpx}@media(max-height:600px){.calendar-photo{height:17vh;min-height:100rpx}.timeline-share{min-height:72rpx}}
