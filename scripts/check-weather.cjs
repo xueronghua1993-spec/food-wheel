@@ -42,8 +42,8 @@ const server=http.createServer((req,res)=>{
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'weather creates horizontal overflow');
    await page.screenshot({path:'public/screenshots/weather-'+engine.name()+'-'+width+'.png',fullPage:true});
    failWeather=true;await page.locator('#weather-details > summary').click();await page.click('#weather-retry');await page.waitForFunction(()=>document.getElementById('weather-summary').textContent.includes('暂时不可用'));
-   await page.click('#calendar-open');await page.click('#calendar-view-todos');await page.fill('#todo-input','天气失败也能记');await page.click('#todo-form button');assert.equal(await page.locator('#todo-list li').count(),1);await page.click('#calendar-detail-close');
-   failIP=true;await page.click('#weather-change');await page.click('#weather-auto');await page.waitForFunction(()=>document.getElementById('weather-widget').hidden);
+   await page.locator('#weather-details > summary').click();await page.click('#calendar-open');await page.click('#calendar-view-todos');await page.fill('#todo-input','天气失败也能记');await page.click('#todo-form button');assert.equal(await page.locator('#todo-list li').count(),1);await page.click('#calendar-detail-close');
+   failIP=true;await page.locator('#weather-details > summary').click();await page.click('#weather-change');await page.click('#weather-auto');await page.waitForFunction(()=>document.getElementById('weather-widget').hidden);
    assert.equal(await page.locator('#weather-info').textContent(),'');
    await page.evaluate(()=>sessionStorage.clear());
    await page.reload();await page.waitForFunction(()=>document.getElementById('weather-widget').hidden&&document.getElementById('weather-summary').textContent==='');
