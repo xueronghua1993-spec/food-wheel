@@ -44,7 +44,7 @@ async function waitSafe(){
 }
 async function setUser(next){
  if(next?.id===user?.id)return;
- const current=++epoch;user=next;view('login');message('');
+ const current=++epoch;user=next;view(recovery?'password':'login');message('');
  await waitSafe();if(current!==epoch)return;
  store.use(null);refresh();
  $('account-import-box').hidden=true;
@@ -80,7 +80,7 @@ async function sync(){
    if(current===epoch){status(store.owner?'修改保留在此浏览器，尚未同步。':'账号数据未能加载，暂时继续游客模式。');message('同步失败，请稍后点击“刷新同步”。');}
   }
  })();
- syncing=task;try{await task;}finally{if(syncing===task)syncing=null;}
+ syncing=task;try{await task;}finally{if(syncing===task)syncing=null;if(current===epoch&&store.owner===id&&store.pending(id).length){clearTimeout(timer);timer=setTimeout(()=>sync(),15000);}}
 }
 for(const name of ['login','signup'])$('account-'+name).onclick=()=>{recovery=false;view(name);message('');};
 $('account-forgot').onclick=()=>{view('reset');message('输入注册时的邮箱。');};
