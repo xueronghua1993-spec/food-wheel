@@ -67,3 +67,24 @@ test('calendar shares the selected date and its real photo, not an unrelated scr
  assert.equal(p.onShareAppMessage().imageUrl,p.data.photo);
  p.select('2026-10-04');assert.equal(p.onShareTimeline().query,'date=2026-10-04');assert.equal(p.onShareTimeline().imageUrl,p.data.photo);
 });
+
+test('album denial has one recovery action and authorization resumes the pending save',()=>{
+ let attempt=0;const messages=[];
+ const p=loadPage('calendar',app(),{showToast:o=>messages.push(o.title),saveImageToPhotosAlbum:o=>{attempt++;if(attempt===1)o.fail({errMsg:'saveImageToPhotosAlbum:fail auth deny'});else o.success();o.complete();}});
+ p.data.previewPath='/tmp/calendar.png';p.saveAlbum();
+ assert.equal(p.data.albumDenied,true);assert.equal(p.data.previewVisible,true);assert.equal(p.data.saving,false);
+ p.albumSettingsChanged({detail:{authSetting:{'scope.writePhotosAlbum':true}}});
+ assert.equal(attempt,2);assert.equal(p.data.previewVisible,false);assert.equal(p.data.previewPath,'');assert.equal(messages.at(-1),'已保存到相册');
+});
+test('cancelled album save releases busy state without showing a permission error',()=>{
+ const p=loadPage('calendar',app(),{showToast(){},saveImageToPhotosAlbum:o=>{o.fail({errMsg:'saveImageToPhotosAlbum:fail cancel'});o.complete();}});
+ p.data.previewPath='/tmp/calendar.png';p.saveAlbum();
+ assert.equal(p.data.albumDenied,false);assert.equal(p.data.previewVisible,false);assert.equal(p.data.saving,false);
+});
+
+test('calendar allocates short copy by measured height and gives long stories a scroll area',()=>{
+ const p=loadPage('calendar',app(),{nextTick:fn=>fn(),getWindowInfo:()=>({windowHeight:600}),createSelectorQuery:()=>({in(){return this;},select(){return this;},boundingClientRect(fn){fn({height:155});return this;},exec(){}})});
+ p.updateReadingLayout({text:'一句简短的话'});assert.equal(p.data.readingSize,'short');assert.equal(p.data.readingHeight,157);
+ p.updateReadingLayout({text:'长'.repeat(90)});assert.equal(p.data.readingSize,'medium');
+ p.updateReadingLayout({text:'故事',fullText:'完整故事'});assert.equal(p.data.readingSize,'long');assert.equal(p.data.readingHeight,0);
+});

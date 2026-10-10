@@ -42,3 +42,19 @@
 
 
 .actions button{flex:1;width:100%}
+
+/* Short copy determines its own height; give remaining space to the photograph. */
+.reading-body{padding:2rpx 0 12rpx}
+.reading-short .calendar-photo,.reading-medium .calendar-photo{flex:1;min-height:120rpx;height:0;max-height:none}
+.reading-short .paper-content,.reading-medium .paper-content{flex:none}
+.reading-short .reading-scroll{flex:none;height:180rpx}
+.reading-medium .reading-scroll{flex:none;height:280rpx}
+.reading-short .quote{font-size:36rpx;line-height:1.7;margin:20rpx 0}
+.export-heading{width:100%;flex:none}
+.export-heading .section-title{flex:1;min-width:0;font-size:32rpx}
+.export-heading .preview-close{flex:0 0 88rpx!important;width:88rpx;min-width:88rpx;height:88rpx;margin-left:auto;margin-right:0;padding:0;font-size:44rpx;line-height:1}
+.export-modal .export-action{width:100%;flex:none;min-height:88rpx;white-space:nowrap;margin:0;padding:16rpx 24rpx}
+.export-note{margin:12rpx 0 20rpx;font-size:26rpx;line-height:1.6}
+.export-hint{flex:none;text-align:center;font-size:22rpx;color:#7b896f;margin-top:16rpx}
+.export-modal .export-preview{margin-top:8rpx;height:40vh}
+@media(max-height:600px){.reading-short .quote{font-size:32rpx;margin:12rpx 0}.export-modal .export-preview{height:34vh}.export-hint{margin-top:8rpx}}
