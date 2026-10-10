@@ -11,6 +11,16 @@ export function describeWeather(code){
  if([61,63,65,66,67,80,81,82].includes(code))return '雨';if([71,73,75,77,85,86].includes(code))return '雪';
  if([95,96,99].includes(code))return '雷雨';return '天气状况未知';
 }
+export function weatherIcon(description){
+ if(description==='晴')return '☀️';
+ if(description.includes('多云'))return '🌤️';
+ if(description==='阴')return '☁️';
+ if(description==='雾')return '🌫️';
+ if(description==='雷雨')return '⛈️';
+ if(description==='雪')return '❄️';
+ if(description.includes('雨'))return '🌧️';
+ return '☁️';
+}
 export function weatherOf(data){
  const current=data.current,daily=data.daily;
  if(!current||!daily||typeof current.temperature_2m!=='number'||!Number.isFinite(current.temperature_2m)||!Number.isFinite(daily.temperature_2m_max?.[0])||!Number.isFinite(daily.temperature_2m_min?.[0])||typeof current.time!=='string'||!daily.time?.[0])throw Error('weather');
@@ -38,13 +48,14 @@ export function mountWeather(){
  function show(place,weather,cached=false){
   current=place;lastLoaded=Date.now();$('weather-widget').hidden=false;
   $('weather-city').textContent=place.name;
-  $('weather-summary').textContent=weather.temperature+'°C · '+weather.description+' · '+weather.low+'～'+weather.high+'°C';
+  $('weather-icon').textContent=weatherIcon(weather.description);
+  $('weather-summary').textContent=weather.temperature+'°C · '+weather.description;
   $('weather-info').textContent=(place.source==='ip'?'IP 估算':'手动选择')+' · 当地 '+weather.date+' '+weather.time.slice(11,16)+(cached?' · 缓存':'');
  }
  async function load(place=null,force=false){
   const token=++generation;
   if(!current&&!place)$('weather-widget').hidden=true;
-  $('weather-summary').textContent='正在获取天气…';$('weather-info').textContent='';$('weather-city').textContent=place?.name||'当地天气';
+  $('weather-summary').textContent='获取中…';$('weather-info').textContent='';$('weather-city').textContent=place?.name||'当地天气';
   try{
    if(!place){
     const saved=read(local,'daily-weather-city-v1');
@@ -68,7 +79,7 @@ export function mountWeather(){
   }catch{
    if(token!==generation)return;current=place;
    $('weather-widget').hidden=!place;
-   $('weather-summary').textContent=place?'天气暂时不可用，请稍后重试。':'';
+   $('weather-summary').textContent=place?'暂时不可用':'';
    $('weather-info').textContent='';
   }
  }
@@ -88,7 +99,7 @@ export function mountWeather(){
    for(const result of results){
     let place;try{place=locationOf(result,'manual');}catch{continue;}
     const button=document.createElement('button');button.type='button';button.textContent=[result.name,result.admin1,result.country].filter(Boolean).join(' · ');
-    button.onclick=()=>{write(local,'daily-weather-city-v1',place);$('weather-form').hidden=true;load(place);};$('weather-results').append(button);
+    button.onclick=()=>{$('weather-details').open=false;write(local,'daily-weather-city-v1',place);$('weather-form').hidden=true;load(place);};$('weather-results').append(button);
    }
   }catch{if(token===searchGeneration)$('weather-search-status').textContent='城市查询失败，请稍后重试。';}
  };

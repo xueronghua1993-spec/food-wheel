@@ -10,8 +10,8 @@ const server=http.createServer((req,res)=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const base='http://127.0.0.1:'+server.address().port;
  for(const engine of [chromium,webkit]){
   const browser=await engine.launch({headless:true});
-  try{for(const width of [320,390]){
-   const page=await browser.newPage({viewport:{width,height:720}});
+  try{for(const width of [320,360,390,430]){
+   const page=await browser.newPage({viewport:{width,height:width===320?568:width===360?640:width===390?720:844}});
    await page.clock.install({time:new Date('2026-10-10T04:00:00Z')});
    await page.route('https://www.clarity.ms/**',r=>r.abort());
    let ipCalls=0,weatherCalls=0,failIP=false,failWeather=false;
@@ -23,14 +23,27 @@ const server=http.createServer((req,res)=>{
    assert.equal(await page.locator('.weather-credit').count(),0);
    assert.match(await page.locator('#weather-info').textContent(),/IP 估算/);
    assert.equal(ipCalls,1);assert.equal(weatherCalls,1);
-   await page.click('#weather-change');await page.fill('#weather-search','杭州');await page.click('#weather-form button[type=submit]');await page.click('#weather-results button');
+   assert.equal(await page.locator('#weather-icon').textContent(),'🌤️');
+   const fits=async()=>page.evaluate(()=>{
+    const header=document.querySelector('.app-header'),widget=document.querySelector('#weather-widget'),brand=document.querySelector('.app-brand');
+    const h=header.getBoundingClientRect(),w=widget.getBoundingClientRect(),b=brand.getBoundingClientRect();
+    return w.left>=b.right&&w.bottom<=h.bottom&&document.querySelector('#spin').getBoundingClientRect().bottom<=innerHeight&&document.documentElement.scrollWidth<=innerWidth;
+   });
+   console.log('LAYOUT',engine.name(),width,await page.evaluate(()=>Object.fromEntries(['.app-header','.app-brand','#weather-widget','#calendar-open','.tabs','.frame','#spin'].map(s=>{const r=document.querySelector(s).getBoundingClientRect();return [s,{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom,right:r.right}]}))));
+   assert.ok(await fits(),'header weather and spin must fit one screen');
+   await page.emulateMedia({reducedMotion:'reduce'});
+   for(const mode of ['food','coffee']){
+    await page.click('#'+mode);await page.click('#spin');await page.waitForSelector('#result:not([hidden])');
+    assert.ok(await fits(),'spin result must fit one screen');
+   }
+   await page.locator('#weather-details > summary').click();await page.click('#weather-change');await page.fill('#weather-search','杭州');await page.click('#weather-form button[type=submit]');await page.click('#weather-results button');
    await page.waitForFunction(()=>document.getElementById('weather-info').textContent.includes('手动'));
    assert.equal(await page.locator('#weather-city').textContent(),'杭州');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'weather creates horizontal overflow');
    await page.screenshot({path:'public/screenshots/weather-'+engine.name()+'-'+width+'.png',fullPage:true});
-   failWeather=true;await page.click('#weather-retry');await page.waitForFunction(()=>document.getElementById('weather-summary').textContent.includes('暂时不可用'));
-   await page.click('#calendar-open');await page.click('#calendar-view-todos');await page.fill('#todo-input','天气失败也能记');await page.click('#todo-form button');assert.equal(await page.locator('#todo-list li').count(),1);await page.click('#calendar-detail-close');
-   failIP=true;await page.click('#weather-change');await page.click('#weather-auto');await page.waitForFunction(()=>document.getElementById('weather-widget').hidden);
+   failWeather=true;await page.locator('#weather-details > summary').click();await page.click('#weather-retry');await page.waitForFunction(()=>document.getElementById('weather-summary').textContent.includes('暂时不可用'));
+   await page.locator('#weather-details > summary').click();await page.click('#calendar-open');await page.click('#calendar-view-todos');await page.fill('#todo-input','天气失败也能记');await page.click('#todo-form button');assert.equal(await page.locator('#todo-list li').count(),1);await page.click('#calendar-detail-close');
+   failIP=true;await page.locator('#weather-details > summary').click();await page.click('#weather-change');await page.click('#weather-auto');await page.waitForFunction(()=>document.getElementById('weather-widget').hidden);
    assert.equal(await page.locator('#weather-info').textContent(),'');
    await page.evaluate(()=>sessionStorage.clear());
    await page.reload();await page.waitForFunction(()=>document.getElementById('weather-widget').hidden&&document.getElementById('weather-summary').textContent==='');
@@ -38,7 +51,7 @@ const server=http.createServer((req,res)=>{
    await page.close();
   }}finally{await browser.close();}
  }
- console.log('PASS: mocked IP/weather, manual city, hidden missing-city panel, rate limit/network fallback and independent todos');
+ console.log('PASS: mocked IP/weather, manual city, compact header, icons, one-screen food/coffee results, hidden missing-city panel, rate limit/network fallback and independent todos');
  // Read-only live preview verification. Its availability is reported separately.
  const browser=await chromium.launch({headless:true});
  try{
