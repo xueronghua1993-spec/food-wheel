@@ -1,0 +1,24 @@
+#account-open{flex:none;width:32px;height:40px;padding:0;border:0;background:transparent;color:#285b49;border-radius:10px;font-size:21px}
+#account-open:focus-visible{outline:3px solid #649e78}
+#account-dialog{width:min(390px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:22px;border:1px solid #dce5d4;border-radius:24px;background:#fffdf7;color:#284c3d;overflow:auto}
+#account-dialog::backdrop{background:#17362966}
+#account-dialog .account-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#account-dialog h2{margin:0;font-size:22px}
+#account-dialog p{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+#account-dialog button{min-height:44px;border-radius:12px}
+#account-close{border:0;background:transparent;font-size:22px;padding:0 10px}
+#account-dialog .account-tabs{display:flex;gap:8px;margin:18px 0}
+#account-dialog .account-tabs button{flex:1;border:1px solid #dce5d4;background:#eff4e9;color:#285b49}
+#account-dialog .account-tabs button[aria-pressed=true]{background:#285b49;color:white}
+#account-dialog label{display:block;margin:14px 0 6px;font-size:14px}
+#account-dialog input{box-sizing:border-box;width:100%;padding:12px;border:1px solid #cbdac5;border-radius:12px;font:inherit;background:white;color:#284c3d}
+#account-submit,#account-sync,#account-import{width:100%;margin-top:18px;border:0;background:#285b49;color:white;padding:12px;font-weight:600}
+#account-dialog .account-link{border:0;background:transparent;color:#426b54;margin-top:10px;padding:8px}
+#account-message{min-height:22px;margin:10px 0;color:#805132}
+#account-import-box{border:1px solid #dce5d4;padding:12px;border-radius:14px}
+#account-dialog [hidden]{display:none!important}
+body .app-header{gap:6px}
+body .app-header .app-brand{font-size:18px;letter-spacing:0;gap:5px}
+body .app-header .weather-widget{max-width:44%;margin-left:auto}
+body .app-header .weather-brief{max-width:83px}
+body .app-header #weather-icon{font-size:22px}

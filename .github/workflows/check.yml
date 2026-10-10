@@ -5,6 +5,9 @@ on:
     branches: [feat/reset-menu-share-card]
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -17,7 +20,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y fonts-noto-cjk
-          npm install --no-save --package-lock=false jsdom@26.1.0 sharp@0.34.3 playwright@1.56.1
+          npm install --no-save --package-lock=false jsdom@26.1.0 sharp@0.34.3 playwright@1.56.1 @supabase/supabase-js@2.102.0 esbuild@0.25.10
       - name: Check calendar and todo logic
         run: node --test tests/*.test.mjs
       - name: Check menu behavior
@@ -26,6 +29,8 @@ jobs:
         run: node scripts/build.cjs
       - name: Install cloud browser
         run: npx playwright install --with-deps chromium webkit
+      - name: Check optional accounts and cloud synchronization (mocked backend)
+        run: node scripts/check-account.cjs
       - name: Check mobile layout and capture screenshots
         run: node scripts/browser-check.cjs
       - name: Check AI meal flow with simulated replies
@@ -34,6 +39,8 @@ jobs:
         run: node scripts/check-todos.cjs
       - name: Check weather and online preview
         run: node scripts/check-weather.cjs
+      - name: Check live Supabase public configuration (read only)
+        run: node scripts/check-supabase-public.cjs
       - uses: actions/upload-artifact@v4
         with:
           name: food-wheel-preview
