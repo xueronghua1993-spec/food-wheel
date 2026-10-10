@@ -1,3 +1,4 @@
+import {mountTodos} from './calendar-todos.mjs';
 import {beijingDate,dateInfo,entryForDate,resolveDate,offsetDate} from './calendar-core.mjs';
 import {renderCalendarImage} from './calendar-export.mjs';
 const $=id=>document.getElementById(id);
@@ -5,9 +6,21 @@ export function mountCalendar({catalog,root}){
  const historyStart=catalog.historyStart||catalog.firstDate;
  let today=beijingDate(),selected=resolveDate(new URL(location.href).searchParams.get('date'),today,historyStart),current=null,toastTimer=null;
  const toast=text=>{clearTimeout(toastTimer);const node=$('calendar-toast');node.hidden=!text;node.textContent=text;if(!text)return;const host=$('calendar-preview').open?$('calendar-preview'):$('calendar-detail').open?$('calendar-detail'):document.body;host.append(node);toastTimer=setTimeout(()=>{node.hidden=true;},3500);};
+ const todos=mountTodos({getToday:()=>today,onCount:(done,total)=>{$('calendar-mini-todo-count').textContent=' · 待办 '+done+'/'+total;}});
+ function view(name){
+  const paper=name==='paper';
+  $('calendar-panel').hidden=!paper;$('calendar-todos').hidden=paper;
+  $('calendar-actions').hidden=!paper||!current;
+  $('calendar-view-paper').setAttribute('aria-pressed',String(paper));
+  $('calendar-view-todos').setAttribute('aria-pressed',String(!paper));
+ }
+ $('calendar-view-paper').onclick=()=>view('paper');
+ $('calendar-view-todos').onclick=()=>view('todos');
  function render(push=false){
+  todos.select(selected);
+  $('calendar-view-todos').textContent=selected===today?'今日待办':'当日待办';
   current=entryForDate(selected,catalog);if(!current){$('calendar-status').textContent='这一页暂未准备好，请先使用小决定。';return;}
-  const info=dateInfo(selected);$('calendar-card').hidden=false;$('calendar-actions').hidden=false;$('calendar-navigation').hidden=false;$('calendar-status').textContent='';toast('');
+  const info=dateInfo(selected);$('calendar-card').hidden=false;$('calendar-actions').hidden=!$('calendar-todos').hidden;$('calendar-navigation').hidden=false;$('calendar-status').textContent='';toast('');
   const photo=$('calendar-photo');photo.onerror=()=>{photo.onerror=null;photo.src='./calendar/assets/fallback.jpg';photo.alt='日常小决定原创山水备用画面';};photo.alt=current.imageAlt;photo.src=current.imagePath;
   $('calendar-kind').textContent={quote:'每日一句',excerpt:'读一段经典',story:'一个小故事'}[current.type];
   $('calendar-text').textContent=current.text;$('calendar-text').dataset.type=current.type;
