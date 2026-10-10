@@ -195,8 +195,8 @@ body[data-mode=coffee] #decision-panel .selection-slot .result strong{color:#496
 #calendar-detail .calendar-date-row p{margin:0 0 3px;font-size:15px;line-height:1.5}
 #calendar-detail #calendar-weekday,#calendar-detail #calendar-lunar{font-size:14px;color:#64735d}
 #calendar-detail #calendar-lunar{margin-bottom:0}
-#calendar-detail .calendar-footnote{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;margin-top:18px;padding-top:12px;border-top:1px solid #e1e8d8}
-#calendar-detail .calendar-footnote .calendar-signature,#calendar-detail .calendar-footnote .calendar-remaining{padding:0;margin:0;border:0;font-size:14px;line-height:1.6;letter-spacing:0;color:#66765f}
+#calendar-detail .calendar-footnote{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;align-items:baseline;margin-top:18px;padding-top:12px;border-top:1px solid #e1e8d8}
+#calendar-detail .calendar-footnote .calendar-signature,#calendar-detail .calendar-footnote .calendar-remaining{padding:0 4px;margin:0;border:0;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;font-weight:400;line-height:20px;letter-spacing:0;text-align:center;color:#66765f;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 @media(max-width:360px){#calendar-detail .calendar-panel{padding:12px 12px 16px}#calendar-detail .calendar-date-row{gap:14px}#calendar-detail #calendar-day{font-size:68px}#calendar-detail .calendar-date-row div{padding-left:12px}#calendar-detail .calendar-navigation{gap:8px;padding:0 12px 10px}.calendar-navigation button{padding:8px;font-size:14px}#calendar-detail .calendar-toolbar{padding-left:12px;padding-right:12px}}
 
 #calendar-detail .calendar-toolbar #calendar-save{width:100%;flex:1}

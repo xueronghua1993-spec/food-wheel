@@ -59,7 +59,12 @@ export async function renderCalendarImage(entry,info){
  drawAtInkTop(info.weekday,dateX,rowTop+62);
  if(info.lunar)drawAtInkTop(`农历${info.lunar}`,dateX,rowTop+114);
  ctx.textBaseline='top';
- ctx.font='30px sans-serif';ctx.textAlign='center';ctx.fillStyle='#60705d';ctx.textAlign='left';ctx.fillText('每日一页',90,dateY+220);ctx.textAlign='right';ctx.fillText(`今年还剩 ${info.remainingDays} 天`,990,dateY+220);ctx.textAlign='center';
+ // Match the mobile footer: equal columns with a shared text baseline.
+ const footerY=dateY+244;
+ ctx.strokeStyle='#e1e8d8';ctx.beginPath();ctx.moveTo(90,footerY-52);ctx.lineTo(990,footerY-52);ctx.stroke();
+ ctx.font='32px sans-serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle='#60705d';
+ ctx.fillText('每日一页',315,footerY);ctx.fillText(`今年还剩 ${info.remainingDays} 天`,765,footerY);
+ ctx.textBaseline='top';
  ctx.font='28px sans-serif';photoCredit.forEach((line,i)=>ctx.fillText(line,540,dateY+278+i*44));
  return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('保存失败，请重试')),'image/png'));
 }
