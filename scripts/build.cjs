@@ -17,8 +17,13 @@ async function build(){
  const html=source.replace("const buildVersion='__BUILD_VERSION__';","const buildVersion='"+version+"';")
   .replaceAll('./calendar/calendar.css','./calendar/calendar.css?v='+version)
   .replaceAll('./calendar/calendar-ui.mjs','./calendar/calendar-ui.mjs?v='+version)
-  .replaceAll('./calendar/weather-ui.mjs','./calendar/weather-ui.mjs?v='+version);
- for(const name of ['calendar-ui.mjs','calendar-export.mjs','calendar-todos.mjs','weather-ui.mjs']){
+  .replaceAll('./calendar/weather-ui.mjs','./calendar/weather-ui.mjs?v='+version)
+  .replaceAll('./calendar/account.css','./calendar/account.css?v='+version)
+  .replaceAll('./calendar/account-ui.mjs','./calendar/account-ui.mjs?v='+version);
+ await require('esbuild').build({stdin:{contents:"export {createClient} from '@supabase/supabase-js';",resolveDir:process.cwd()},bundle:true,format:'esm',platform:'browser',outfile:'public/calendar/vendor/supabase.mjs',minify:true});
+ const adapter='public/calendar/supabase-client.mjs';
+ fs.writeFileSync(adapter,fs.readFileSync(adapter,'utf8').replace('https://esm.sh/@supabase/supabase-js@2.102.0?bundle','./vendor/supabase.mjs'));
+ for(const name of ['calendar-ui.mjs','calendar-export.mjs','calendar-todos.mjs','weather-ui.mjs','account-ui.mjs','account-store.mjs','supabase-client.mjs']){
   const filename='public/calendar/'+name;
   const code=fs.readFileSync(filename,'utf8').replace(/(\.\/[^'"\s]+\.(?:mjs|json|jpg))(?=['"])/g,'$1?v='+version);
   fs.writeFileSync(filename,code);
