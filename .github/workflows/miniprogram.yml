@@ -22,7 +22,7 @@ jobs:
       - name: Generate synchronized native resources
         run: |
           node scripts/build-miniprogram.cjs
-          git diff --exit-code -- miniprogram/generated miniprogram/assets miniprogram/photos-a miniprogram/photos-b miniprogram/photos-c
+          node scripts/check-generated-miniprogram.cjs
       - name: Check native package and all logic
         run: |
           node scripts/check-miniprogram.cjs
