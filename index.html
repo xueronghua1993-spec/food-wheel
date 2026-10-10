@@ -46,9 +46,20 @@
  .notice,#count,#reset,#error,dialog .hint{font-size:14px}.notice{margin:10px 0 0}
 }
 
+.weather-widget{width:calc(100% - 40px);max-width:420px;margin:0 auto 12px;padding:10px 14px;border:1px solid #e0e5d6;border-radius:16px;color:#244c3c;background:#fffdf780}
+.weather-top{display:flex;align-items:center;gap:8px}.weather-top strong{font-size:15px;flex:1;min-width:0;overflow-wrap:anywhere}
+.weather-widget button{font-size:14px;min-height:32px;padding:5px 8px;color:#617357;background:transparent}
+#weather-summary{font-size:15px;line-height:1.5;margin:3px 0 4px}#weather-info,.weather-credit{font-size:12px;color:#7b8873;line-height:1.6;margin:0}
+.weather-credit summary{cursor:pointer}.weather-credit p{margin:8px 0}.weather-credit a{color:#617357}
+#weather-form{margin-top:12px;border-top:1px solid #dbe3d2;padding-top:12px}#weather-form label{font-size:14px}
+.weather-search-row{display:flex;gap:8px;margin-top:6px}.weather-search-row input{min-width:0;flex:1;border:1px solid #cfdac5;border-radius:10px;padding:10px;background:#fffdf7;color:#244c3c;font-size:16px}
+.weather-search-row button{background:#285744;color:white;padding:8px 14px}
+#weather-search-status{font-size:14px;line-height:1.6}#weather-results{display:flex;flex-direction:column}#weather-results button{text-align:left;min-height:44px;border-bottom:1px solid #dbe3d2}
+@media(max-width:360px){.weather-widget{width:calc(100% - 32px)}}
 </style></head>
 <body data-mode="food">
 <header class="app-header"><a class="app-brand" href="./"><svg class="brand-sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><span>日常小决定</span></a></header>
+<aside id="weather-widget" class="weather-widget" aria-label="当地天气"><div class="weather-top"><strong id="weather-city">当地天气</strong><button id="weather-change" type="button">切换城市</button><button id="weather-retry" type="button">刷新</button></div><p id="weather-summary" role="status">正在获取天气…</p><p id="weather-info"></p><form id="weather-form" hidden><label for="weather-search">查找城市</label><div class="weather-search-row"><input id="weather-search" type="text" maxlength="50" placeholder="例如：杭州" autocomplete="off"><button type="submit">查找</button></div><p id="weather-search-status" role="status"></p><div id="weather-results"></div><button id="weather-auto" type="button">恢复 IP 自动估算</button></form><details class="weather-credit"><summary>天气来源与定位说明</summary><p>IP 仅估算网络出口城市，可能不准。当前天气来自预报模型。</p><a href="https://ipwhois.io/" target="_blank" rel="noopener">IPWhois</a> · <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · <a href="https://www.geonames.org/" target="_blank" rel="noopener">GeoNames</a></details></aside>
 <button id="calendar-open" class="calendar-peek" type="button" aria-haspopup="dialog" aria-label="打开完整日历">
  <img id="calendar-peek-background" class="calendar-peek-background" alt="" aria-hidden="true" draggable="false">
  <img id="calendar-mini-photo" alt="" width="76" height="90"><span class="calendar-mini-copy"><span id="calendar-mini-date">今日日历</span><span id="calendar-mini-text">正在翻开今天的一页…</span><span class="calendar-mini-more"><svg class="calendar-open-icon" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h8l4 4v10H4zM12 3v4h4M7 10h6M7 13h4"/></svg>展开日历<span id="calendar-mini-todo-count"> · 待办 0/0</span><span class="calendar-open-arrow" aria-hidden="true">↗</span></span></span>
@@ -214,4 +225,5 @@ checkRelease();
 </script><dialog id="calendar-preview" aria-labelledby="calendar-preview-title"><div class="calendar-preview-head"><h2 id="calendar-preview-title">长按保存到相册</h2><button id="calendar-preview-close" type="button" aria-label="关闭图片预览">关闭</button></div><p>长按下方图片，选择「保存图片」。</p><img id="calendar-output" alt="日历保存图片"></dialog>
 <div id="calendar-toast" class="calendar-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
 <script type="module" src="./calendar/calendar-ui.mjs"></script>
+<script type="module" src="./calendar/weather-ui.mjs"></script>
 </body></html>
