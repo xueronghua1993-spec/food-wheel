@@ -40,4 +40,5 @@
 
 .todos-card{width:100%;padding:0}.todos-body{padding:24rpx;width:100%;box-sizing:border-box}
 
-.timeline-share{flex:none;width:100%;min-height:80rpx;padding:8rpx;font-size:24rpx}.calendar-photo{height:22vh;max-height:290rpx}@media(max-height:600px){.calendar-photo{height:17vh;min-height:100rpx}.timeline-share{min-height:72rpx}}
+
+.actions button{flex:1;width:100%}

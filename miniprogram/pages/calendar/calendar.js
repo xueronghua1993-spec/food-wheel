@@ -39,15 +39,15 @@ Page({
  async saveImage(){
   if(this.data.saving||!this.data.entry)return;this.setData({saving:true,albumDenied:false});
   const entry=this.data.entry,info=this.data.info,photo=this.data.photo;
-  try{const previewPath=await exportCalendar(this,entry,info,photo);this.setData({previewPath});wx.showToast({title:'图片已生成',icon:'success'});}
+  try{const previewPath=await exportCalendar(this,entry,info,photo);this.setData({previewPath,saving:false});this.saveAlbum();}
   catch(error){wx.showToast({title:error.message||'图片生成失败，请重试',icon:'none'});}
-  finally{this.setData({saving:false});}
+  finally{if(!this.data.previewPath)this.setData({saving:false});}
  },
  previewImage(){if(this.data.previewPath)wx.previewImage({urls:[this.data.previewPath],current:this.data.previewPath});},
  saveAlbum(){
   if(!this.data.previewPath||this.data.saving)return;this.setData({saving:true});
   wx.saveImageToPhotosAlbum({filePath:this.data.previewPath,
-   success:()=>{this.setData({albumDenied:false});wx.showToast({title:'已保存到相册',icon:'success'});},
+   success:()=>{this.setData({albumDenied:false,previewPath:''});wx.showToast({title:'已保存到相册',icon:'success'});},
    fail:error=>{
     const message=String(error.errMsg||'');
     if(/cancel/i.test(message)){wx.showToast({title:'已取消保存',icon:'none'});return;}
@@ -58,7 +58,6 @@ Page({
  openSettings(){wx.openSetting({success:result=>{if(result.authSetting['scope.writePhotosAlbum']){this.setData({albumDenied:false});this.saveAlbum();}}});},
  closePreview(){if(!this.data.saving)this.setData({previewPath:'',albumDenied:false});},
  shareDetails(){const text=String(this.data.entry?.text||'把日子过得认真一点。').replace(/\s+/g,' ').trim();const excerpt=Array.from(text).slice(0,36).join('')+(Array.from(text).length>36?'…':'');return {title:this.data.selected+' · '+excerpt,imageUrl:this.data.photo,query:'date='+this.data.selected};},
- shareTimeline(){wx.showShareMenu?.({menus:['shareAppMessage','shareTimeline']});wx.showModal({title:'分享到朋友圈',content:'点击右上角“···”，选择“分享到朋友圈”，会分享当前日期的照片和文字。',showCancel:false,confirmText:'知道了'});},
  onShareAppMessage(){const {title,imageUrl,query}=this.shareDetails();return {title,imageUrl,path:'/pages/calendar/calendar?'+query};},
  onShareTimeline(){return this.shareDetails();}
 });

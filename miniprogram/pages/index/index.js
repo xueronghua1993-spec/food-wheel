@@ -48,7 +48,6 @@ Page({
  openCalendar(){if(!this.data.busy)wx.navigateTo({url:'/pages/calendar/calendar'});},
  imageError(){this.setData({miniPhoto:'/assets/fallback.jpg'});},
  shareDetails(){const coffee=this.data.mode==='coffee';return {title:coffee?'今天喝什么咖啡？转一下，选一杯好心情':'今天吃什么？转一下，把纠结留给转盘',imageUrl:coffee?'/assets/share-coffee.jpg':'/assets/share-food.jpg',query:'mode='+this.data.mode};},
- shareTimeline(){wx.showShareMenu?.({menus:['shareAppMessage','shareTimeline']});wx.showModal({title:'分享到朋友圈',content:'点击右上角“···”，选择“分享到朋友圈”。封面和标题已经为你准备好了。',showCancel:false,confirmText:'知道了'});},
  onShareAppMessage(){const {title,imageUrl,query}=this.shareDetails();return {title,imageUrl,path:'/pages/index/index?'+query};},
  onShareTimeline(){return this.shareDetails();}
 });
