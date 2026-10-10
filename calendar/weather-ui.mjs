@@ -99,7 +99,7 @@ export function mountWeather(){
    for(const result of results){
     let place;try{place=locationOf(result,'manual');}catch{continue;}
     const button=document.createElement('button');button.type='button';button.textContent=[result.name,result.admin1,result.country].filter(Boolean).join(' · ');
-    button.onclick=()=>{write(local,'daily-weather-city-v1',place);$('weather-form').hidden=true;load(place);};$('weather-results').append(button);
+    button.onclick=()=>{$('weather-details').open=false;write(local,'daily-weather-city-v1',place);$('weather-form').hidden=true;load(place);};$('weather-results').append(button);
    }
   }catch{if(token===searchGeneration)$('weather-search-status').textContent='城市查询失败，请稍后重试。';}
  };
