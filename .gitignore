@@ -1,3 +1,4 @@
 public/
 node_modules/
 .superpowers/
+miniprogram/project.private.config.json
