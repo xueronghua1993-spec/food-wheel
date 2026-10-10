@@ -127,7 +127,7 @@ async function edit(page,a,b){
   assert.match(await page.locator('#wheel').getAttribute('aria-label'),/SDK面/);
   await page.click('#account-open');await page.click('#account-logout');await page.waitForFunction(()=>window.appStore.owner===null);
   const recoveryHash=new URLSearchParams({access_token:token,refresh_token:'mock-refresh',token_type:'bearer',expires_in:'3600',type:'recovery'}).toString();
-  await page.goto(base+'#'+recoveryHash);
+  await page.goto(base+'?recovery-check=1#'+recoveryHash);
   await page.waitForFunction(()=>document.querySelector('#account-dialog').open&&!document.querySelector('#account-confirm').hidden);
   await page.fill('#account-password','newpassword123');await page.fill('#account-confirm','newpassword123');await page.click('#account-submit');
   await page.waitForFunction(()=>document.querySelector('#account-message').textContent==='密码已更新。');
