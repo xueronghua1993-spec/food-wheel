@@ -58,3 +58,5 @@
 .export-hint{flex:none;text-align:center;font-size:22rpx;color:#7b896f;margin-top:16rpx}
 .export-modal .export-preview{margin-top:8rpx;height:40vh}
 @media(max-height:600px){.reading-short .quote{font-size:32rpx;margin:12rpx 0}.export-modal .export-preview{height:34vh}.export-hint{margin-top:8rpx}}
+
+.page-weather{display:block;flex:none}

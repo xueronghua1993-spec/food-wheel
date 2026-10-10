@@ -1,1 +1,8 @@
-{"navigationBarTitleText":"日常小决定","enableShareAppMessage":true,"enableShareTimeline":true}
+{
+  "navigationBarTitleText": "日常小决定",
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true,
+  "usingComponents": {
+    "weather-bar": "/components/weather-bar/weather-bar"
+  }
+}

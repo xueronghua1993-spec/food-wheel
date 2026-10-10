@@ -36,3 +36,5 @@
 
 
 .wheel-heading .section-title{flex:1;min-width:0}.wheel-heading .edit-menu{margin-left:auto;margin-right:0;flex:none}
+
+.page-weather{display:block;margin-top:16rpx}

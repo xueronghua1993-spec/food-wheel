@@ -1,1 +1,8 @@
-{"navigationBarTitleText":"每日一页","enableShareAppMessage":true,"enableShareTimeline":true}
+{
+  "navigationBarTitleText": "每日一页",
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true,
+  "usingComponents": {
+    "weather-bar": "/components/weather-bar/weather-bar"
+  }
+}
