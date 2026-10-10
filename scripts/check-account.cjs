@@ -25,7 +25,7 @@ export function makeClient(){
   async getSession(){return {data:{session},error:null};},
   async signInWithPassword({email,password}){if(password!=='password123')return {error:{code:'invalid_credentials'}};session={user:{id:email==='b@test.example'?'B':'A',email}};localStorage.setItem('mock-session',JSON.stringify(session));notify('SIGNED_IN');return {data:{session},error:null};},
   async signOut(){session=null;localStorage.removeItem('mock-session');notify('SIGNED_OUT');return {error:null};},
-  async signUp(value){window.mockAuth.calls.push({kind:'signup',...value});return {data:{},error:null};},
+  async signUp(value){window.mockAuth.calls.push({kind:'signup',...value});if(window.mockSignupError)return {data:{user:null,session:null},error:{code:'over_email_send_rate_limit'}};return {data:{user:{id:'new-user',email:value.email},session:null},error:null};},
   async resetPasswordForEmail(email,options){window.mockAuth.calls.push({kind:'reset',email,options});return {data:{},error:null};},
   async updateUser(value){window.mockAuth.calls.push({kind:'password',...value});return {data:{},error:null};}
  },from(table){
@@ -80,7 +80,28 @@ async function edit(page,a,b){
    await one.page.click('#calendar-open');await one.page.click('#calendar-view-todos');assert.equal(await one.page.locator('#todo-list li').count(),0);await one.page.click('#calendar-detail-close');
    await one.page.click('#account-open');await one.page.click('#account-logout');await one.page.waitForFunction(()=>window.appStore.owner===null);
    await one.page.fill('#account-email','a@test.example');await one.page.fill('#account-password','wrongpass');await one.page.click('#account-submit');await one.page.waitForFunction(()=>document.querySelector('#account-message').textContent.includes('不正确'));
-   await one.page.click('#account-signup');await one.page.fill('#account-password','password123');await one.page.click('#account-submit');await one.page.waitForFunction(()=>window.mockAuth.calls.some(x=>x.kind==='signup'));
+   await one.page.click('#account-signup');
+   assert.match(await one.page.locator('#account-password-label').textContent(),/设置本站登录密码/);
+   assert.match(await one.page.locator('#account-password-hint').textContent(),/不是你的邮箱密码/);
+   await one.page.evaluate(()=>window.mockSignupError=true);
+   await one.page.fill('#account-password','password123');await one.page.click('#account-submit');
+   await one.page.waitForFunction(()=>document.querySelector('#account-message').textContent.includes('频繁'));
+   assert.equal(await one.page.locator('#account-form').isVisible(),true);
+   assert.equal(await one.page.locator('#account-verification').isVisible(),false);
+   await one.page.evaluate(()=>window.mockSignupError=false);
+   await one.page.fill('#account-password','password123');await one.page.click('#account-submit');
+   await one.page.waitForFunction(()=>!document.querySelector('#account-verification').hidden);
+   assert.equal(await one.page.locator('#account-form').isVisible(),false);
+   assert.equal(await one.page.locator('#account-verification-email').textContent(),'a@test.example');
+   assert.equal(await one.page.locator('#account-password').inputValue(),'');
+   assert.equal(await one.page.evaluate(()=>document.activeElement.id),'account-verification-title');
+   assert.equal(await one.page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+   await one.page.screenshot({path:'public/screenshots/signup-confirmation-'+engine.name()+'.png'});
+   await one.page.click('#account-back-login');
+   assert.equal(await one.page.locator('#account-verification').isVisible(),false);
+   assert.equal(await one.page.locator('#account-form').isVisible(),true);
+   assert.equal(await one.page.locator('#account-email').inputValue(),'a@test.example');
+   assert.equal(await one.page.locator('#account-password-label').textContent(),'本站登录密码');
    await one.page.click('#account-forgot');await one.page.click('#account-submit');await one.page.waitForFunction(()=>window.mockAuth.calls.some(x=>x.kind==='reset'));
    assert.ok((await one.page.evaluate(()=>window.mockAuth.calls)).every(x=>(x.options?.redirectTo||x.options?.emailRedirectTo)==='https://xueronghua1993-spec.github.io/food-wheel/'));
    await closeAccount(one.page);await login(one.page);await closeAccount(one.page);
