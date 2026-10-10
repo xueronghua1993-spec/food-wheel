@@ -1,0 +1,28 @@
+#meal-open{width:100%;min-height:44px;margin-top:8px;background:#edf2e5;color:#365b43;font-size:15px;border:1px solid #d5dfcd}
+body[data-mode=coffee] #meal-open{display:none!important}
+#meal-dialog{padding:0;border:0;width:min(440px,calc(100% - 24px));max-height:calc(100dvh - 24px);background:#fffdf7;overflow:auto;box-shadow:0 20px 60px #203a3240}
+#meal-dialog::backdrop{background:#18392e99}
+.meal-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px 20px 12px}
+.meal-header h2{font-family:"Songti SC",SimSun,serif;font-size:24px;color:#244c3c}
+.meal-kicker{margin:0 0 4px;color:#748070;font-size:13px}
+#meal-close{background:#edf1e5;color:#365b43;min-width:60px;padding:8px 12px;flex:none}
+#meal-form{padding:0 20px 20px}
+.meal-intro{font-size:14px;line-height:1.6;color:#657467;margin:0 0 18px}
+.meal-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#meal-form label{display:block;font-size:14px;line-height:1.5;color:#365b43;margin-bottom:6px}
+.meal-field{margin-bottom:16px;min-width:0}
+#meal-form input,#meal-form select{width:100%;min-height:46px;padding:10px 12px;border:1px solid #cedac4;border-radius:12px;background:#fff;color:#244c3c;font-family:inherit;font-size:16px}
+#meal-form :is(input,select):focus-visible{outline:3px solid #649e78;outline-offset:2px}
+.meal-help{font-size:12px;line-height:1.6;margin:6px 0 0;color:#748070}
+#meal-submit,#meal-apply{width:100%;min-height:48px;background:#244c3c;color:white;font-size:16px;padding:12px}
+#meal-status{font-size:14px;line-height:1.6;color:#64735d;margin:12px 0;overflow-wrap:anywhere}
+#meal-status:empty{display:none}
+#meal-results{list-style:none;margin:0;padding:0}
+#meal-results li{padding:14px 16px;margin:10px 0;border:1px solid #dce4d3;border-radius:16px;background:#f6f8ef;overflow-wrap:anywhere}
+#meal-results strong{font-size:18px;font-weight:600;color:#244c3c}
+#meal-results p{margin:6px 0;font-size:14px;line-height:1.6;color:#657467}
+#meal-results small{font-size:13px;line-height:1.6;color:#748070}
+#meal-apply{margin-top:8px}
+.meal-privacy{font-size:12px;line-height:1.7;color:#748070;margin:16px 0 0}
+@media(max-width:600px){#decision-panel:has(#meal-open:not([hidden])) .frame{width:min(100%,260px,calc(100dvh - 492px))}}
+@media(max-width:360px){.meal-header{padding:16px 16px 12px}#meal-form{padding:0 16px 16px}}

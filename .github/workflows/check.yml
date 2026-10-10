@@ -33,6 +33,8 @@ jobs:
         run: node scripts/check-account.cjs
       - name: Check mobile layout and capture screenshots
         run: node scripts/browser-check.cjs
+      - name: Check AI meal flow with simulated replies
+        run: node scripts/check-meal.cjs
       - name: Check calendar todos in mobile browsers
         run: node scripts/check-todos.cjs
       - name: Check weather and online preview

@@ -34,6 +34,7 @@
     })(window, document, "clarity", "script", "yv0epg3rqf");
 </script>
 <link rel="stylesheet" href="./calendar/calendar.css">
+<link rel="stylesheet" href="./ai/meal.css">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f4f3ec;color:#203a32;font-family:system-ui,"Microsoft YaHei",sans-serif;min-height:100vh}main{max-width:460px;margin:auto;padding:24px 20px 28px}.brand{display:flex;align-items:center;gap:10px;font-weight:750;font-size:15px}.brand-mark{display:grid;place-items:center;width:34px;height:34px;background:#234f40;color:#fff;border-radius:12px}.brand small{margin-left:auto;color:#858b80;font-size:10px;letter-spacing:2px}.badge{text-align:center;margin-top:28px;color:#758276;font-size:12px}h1{text-align:center;font-size:32px;letter-spacing:-1px;margin:28px 0 8px}h1 span{color:#55825c}.hint{color:#7b847b;font-size:13px;margin:0 0 22px;line-height:1.7}.tabs{display:flex;background:#e7e9df;border-radius:16px;padding:5px;margin:20px 0}.tabs button{flex:1;background:transparent;color:#748074;min-height:46px;border-radius:12px;font-weight:650}.tabs button[aria-pressed=true]{background:#fff;color:#244c3c;box-shadow:0 2px 8px #203a3210}.card{background:#fffdf7;border:1px solid #e9e8de;border-radius:28px;padding:22px 18px;text-align:center;box-shadow:0 10px 35px #30423408}.card-head{display:flex;justify-content:space-between;color:#758276;font-size:11px;margin-bottom:24px}.card-head strong{color:#345844;font-weight:650}.frame{position:relative;aspect-ratio:1;width:100%;max-width:300px;margin:auto;border:7px solid white;border-radius:50%;box-shadow:0 6px 22px #37493812}.wheel{position:absolute;inset:0;border-radius:50%;transition:none}svg{width:100%;height:100%;display:block}.pointer{position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:25px;height:34px;background:#244f3d;clip-path:polygon(0 0,100% 0,50% 100%);z-index:2}.hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:58px;height:58px;border:5px solid white;border-radius:50%;background:#244f3d;color:white;font-weight:bold}.caption{font-size:11px;color:#879184;margin:22px 0 18px}button,input{font:inherit}button{border:0;border-radius:14px;min-height:44px;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.45;cursor:default}button:focus-visible,input:focus-visible{outline:3px solid #649e78;outline-offset:3px}.primary{color:#fff;background:#244f3d;padding:14px 18px;font-weight:700}#spin{width:100%;font-size:16px;min-height:54px}.plain{background:transparent;color:#637765;padding:8px 14px}.result{margin-top:20px;padding:16px;border-radius:18px;background:#edf2e7;font-size:12px}.result strong{display:block;font-size:26px;color:#244f3d;margin:5px;overflow-wrap:anywhere}[hidden]{display:none!important}.tools{display:flex;justify-content:space-between;align-items:center;margin-top:16px}.tools span{font-size:11px;color:#90978c}footer{text-align:center;font-size:10px;color:#9a9f94;margin-top:24px}.notice{font-size:12px;color:#5b755b;text-align:center;min-height:16px;margin:12px 0 0}dialog{width:min(430px,calc(100% - 28px));max-height:calc(100dvh - 32px);border:1px solid #e4e8dc;background:#fffdf7;color:#203a32;border-radius:24px;padding:23px}dialog::backdrop{background:#203a3270}h2{font-size:20px;margin:0}.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}#count{font-size:12px;color:#758276}.row{display:flex;gap:8px;margin:10px 0}.row input{width:100%;min-width:0;border:1px solid #dde3d7;border-radius:12px;padding:11px;font-size:16px;background:white;color:#203a32}.remove{flex-shrink:0;width:44px;background:#f3e7df;color:#926857}#add{width:100%;background:transparent;color:#4d735c;border:1px dashed #a5b9a7}.actions{display:flex;gap:12px}.actions button{flex:1}.secondary{background:#e9eee3;color:#476a51}#error{color:#a13a36;font-size:13px;min-height:20px}#reset{width:100%;font-size:12px;margin-top:12px}body[data-mode=coffee]{background:#f4efe8}body[data-mode=coffee] .primary,body[data-mode=coffee] .hub,body[data-mode=coffee] .pointer{background:#73513a}@media(max-width:380px){main{padding:18px 16px}.card{padding:20px 14px}h1{font-size:30px}}@media(prefers-reduced-motion:reduce){.wheel,.wheel text{transition-duration:.01s}}
 #intro{text-align:center}
@@ -137,7 +138,7 @@
 </section>
 <div id="calendar-actions" class="calendar-actions calendar-toolbar" aria-label="日历操作" hidden><button id="calendar-save" type="button">保存图片</button></div>
 </dialog>
-<main id="decision-panel"><header class="brand"><span class="brand-mark">◷</span>日常小决定<small>DAILY PICK</small></header><h1 id="heading">今天吃什么<span>？</span></h1><p id="intro" class="hint">好好吃饭，把纠结留给转盘。</p><nav class="tabs" aria-label="选择转盘"><button id="food" type="button" aria-pressed="true">吃什么</button><button id="coffee" type="button" aria-pressed="false">喝什么咖啡</button></nav><section class="card" aria-label="随机选择" data-clarity-mask><div class="card-head"><strong id="card-title">我的餐食转盘</strong><button id="edit" class="plain" type="button">编辑菜单 →</button></div><div class="frame"><div class="pointer" aria-hidden="true"></div><div id="wheel" class="wheel" role="img" aria-label="餐食转盘"></div><div id="hub" class="hub" aria-hidden="true">吃</div></div><div class="selection-slot"><p id="caption" class="caption"></p><div id="result" class="result" aria-live="polite" hidden><span id="result-label">今天就吃</span><strong id="winner"></strong></div></div><button id="spin" class="primary" type="button">帮我选一餐 ↗</button></section><div class="tools"><span id="tools-hint">只放你想吃的</span></div><p id="notice" class="notice" role="status"></p><footer>吃一顿喜欢的 · 喝一杯刚好的</footer></main>
+<main id="decision-panel"><header class="brand"><span class="brand-mark">◷</span>日常小决定<small>DAILY PICK</small></header><h1 id="heading">今天吃什么<span>？</span></h1><p id="intro" class="hint">好好吃饭，把纠结留给转盘。</p><nav class="tabs" aria-label="选择转盘"><button id="food" type="button" aria-pressed="true">吃什么</button><button id="coffee" type="button" aria-pressed="false">喝什么咖啡</button></nav><section class="card" aria-label="随机选择" data-clarity-mask><div class="card-head"><strong id="card-title">我的餐食转盘</strong><button id="edit" class="plain" type="button">编辑菜单 →</button></div><div class="frame"><div class="pointer" aria-hidden="true"></div><div id="wheel" class="wheel" role="img" aria-label="餐食转盘"></div><div id="hub" class="hub" aria-hidden="true">吃</div></div><div class="selection-slot"><p id="caption" class="caption"></p><div id="result" class="result" aria-live="polite" hidden><span id="result-label">今天就吃</span><strong id="winner"></strong></div></div><button id="spin" class="primary" type="button">帮我选一餐 ↗</button><button id="meal-open" type="button" aria-haspopup="dialog" hidden>不知道吃什么？试试 AI 推荐</button></section><div class="tools"><span id="tools-hint">只放你想吃的</span></div><p id="notice" class="notice" role="status"></p><footer>吃一顿喜欢的 · 喝一杯刚好的</footer></main>
 <dialog id="editor" aria-labelledby="title" data-clarity-mask><form id="form" novalidate><div class="top"><h2 id="title">想吃的，都放进来</h2><span id="count"></span></div><p class="hint">2～10 个选项 · 每项最多 8 个字符</p><div id="rows"></div><button id="add" type="button">＋ 新增选项</button><p id="error" role="alert"></p><div class="actions"><button id="cancel" type="button" class="secondary">取消</button><button type="submit" class="primary">保存菜单</button></div><button id="reset" class="plain" type="button">恢复默认菜单 ↺</button></form></dialog>
 <dialog id="account-dialog" aria-labelledby="account-title" data-clarity-mask>
  <div class="account-top"><h2 id="account-title">留住你的小决定</h2><button id="account-close" type="button" aria-label="关闭账户">×</button></div>
@@ -223,7 +224,7 @@ function setWheelAngle(angle){
 const frame=window.requestAnimationFrame?.bind(window)||((callback)=>setTimeout(callback,16));
 const cancelFrame=window.cancelAnimationFrame?.bind(window)||clearTimeout;
 function spin(){
- if(busy)return;busy=true;['spin','edit','reset','food','coffee'].forEach(id=>el(id).disabled=true);el('spin').textContent='正在选…';el('result').hidden=true;el('caption').hidden=false;el('caption').textContent='让转盘替你想一想…';
+ if(busy)return;busy=true;['spin','edit','reset','food','coffee','meal-open'].forEach(id=>el(id).disabled=true);el('spin').textContent='正在选…';el('result').hidden=true;el('caption').hidden=false;el('caption').textContent='让转盘替你想一想…';
  const index=Math.floor(Math.random()*menu.length),startRotation=rotation;rotation=nextRotation(rotation,index,menu.length);
  const duration=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?0:3000;
  let started;
@@ -235,7 +236,7 @@ function spin(){
   setWheelAngle(startRotation+(rotation-startRotation)*eased);
   if(progress===1){finish();return;}animationFrame=frame(track);
  }
- function finish(){if(done)return;done=true;cancelFrame(animationFrame);setWheelAngle(rotation);clearTimeout(timer);el('wheel').removeEventListener('transitionend',end);el('winner').textContent=menu[index];el('result').hidden=false;el('caption').hidden=true;['spin','edit','reset','food','coffee'].forEach(id=>el(id).disabled=false);el('spin').textContent=mode==='coffee'?'再选一杯 ↻':'再选一餐 ↻';busy=false;}
+ function finish(){if(done)return;done=true;cancelFrame(animationFrame);setWheelAngle(rotation);clearTimeout(timer);el('wheel').removeEventListener('transitionend',end);el('winner').textContent=menu[index];el('result').hidden=false;el('caption').hidden=true;['spin','edit','reset','food','coffee','meal-open'].forEach(id=>el(id).disabled=false);el('spin').textContent=mode==='coffee'?'再选一杯 ↻':'再选一餐 ↻';busy=false;}
  function end(event){if(event.target===el('wheel')&&event.propertyName==='transform')finish();}
  el('wheel').addEventListener('transitionend',end);animationFrame=frame(track);timer=setTimeout(finish,3400);
 }
@@ -267,6 +268,15 @@ el('edit').onclick=()=>{if(busy)return;draft=[...menu];el('error').textContent='
 el('add').onclick=()=>{if(draft.length>=10)return;draft.push('');drawRows(draft.length-1);};
 el('cancel').onclick=()=>el('editor').close();
 el('form').onsubmit=event=>{event.preventDefault();const checked=validate(draft);if(checked.error){el('error').textContent=checked.error;const input=el('rows').children[checked.index]?.querySelector('input');if(input){input.setAttribute('aria-invalid','true');input.focus();}return;}menu=checked.items;persistMenu();el('result').hidden=true;draw();el('editor').close();};
+window.addEventListener('meal-menu-request',event=>{
+ const names=event.detail?.names;if(busy||mode!=='food'||!Array.isArray(names)||names.some(x=>typeof x!=='string'))return;
+ const checked=validate(names);if(checked.error||names.length!==3)return;
+ const custom=menu.join('\n')!==presets.food.join('\n');
+ if(custom&&!window.confirm('用这 3 个推荐替换当前餐食菜单？'))return;
+ menu=checked.items;const saved=persistMenu();draw();
+ if(saved)el('notice').textContent='已放进转盘，点一下选出今天的一餐。';
+ event.detail.accepted=true;
+});
 window.decisionBusy=()=>busy||el('editor').open;
 el('account-open').onclick=()=>{if(window.decisionBusy())return;el('account-dialog').showModal();};
 el('account-close').onclick=()=>el('account-dialog').close();
@@ -294,5 +304,19 @@ checkRelease();
 <div id="calendar-toast" class="calendar-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
 <script type="module" src="./calendar/calendar-ui.mjs"></script>
 <script type="module" src="./calendar/weather-ui.mjs"></script>
+<dialog id="meal-dialog" aria-labelledby="meal-title" data-clarity-mask>
+ <div class="meal-header"><div><p class="meal-kicker">少一点纠结</p><h2 id="meal-title">让 AI 帮你想一餐</h2></div><button id="meal-close" type="button" aria-label="关闭餐食推荐">关闭</button></div>
+ <form id="meal-form" novalidate autocomplete="off">
+  <p class="meal-intro">选好条件，给你 3 个建议，再交给转盘决定。</p>
+  <div class="meal-fields"><div class="meal-field"><label for="meal-budget">每人预算</label><select id="meal-budget"><option value="20">20 元以内</option><option value="30" selected>30 元以内</option><option value="50">50 元以内</option></select></div><div class="meal-field"><label for="meal-taste">今天的口味</label><select id="meal-taste"><option value="any">都可以</option><option value="light">清淡一点</option><option value="spicy">想吃辣的</option></select></div></div>
+  <div class="meal-field"><label for="meal-avoid">不想吃的食材（选填）</label><input id="meal-avoid" type="text" maxlength="64" placeholder="例如：香菜、花生" spellcheck="false"><p class="meal-help">用顿号或逗号分开，最多 5 项。</p></div>
+  <div class="meal-field"><label for="meal-code">试用码</label><input id="meal-code" type="password" maxlength="128" placeholder="输入收到的试用码" autocomplete="off" autocapitalize="off" spellcheck="false"><p class="meal-help">目前小范围试用，试用码不会保存在网页里。</p></div>
+  <button id="meal-submit" type="submit">生成 3 个建议</button>
+  <p id="meal-status" role="status" aria-live="polite"></p><ul id="meal-results"></ul>
+  <button id="meal-apply" type="button" hidden>放进转盘</button>
+  <p class="meal-privacy">预算、口味和忌口将发送给 DeepSeek 生成建议。价格和食材仅供参考，食用前请向商家确认；严重过敏请勿依赖 AI 推荐。</p>
+ </form>
+</dialog>
+<script type="module" src="./ai/meal-ui.mjs"></script>
 <script type="module" src="./calendar/account-ui.mjs"></script>
 </body></html>

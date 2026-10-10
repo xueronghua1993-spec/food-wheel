@@ -22,3 +22,11 @@ test('A release gives the calendar entry points and module dependencies versione
  assert.ok(ui.includes(`calendar-core.mjs?v=${version}`));assert.ok(ui.includes(`calendar-export.mjs?v=${version}`));assert.ok(ui.includes(`content.json?v=${version}`));
  const c=JSON.parse(fs.readFileSync('public/calendar/content.json','utf8'));assert.ok(c.entries.every(e=>e.imagePath.endsWith(`?v=${version}`)));
 });
+test('AI browser assets are versioned and backend credentials cannot enter Pages',()=>{
+ const version=JSON.parse(fs.readFileSync('public/release.json','utf8')).version;
+ const html=fs.readFileSync('public/index.html','utf8');
+ assert.ok(html.includes(`ai/meal.css?v=${version}`));assert.ok(html.includes(`ai/meal-ui.mjs?v=${version}`));
+ const ui=fs.readFileSync('public/ai/meal-ui.mjs','utf8');assert.ok(ui.includes(`config.mjs?v=${version}`));assert.ok(ui.includes(`meal-rules.mjs?v=${version}`));
+ assert.ok(!fs.existsSync('public/backend'));assert.ok(!fs.existsSync('public/ai/.env'));
+ const config=fs.readFileSync('public/ai/config.mjs','utf8');assert.ok(!config.includes('DEEPSEEK_API_KEY'));assert.ok(!/sk-[a-zA-Z0-9]{16}/.test(config));
+});
