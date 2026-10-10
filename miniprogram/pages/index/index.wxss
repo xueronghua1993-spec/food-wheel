@@ -25,3 +25,11 @@
 .draft-row{align-items:center}
 .draft-row .input{flex:1 1 0;width:0;min-width:0;height:88rpx;padding:0 20rpx;line-height:88rpx}
 .draft-row .remove{flex:0 0 88rpx;width:88rpx;min-width:88rpx;height:88rpx;margin:0;padding:0;display:flex;align-items:center;justify-content:center;line-height:1;font-size:40rpx;border-radius:18rpx}
+
+.wheel-heading{min-height:88rpx;margin-bottom:8rpx}
+.wheel-heading .section-title{font-size:30rpx;line-height:1.4}
+.wheel-heading .edit-menu{height:80rpx;min-height:80rpx;min-width:160rpx;padding:0 24rpx;border:1rpx solid #ccd8c5;border-radius:20rpx;background:#edf2e5;font-size:26rpx;color:#285744}
+.menu-modal .section-title{font-size:30rpx}
+.menu-modal .reset-menu{min-height:88rpx;margin-top:8rpx}
+.menu-modal>.link{width:100%}
+.menu-modal .draft-row{margin:16rpx 0}
