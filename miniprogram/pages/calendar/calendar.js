@@ -4,16 +4,16 @@ const {createTodoStore}=require('../../generated/todos'),{exportCalendar}=requir
 Page({
  data:{today:'',selected:'',firstDate:catalog.historyStart||catalog.firstDate,entry:null,info:{},photo:'/assets/fallback.jpg',photoLoading:false,photoError:'',view:'paper',fullOpen:false,todos:[],done:0,todoInput:'',todoError:'',readOnly:false,status:'',saving:false,previewPath:'',albumDenied:false},
  onLoad(options){
-  this.account=getApp().account;this.todos=createTodoStore(this.account.store);this.generation=0;
+  this.todos=createTodoStore(getApp().store);this.generation=0;
   wx.showShareMenu?.({menus:['shareAppMessage','shareTimeline']});
   const now=today();this.setData({today:now});this.select(resolveDate(options.date,now,this.data.firstDate));
  },
  onShow(){
-  this._active=true;this.unsubscribe=this.account.subscribe(()=>{this.readTodos();this.setData({status:this.account.state().status});});
-  this.refreshDate();this.readTodos();this.setData({status:this.account.state().status});
+  this._active=true;
+  this.refreshDate();this.readTodos();this.setData({status:'保存在此设备。'});
   this.midnightTimer=setInterval(()=>this.refreshDate(),30000);
  },
- onHide(){this._active=false;this.unsubscribe?.();this.unsubscribe=null;clearInterval(this.midnightTimer);},
+ onHide(){this._active=false;clearInterval(this.midnightTimer);},
  onUnload(){this.onHide();this.generation++;},
  refreshDate(){const now=today();if(now!==this.data.today){const wasToday=this.data.selected===this.data.today;this.setData({today:now});this.select(wasToday?now:this.data.selected);}},
  select(date){
