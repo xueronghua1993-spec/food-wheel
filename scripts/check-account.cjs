@@ -109,7 +109,7 @@ async function edit(page,a,b){
     if(body.password!=='password123'){await route.fulfill({status:400,contentType:'application/json',body:JSON.stringify({error_code:'invalid_credentials',msg:'Invalid login credentials'})});return;}
     await route.fulfill({contentType:'application/json',body:JSON.stringify({access_token:token,token_type:'bearer',expires_in:3600,refresh_token:'mock-refresh',user})});return;
    }
-   await route.fulfill({contentType:'application/json',body:JSON.stringify({user})});
+   await route.fulfill({contentType:'application/json',body:JSON.stringify(user)});
   });
   let sdkMenus=[];
   await page.route('https://scmqmdqwlrtlydehsvlo.supabase.co/rest/v1/**',async route=>{
@@ -126,6 +126,11 @@ async function edit(page,a,b){
   await page.waitForFunction(()=>document.querySelector('#account-status').textContent==='已同步到账号。');
   assert.match(await page.locator('#wheel').getAttribute('aria-label'),/SDK面/);
   await page.click('#account-open');await page.click('#account-logout');await page.waitForFunction(()=>window.appStore.owner===null);
+  const recoveryHash=new URLSearchParams({access_token:token,refresh_token:'mock-refresh',token_type:'bearer',expires_in:'3600',type:'recovery'}).toString();
+  await page.goto(base+'#'+recoveryHash);
+  await page.waitForFunction(()=>document.querySelector('#account-dialog').open&&!document.querySelector('#account-confirm').hidden);
+  await page.fill('#account-password','newpassword123');await page.fill('#account-confirm','newpassword123');await page.click('#account-submit');
+  await page.waitForFunction(()=>document.querySelector('#account-message').textContent==='密码已更新。');
   assert.deepEqual(errors,[]);
   console.log('PASS: bundled official SDK login/error parsing, owner-filtered reads, menu upsert and local logout against mocked HTTP');
  }finally{await browser.close();}
