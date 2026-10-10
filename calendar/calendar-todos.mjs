@@ -63,7 +63,7 @@ export function mountTodos({getToday,onCount}){
   if(result.error&&!result.items){$('todo-message').textContent=result.error;$('todo-input').focus();return;}
   $('todo-input').value='';render();$('todo-input').focus();
  };
- window.addEventListener('personal-data-change',()=>{if(selected){store.select(selected);$('todo-input').value='';render();}});
+ window.addEventListener('personal-data-change',()=>{if(selected){store.select(selected);$('todo-input').value='';render();}const today=createTodoStore(storage).select(getToday()).items;onCount(today.filter(x=>x.done).length,today.length);});
  return {select(date){
   if(date===selected){readOnly=date!==getToday();render();return;}
   selected=date;readOnly=date!==getToday();store.select(date);$('todo-input').value='';render();
