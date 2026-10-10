@@ -5,6 +5,9 @@ on:
     branches: [feat/reset-menu-share-card]
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -26,6 +29,8 @@ jobs:
         run: node scripts/build.cjs
       - name: Install cloud browser
         run: npx playwright install --with-deps chromium webkit
+      - name: Check optional accounts and cloud synchronization (mocked backend)
+        run: node scripts/check-account.cjs
       - name: Check mobile layout and capture screenshots
         run: node scripts/browser-check.cjs
       - name: Check calendar todos in mobile browsers
@@ -34,8 +39,6 @@ jobs:
         run: node scripts/check-weather.cjs
       - name: Check live Supabase public configuration (read only)
         run: node scripts/check-supabase-public.cjs
-      - name: Check optional accounts and cloud synchronization (mocked backend)
-        run: node scripts/check-account.cjs
       - uses: actions/upload-artifact@v4
         with:
           name: food-wheel-preview
