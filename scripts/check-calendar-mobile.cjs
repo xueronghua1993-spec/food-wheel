@@ -36,7 +36,7 @@ const fallback=await browser.newPage({viewport:{width:393,height:720},userAgent:
 await fallback.addInitScript(()=>{window.calendarDrawnText=[];const draw=CanvasRenderingContext2D.prototype.fillText;CanvasRenderingContext2D.prototype.fillText=function(text,...args){window.calendarDrawnText.push(String(text));return draw.call(this,text,...args);};});
 await fallback.route('https://www.clarity.ms/**',r=>r.abort());await fallback.clock.install({time:new Date('2026-10-09T04:00:00Z')});await fallback.route('**/calendar/assets/autumn.jpg*',r=>r.abort());await fallback.goto(base);await fallback.click('#calendar-open');
 await fallback.waitForFunction(()=>document.querySelector('#calendar-photo').src.includes('fallback.jpg')&&document.querySelector('#calendar-photo').naturalWidth>0);
-await fallback.click('#calendar-save');await fallback.waitForSelector('#calendar-preview[open]');assert.ok(await fallback.evaluate(()=>window.calendarDrawnText.some(t=>t.includes('备用画面'))),'fallback export must not credit absent photo');await fallback.click('#calendar-preview-close');
+await fallback.click('#calendar-save');await fallback.waitForSelector('#calendar-preview[open]');assert.ok(await fallback.evaluate(()=>window.calendarDrawnText.every(t=>! /备用画面|摄影：|今年还剩/.test(t))),'export must omit footer and photo credits');await fallback.click('#calendar-preview-close');
 await fallback.close();
 const broken=await browser.newPage();await broken.route('https://www.clarity.ms/**',r=>r.abort());await broken.route('**/calendar/content.json*',r=>r.fulfill({status:500,body:'error'}));await broken.goto(base);await broken.click('#calendar-open');
 await broken.waitForFunction(()=>document.querySelector('#calendar-status').textContent.includes('暂时'));

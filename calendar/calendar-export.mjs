@@ -17,7 +17,7 @@ export function wrapText(ctx,text,maxWidth){
 function loadImage(url){return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>reject(new Error('图片未能载入'));image.src=url;});}
 export async function renderCalendarImage(entry,info){
  await document.fonts.ready;
- let image,usedFallback=false;try{image=await loadImage(entry.imagePath);}catch{usedFallback=true;image=await loadImage('./calendar/assets/fallback.jpg');}
+ let image;try{image=await loadImage(entry.imagePath);}catch{image=await loadImage('./calendar/assets/fallback.jpg');}
  const canvas=document.createElement('canvas');canvas.width=1080;
  const ctx=canvas.getContext('2d');if(!ctx)throw new Error('浏览器暂不支持保存图片');
  const font='"Noto Serif CJK SC","Songti SC","SimSun",serif';
@@ -27,8 +27,7 @@ export async function renderCalendarImage(entry,info){
  const paperH=120,photoH=720,quoteY=paperH+photoH+90,lineH=82;
  const sourceY=quoteY+lines.length*lineH+24;
  const dateY=sourceY+sourceLines.length*48+100;
- const photoCredit=wrapText(ctx,usedFallback?'备用画面：日常小决定':`摄影：${entry.imageAuthor}`,900);
- canvas.height=dateY+320+photoCredit.length*44;
+ canvas.height=dateY+240;
  ctx.fillStyle='#fcfff6';ctx.fillRect(0,0,canvas.width,canvas.height);
  ctx.textBaseline='top';ctx.fillStyle='#617259';ctx.font='32px sans-serif';ctx.textAlign='left';ctx.fillText('日常小决定',60,48);ctx.textAlign='right';ctx.fillText('每日一页',1020,48);ctx.fillStyle='#263e33';ctx.beginPath();ctx.arc(540,60,15,0,Math.PI*2);ctx.fill();
  const ratio=Math.max(1080/image.naturalWidth,photoH/image.naturalHeight);
@@ -58,13 +57,5 @@ export async function renderCalendarImage(entry,info){
  ctx.font='32px sans-serif';ctx.fillStyle='#60705d';
  drawAtInkTop(info.weekday,dateX,rowTop+62);
  if(info.lunar)drawAtInkTop(`农历${info.lunar}`,dateX,rowTop+114);
- ctx.textBaseline='top';
- // Match the mobile footer: equal columns with a shared text baseline.
- const footerY=dateY+244;
- ctx.strokeStyle='#e1e8d8';ctx.beginPath();ctx.moveTo(90,footerY-52);ctx.lineTo(990,footerY-52);ctx.stroke();
- ctx.font='32px sans-serif';ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillStyle='#60705d';
- ctx.fillText('每日一页',315,footerY);ctx.fillText(`今年还剩 ${info.remainingDays} 天`,765,footerY);
- ctx.textBaseline='top';
- ctx.font='28px sans-serif';photoCredit.forEach((line,i)=>ctx.fillText(line,540,dateY+278+i*44));
  return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('保存失败，请重试')),'image/png'));
 }
