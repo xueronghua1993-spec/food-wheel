@@ -39,12 +39,12 @@ const server=http.createServer((req,res)=>{
  try{
   const event=JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH,'utf8'));
   const sha=event.pull_request?.head.sha||process.env.GITHUB_SHA;
-  const url='https://raw.githack.com/'+process.env.GITHUB_REPOSITORY+'/'+sha+'/index.html';
+  const url='https://rawcdn.githack.com/'+process.env.GITHUB_REPOSITORY+'/'+sha+'/index.html';
   console.log('PREVIEW: '+url);
   const page=await browser.newPage({viewport:{width:390,height:844}});
   await page.route('https://www.clarity.ms/**',r=>r.abort());
-  await page.goto(url,{timeout:25000});
-  await page.waitForSelector('#calendar-mini-todo-count',{timeout:10000});
+  const response=await page.goto(url,{timeout:25000});console.log('PREVIEW HTTP: '+response.status());
+  await page.waitForSelector('#calendar-mini-todo-count',{state:'attached',timeout:10000});
   await page.click('#calendar-open');await page.click('#calendar-view-todos');
   await page.fill('#todo-input','预览测试');await page.click('#todo-form button');
   await page.waitForSelector('#todo-list li',{timeout:15000});
