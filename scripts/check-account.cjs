@@ -46,7 +46,7 @@ async function prepare(browser,base){
  return {ctx,page,errors};
 }
 async function login(page,email='a@test.example'){
- await page.click('#account-open');await page.fill('#account-email',email);await page.fill('#account-password','password123');await page.click('#account-submit');
+ await page.click('#account-open');await page.click('#account-login');await page.fill('#account-email',email);await page.fill('#account-password','password123');await page.click('#account-submit');
  await page.waitForFunction(()=>document.querySelector('#account-status').textContent==='已同步到账号。');
 }
 async function closeAccount(page){await page.click('#account-close');}
@@ -111,10 +111,11 @@ async function edit(page,a,b){
    }
    await route.fulfill({contentType:'application/json',body:JSON.stringify({user})});
   });
+  let sdkMenus=[];
   await page.route('https://scmqmdqwlrtlydehsvlo.supabase.co/rest/v1/**',async route=>{
    const request=route.request(),url=new URL(request.url()),table=url.pathname.split('/').pop();
-   if(request.method()==='GET'){await route.fulfill({contentType:'application/json',body:'[]'});return;}
-   assert.equal(request.method(),'POST');const row=request.postDataJSON();assert.equal(row.user_id,uid);assert.equal(table,'user_menus');
+   if(request.method()==='GET'){assert.equal(url.searchParams.get('user_id'),'eq.'+uid);await route.fulfill({contentType:'application/json',body:JSON.stringify(table==='user_menus'?sdkMenus:[])});return;}
+   assert.equal(request.method(),'POST');const row=request.postDataJSON();assert.equal(row.user_id,uid);assert.equal(table,'user_menus');sdkMenus=[row];
    await route.fulfill({status:201,contentType:'application/json',body:''});
   });
   await page.goto(base);await page.click('#account-open');await page.fill('#account-email',email);await page.fill('#account-password','wrongpass');await page.click('#account-submit');
@@ -123,6 +124,7 @@ async function edit(page,a,b){
   await page.waitForFunction(()=>document.querySelector('#account-status').textContent==='已同步到账号。');
   await closeAccount(page);await edit(page,'SDK面','SDK饭');
   await page.waitForFunction(()=>document.querySelector('#account-status').textContent==='已同步到账号。');
+  assert.match(await page.locator('#wheel').getAttribute('aria-label'),/SDK面/);
   await page.click('#account-open');await page.click('#account-logout');await page.waitForFunction(()=>window.appStore.owner===null);
   assert.deepEqual(errors,[]);
   console.log('PASS: bundled official SDK login/error parsing, owner-filtered reads, menu upsert and local logout against mocked HTTP');
