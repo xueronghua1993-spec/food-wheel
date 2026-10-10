@@ -91,5 +91,41 @@ async function edit(page,a,b){
    assert.deepEqual(one.errors,[]);assert.deepEqual(two.errors,[]);
   }finally{await one.ctx.close();await two.ctx.close();await browser.close();}
  }
+ // Check the shipped, real SDK against mocked HTTP, independently of the UI adapter.
+ const browser=await chromium.launch({headless:true});
+ const page=await browser.newPage({viewport:{width:390,height:720}});
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ try{
+  await page.route('https://www.clarity.ms/**',r=>r.abort());
+  await page.route('https://ipwho.is/**',r=>r.abort());
+  const uid='11111111-1111-4111-8111-111111111111',email='sdk@test.example';
+  const payload={sub:uid,role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600};
+  const token=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify(payload)).toString('base64url')+'.mock';
+  await page.route('https://scmqmdqwlrtlydehsvlo.supabase.co/auth/v1/**',async route=>{
+   const request=route.request(),url=new URL(request.url());
+   const user={id:uid,email,aud:'authenticated',role:'authenticated',app_metadata:{provider:'email',providers:['email']},user_metadata:{},created_at:new Date().toISOString()};
+   if(url.pathname.endsWith('/token')){
+    const body=request.postDataJSON();
+    if(body.password!=='password123'){await route.fulfill({status:400,contentType:'application/json',body:JSON.stringify({error_code:'invalid_credentials',msg:'Invalid login credentials'})});return;}
+    await route.fulfill({contentType:'application/json',body:JSON.stringify({access_token:token,token_type:'bearer',expires_in:3600,refresh_token:'mock-refresh',user})});return;
+   }
+   await route.fulfill({contentType:'application/json',body:JSON.stringify({user})});
+  });
+  await page.route('https://scmqmdqwlrtlydehsvlo.supabase.co/rest/v1/**',async route=>{
+   const request=route.request(),url=new URL(request.url()),table=url.pathname.split('/').pop();
+   if(request.method()==='GET'){await route.fulfill({contentType:'application/json',body:'[]'});return;}
+   assert.equal(request.method(),'POST');const row=request.postDataJSON();assert.equal(row.user_id,uid);assert.equal(table,'user_menus');
+   await route.fulfill({status:201,contentType:'application/json',body:''});
+  });
+  await page.goto(base);await page.click('#account-open');await page.fill('#account-email',email);await page.fill('#account-password','wrongpass');await page.click('#account-submit');
+  await page.waitForFunction(()=>document.querySelector('#account-message').textContent.includes('不正确'));
+  await page.fill('#account-password','password123');await page.click('#account-submit');
+  await page.waitForFunction(()=>document.querySelector('#account-status').textContent==='已同步到账号。');
+  await closeAccount(page);await edit(page,'SDK面','SDK饭');
+  await page.waitForFunction(()=>document.querySelector('#account-status').textContent==='已同步到账号。');
+  await page.click('#account-open');await page.click('#account-logout');await page.waitForFunction(()=>window.appStore.owner===null);
+  assert.deepEqual(errors,[]);
+  console.log('PASS: bundled official SDK login/error parsing, owner-filtered reads, menu upsert and local logout against mocked HTTP');
+ }finally{await browser.close();}
  console.log('PASS: Chromium/WebKit mocked auth, two-device sync, pending retry after reload, guest import, logout isolation, signup/reset/recovery UI. No real email sent or live database changed.');
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>server.close());
