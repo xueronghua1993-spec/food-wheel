@@ -1,11 +1,15 @@
 {
-  "pages": ["pages/index/index", "pages/calendar/calendar"],
-  "window": {"navigationBarTitleText": "日常小决定", "navigationBarBackgroundColor": "#f4f3ec", "navigationBarTextStyle": "black", "backgroundColor": "#f4f3ec"},
-  "subPackages": [
-    {"name": "photos-a", "root": "photos-a", "pages": ["loader"]},
-    {"name": "photos-b", "root": "photos-b", "pages": ["loader"]},
-    {"name": "photos-c", "root": "photos-c", "pages": ["loader"]}
+  "pages": [
+    "pages/index/index",
+    "pages/calendar/calendar"
   ],
+  "window": {
+    "navigationBarTitleText": "日常小决定",
+    "navigationBarBackgroundColor": "#f4f3ec",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f4f3ec"
+  },
+  "subPackages": [],
   "style": "v2",
   "lazyCodeLoading": "requiredComponents",
   "sitemapLocation": "sitemap.json"

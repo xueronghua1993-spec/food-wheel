@@ -18,8 +18,7 @@ Page({
  refreshDate(){const now=today();if(now!==this.data.today){const wasToday=this.data.selected===this.data.today;this.setData({today:now});this.select(wasToday?now:this.data.selected);}},
  select(date){
   const now=today(),selected=resolveDate(date,now,this.data.firstDate),entry=entryForDate(selected,catalog),info=dateInfo(selected),generation=++this.generation;
-  this.setData({today:now,selected,entry,info,readOnly:selected!==now,photo:'/assets/fallback.jpg',photoLoading:!!entry,photoError:'',fullOpen:false,todoInput:'',todoError:'',previewPath:'',albumDenied:false});this.readTodos();
-  if(entry)wx.loadSubpackage({name:entry.package,success:()=>{if(generation===this.generation)this.setData({photo:entry.imagePath,photoLoading:false});},fail:()=>{if(generation===this.generation)this.setData({photoLoading:false,photoError:'照片未能下载，暂用备用画面。'});}});
+  this.setData({today:now,selected,entry,info,readOnly:selected!==now,photo:entry?.imagePath||'/assets/fallback.jpg',photoLoading:false,photoError:'',fullOpen:false,todoInput:'',todoError:'',previewPath:'',albumDenied:false});this.readTodos();
  },
  readTodos(){
   const state=this.todos.select(this.data.selected);this.setData({todos:state.items,done:state.items.filter(x=>x.done).length,todoError:state.error,readOnly:this.data.selected!==today()});

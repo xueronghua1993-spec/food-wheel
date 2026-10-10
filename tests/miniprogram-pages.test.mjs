@@ -29,9 +29,14 @@ test('today todo persists, completion counts update and share keeps selected dat
  const share=p.onShareAppMessage();assert.ok(share.path.endsWith('?date='+p.data.selected));
  p.removeTodo({currentTarget:{dataset:{id}}});assert.equal(p.data.todos.length,0);
 });
-test('calendar ignores stale package callbacks after changing the date',()=>{
- const a=app(),callbacks=[],p=loadPage('calendar',a,{loadSubpackage:o=>callbacks.push(o),showToast(){}});p.onLoad({date:'2026-10-03'});
- p.select('2026-10-04');callbacks[0].success();assert.equal(p.data.selected,'2026-10-04');assert.equal(p.data.photo,'/assets/fallback.jpg');callbacks[1].success();assert.equal(p.data.photo,p.data.entry.imagePath);
+test('calendar photos work without a game-only subpackage API and follow date changes',()=>{
+ const p=loadPage('calendar',app(),{showToast(){}});p.onLoad({date:'2026-10-03'});
+ assert.equal(p.data.photo,p.data.entry.imagePath);assert.equal(p.data.photoLoading,false);
+ p.select('2026-10-04');assert.equal(p.data.photo,p.data.entry.imagePath);
+ assert.ok(fs.existsSync('miniprogram'+p.data.photo));
+ const home=loadPage('index',app());home.onLoad();home.onShow();
+ assert.notEqual(home.data.miniPhoto,'/assets/fallback.jpg');assert.ok(fs.existsSync('miniprogram'+home.data.miniPhoto));
+ home.onHide();
 });
 test('invalid draft does not overwrite a stored menu and busy wheel blocks mode changes',()=>{
  const a=app(),p=loadPage('index',a,{showToast(){}});p.reload();p.data.draft=['面',' 面 '];p.saveMenu();assert.equal(a.disk.size,0);assert.ok(p.data.editError);

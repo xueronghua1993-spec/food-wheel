@@ -22,8 +22,7 @@ Page({
   const day=today(),entry=entryForDate(day,catalog),info=dateInfo(day);let todos=[];
   try{todos=JSON.parse(store.getItem(todoPrefix+day)||'[]');if(!Array.isArray(todos))todos=[];}catch{}
   this.setData({menu,notice,winner:changed?'':this.data.winner,miniText:entry?.text||'好好过今天。',miniDate:info.month+'月'+info.day+'日 · '+info.weekday,todoCount:todos.filter(x=>x.done).length+'/'+todos.length});this.paint();
-  const photoToken=this.photoToken=(this.photoToken||0)+1;
-  if(entry)wx.loadSubpackage?.({name:entry.package,success:()=>{if(this._active&&photoToken===this.photoToken)this.setData({miniPhoto:entry.imagePath});},fail:()=>{}});
+  this.setData({miniPhoto:entry?.imagePath||'/assets/fallback.jpg'});
  },
  paint(){if(this.ctx)drawWheel(this.ctx,this.size,this.data.menu,this.data.mode,this.rotation||0);},
  switchMode(event){if(this.data.busy||this.data.editing)return;const mode=event.currentTarget.dataset.mode;if(!presets[mode]||mode===this.data.mode)return;this.rotation=0;this.setData({mode,winner:''});this.reload();},
