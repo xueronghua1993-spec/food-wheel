@@ -80,8 +80,8 @@ DeepSeek 负责回答；阿里云函数计算负责转发和检查；阿里云 O
 | `AI_ENABLED` | 先填 `false`；其余配置好再改为 `true` |
 | `DEEPSEEK_API_KEY` | 你在 DeepSeek 开放平台生成的 API 密钥 |
 | `DEEPSEEK_MODEL` | `deepseek-flash`；若账号模型列表不同，按官方当前可用模型修改 |
-| `AI_BETA_CODE` | 自己生成的至少 24 位随机英文字母数字试用码，不使用简单口令 |
-| `AI_HASH_SALT` | 另一个至少 24 位随机串，和试用码不同 |
+| `AI_BETA_CODE` | 建议生成至少 24 位随机英文字母数字试用码（程序最低接受 16 位），不使用简单口令 |
+| `AI_HASH_SALT` | 建议另一个至少 24 位随机串（程序最低接受 16 位），和试用码不同 |
 | `ALLOWED_ORIGIN` | `https://xueronghua1993-spec.github.io`，不带 `/food-wheel/` 或末尾斜杠 |
 | `OSS_BUCKET` | 第 2 步创建的 Bucket 名称 |
 | `OSS_REGION` | `oss-cn-hangzhou` |

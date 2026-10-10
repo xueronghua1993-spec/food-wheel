@@ -10,7 +10,7 @@ function reset(){stop();clearResults();status.textContent='';$('meal-code').valu
 if(endpoint){
  $('meal-open').hidden=false;
  $('meal-open').onclick=()=>{reset();dialog.showModal();};
- $('meal-close').onclick=()=>dialog.close();
+ $('meal-close').onclick=()=>{reset();dialog.close();};
  dialog.addEventListener('close',reset);
  dialog.addEventListener('cancel',reset);
  form.addEventListener('input',()=>{stop();clearResults();status.textContent='';});
@@ -35,6 +35,6 @@ if(endpoint){
   if(options.length!==3)return;
   const detail={names:options.map(x=>x.name),accepted:false};
   window.dispatchEvent(new CustomEvent('meal-menu-request',{detail}));
-  if(detail.accepted)dialog.close();
+  if(detail.accepted){reset();dialog.close();}
  };
 }

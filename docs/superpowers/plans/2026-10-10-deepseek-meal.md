@@ -22,17 +22,17 @@
 ### Task 1: 后端与安全边界
 Files: ai/meal-rules.mjs; backend/meal/{app,quota,oss-store,server}.mjs; tests/meal-api.test.mjs; tests/meal-quota.test.mjs。
 Interfaces: validatePreferences, validateOptions; reserveQuota(store,client,now,limits); createMealHandler({config,store,fetchImpl,now}) 返回 HTTP handler。
-- [ ] 写输入、输出、配额并发、来源伪造、授权、超时的失败测试，运行并确认失败。
-- [ ] 实现纯校验、持久配额和 HTTP 后端；通过以上测试。
+- [x] 写输入、输出、配额并发、来源伪造、授权、超时的失败测试，运行并确认失败。
+- [x] 实现纯校验、持久配额和 HTTP 后端；通过以上测试。
 
 ### Task 2: 手机入口和转盘连接
 Files: ai/{config,meal-ui}.mjs; ai/meal.css; index.html; scripts/build.cjs; scripts/check-meal.cjs; tests/meal-build.test.mjs。
 Interfaces: meal-menu-request 事件含 options 名称；主页面验证后替换并持久化餐食菜单。
-- [ ] 写默认关闭、成功到转盘、错误重试、关闭取消、自定义替换确认、手机尺寸和安全发布包测试；确认失败。
-- [ ] 实现弹窗、纯文本结果与确认，运行浏览器和构建测试。
+- [x] 写默认关闭、成功到转盘、错误重试、关闭取消、自定义替换确认、手机尺寸和安全发布包测试；确认失败。
+- [x] 实现弹窗、纯文本结果与确认，运行浏览器和构建测试。
 
 ### Task 3: 交付和验证
 Files: backend/meal/package*.json; scripts/package-meal.cjs; docs/ai-meal-setup.md; .github/workflows/check.yml。
-- [ ] 打包后端独立 ZIP，执行 Node 语法检查、完整测试与相关浏览器检查。
-- [ ] 写新手操作说明、费用边界、停止办法和真实联调检查。
-- [ ] 做一次独立审查，修复重要问题，提交独立功能分支；缺少云账号配置则明确交付边界。
+- [x] 打包后端独立 ZIP，执行 Node 语法检查、完整测试与相关浏览器检查。
+- [x] 写新手操作说明、费用边界、停止办法和真实联调检查。
+- [x] 做一次独立审查，修复重要问题，提交独立功能分支；缺少云账号配置则明确交付边界。
